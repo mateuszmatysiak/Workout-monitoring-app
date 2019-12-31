@@ -5,16 +5,13 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { TextField } from '@material-ui/core';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
+import Link from '@material-ui/core/Link';
 
-const useStyles = makeStyles(() => ({
-  root: {
-    minWidth: '1000px',
-  },
+const useStyles = makeStyles(theme => ({
   cursor: {
     cursor: 'pointer',
   },
@@ -36,16 +33,21 @@ const SignsDialog = () => {
 
   return (
     <div>
-      <Typography className={classes.cursor} variant="body2" onClick={handleClickOpen}>
+      <Link onClick={handleClickOpen} className={classes.cursor}>
         Zapomniałeś hasło?
-      </Typography>
+      </Link>
       <Dialog fullScreen={fullScreen} open={openDialog} onClose={handleClickClose}>
         <DialogTitle>Resetowanie hasła</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Aby zresetować hasło, wprowadź poniżej swój adres e-mail lub nazwę użytkownika.
           </DialogContentText>
-          <TextField fullWidth label="Wpisz swoją nazwę użytkownika lub email" variant="outlined" />
+          <TextField
+            onChange={(e: any) => console.log(e.target.value)}
+            fullWidth
+            label="Wpisz swoją nazwę użytkownika lub email"
+            variant="outlined"
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClickClose} color="primary">
