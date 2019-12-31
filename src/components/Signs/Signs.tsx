@@ -4,16 +4,17 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import Link from '@material-ui/core/Link';
 import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import BgImg from '../../assets/bg.jpg';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import SignsDialog from './SignsDialog';
-import * as Yup from 'yup';
+import { useLocation, Link as RouterLink } from 'react-router-dom';
+import { object, string } from 'yup';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -51,15 +52,15 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const SignsSchema = Yup.object().shape({
-  username: Yup.string()
+const SignsSchema = object().shape({
+  username: string()
     .min(10, 'Login musi posiadać co najmniej 10 znaków')
     .max(20, 'Login może posiadać maksymalnie 20 znaków')
     .required('To pole jest wymagane'),
-  email: Yup.string()
+  email: string()
     .email('Błędny adres email')
     .required('To pole jest wymagane'),
-  password: Yup.string()
+  password: string()
     .min(10, 'Hasło musi posiadać co najmniej 10 znaków')
     .required('To pole jest wymagane'),
 });
@@ -68,6 +69,8 @@ const SignsValues = { username: '', email: '', password: '' };
 
 const Signs = () => {
   const classes = useStyles();
+
+  const pathName = useLocation().pathname;
 
   return (
     <Formik
@@ -88,23 +91,25 @@ const Signs = () => {
                   <FitnessCenterIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                  Logowanie
+                  {pathName === '/login' ? 'Logowanie' : 'Rejestracja'}
                 </Typography>
                 <Form className={classes.form} noValidate>
-                  <Field
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="username"
-                    label="Login"
-                    name="username"
-                    autoComplete="username"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.username}
-                    component={TextField}
-                  />
+                  {pathName === '/login' ? null : (
+                    <Field
+                      variant="outlined"
+                      margin="normal"
+                      required
+                      fullWidth
+                      id="username"
+                      label="Login"
+                      name="username"
+                      autoComplete="username"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.username}
+                      component={TextField}
+                    />
+                  )}
                   <ErrorMessage name="username">
                     {msg => <div className={classes.error}>{msg}</div>}
                   </ErrorMessage>
@@ -114,7 +119,7 @@ const Signs = () => {
                     required
                     fullWidth
                     id="email"
-                    label="Email"
+                    label={pathName === '/login' ? 'Nazwa użytkownika lub Email' : 'Email'}
                     name="email"
                     autoComplete="email"
                     onChange={handleChange}
@@ -143,10 +148,12 @@ const Signs = () => {
                   <ErrorMessage name="password">
                     {msg => <div className={classes.error}>{msg}</div>}
                   </ErrorMessage>
-                  <FormControlLabel
-                    control={<Checkbox value="remember" color="primary" />}
-                    label="Zapamiętaj mnie"
-                  />
+                  {pathName === '/login' ? (
+                    <FormControlLabel
+                      control={<Checkbox value="remember" color="primary" />}
+                      label="Zapamiętaj mnie"
+                    />
+                  ) : null}
                   <Button
                     type="submit"
                     fullWidth
@@ -154,16 +161,18 @@ const Signs = () => {
                     color="primary"
                     className={classes.submit}
                   >
-                    Zaloguj się
+                    {pathName === '/login' ? 'Zaloguj się' : 'Zarejestruj się'}
                   </Button>
                   <Grid container>
                     <Grid item xs>
                       <SignsDialog />
                     </Grid>
                     <Grid item>
-                      <Link href="#" variant="body2">
-                        Nie masz konta? Zarejestruj się!
-                      </Link>
+                      <RouterLink component={Link} to={pathName === '/login' ? '/register' : '/login'}>
+                        {pathName === '/login'
+                          ? 'Nie masz konta? Zarejestruj się!'
+                          : 'Masz konto? Zaloguj się!'}
+                      </RouterLink>
                     </Grid>
                   </Grid>
                 </Form>
