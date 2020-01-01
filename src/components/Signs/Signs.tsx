@@ -6,13 +6,18 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import Link from '@material-ui/core/Link';
 import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import BgImg from '../../assets/bg.jpg';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import SignsDialog from './SignsDialog';
+<<<<<<< HEAD
 import { useLocation, Link } from 'react-router-dom';
+=======
+import { useLocation, Link as RouterLink } from 'react-router-dom';
+>>>>>>> 87671cce1909e496a9a4caaf7bfd72575c0cd5f9
 import { object, string } from 'yup';
 
 const useStyles = makeStyles(theme => ({
@@ -61,14 +66,23 @@ const useStyles = makeStyles(theme => ({
 
 const SignsSchema = object().shape({
   username: string()
+<<<<<<< HEAD
     .min(5, 'Nazwa użytkownika musi posiadać co najmniej 5 znaków')
     .max(15, 'Nazwa użytkownika może posiadać maksymalnie 15 znaków')
+=======
+    .min(10, 'Login musi posiadać co najmniej 10 znaków')
+    .max(20, 'Login może posiadać maksymalnie 20 znaków')
+>>>>>>> 87671cce1909e496a9a4caaf7bfd72575c0cd5f9
     .required('To pole jest wymagane'),
   email: string()
     .email('Błędny adres email')
     .required('To pole jest wymagane'),
   password: string()
+<<<<<<< HEAD
     .min(8, 'Hasło musi posiadać co najmniej 8 znaków')
+=======
+    .min(10, 'Hasło musi posiadać co najmniej 10 znaków')
+>>>>>>> 87671cce1909e496a9a4caaf7bfd72575c0cd5f9
     .required('To pole jest wymagane'),
 });
 
@@ -175,6 +189,7 @@ const Signs = () => {
                       <SignsDialog />
                     </Grid>
                     <Grid item>
+<<<<<<< HEAD
                       <Link
                         className={classes.link}
                         to={pathName === '/login' ? '/register' : '/login'}
@@ -183,6 +198,13 @@ const Signs = () => {
                           ? 'Nie masz konta? Zarejestruj się!'
                           : 'Masz konto? Zaloguj się!'}
                       </Link>
+=======
+                      <RouterLink component={Link} to={pathName === '/login' ? '/register' : '/login'}>
+                        {pathName === '/login'
+                          ? 'Nie masz konta? Zarejestruj się!'
+                          : 'Masz konto? Zaloguj się!'}
+                      </RouterLink>
+>>>>>>> 87671cce1909e496a9a4caaf7bfd72575c0cd5f9
                     </Grid>
                   </Grid>
                 </Form>
