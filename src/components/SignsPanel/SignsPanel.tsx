@@ -74,7 +74,7 @@ const SignsSchema = object().shape({
 
 const SignsValues = { username: '', email: '', password: '' };
 
-const Signs = () => {
+const SingsPanel = () => {
   const classes = useStyles();
 
   const pathName = useLocation().pathname;
@@ -200,4 +200,4 @@ const Signs = () => {
   );
 };
 
-export default Signs;
+export default SingsPanel;

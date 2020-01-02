@@ -17,9 +17,9 @@ const useStyles = makeStyles(theme => ({
 const Header = () => {
   const classes = useStyles();
   return (
-    <div className={classes.header}>
+    <header className={classes.header}>
       <HeaderHelpDialog />
-    </div>
+    </header>
   );
 };
 
