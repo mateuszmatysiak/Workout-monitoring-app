@@ -1,7 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Signs from '../components/Signs';
 import MainTemplate from 'templates/MainTemplate';
+import Signs from './Signs';
+import Calendar from './Calendar';
 
 const Root = () => {
   return (
@@ -11,6 +12,7 @@ const Root = () => {
           <>
             <Route path="/login" component={Signs} />
             <Route path="/register" component={Signs} />
+            <Route path="/calendar" component={Calendar} />
           </>
         </Switch>
       </MainTemplate>

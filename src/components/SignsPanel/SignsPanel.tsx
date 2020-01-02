@@ -11,8 +11,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import BgImg from '../../assets/bg.jpg';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import SignsDialog from './SignsDialog';
-import { useLocation, Link } from 'react-router-dom';
+import SignsDialog from './SignsPanelDialog';
+import { useLocation, Link, useHistory } from 'react-router-dom';
 import { object, string } from 'yup';
 
 const useStyles = makeStyles(theme => ({
@@ -78,6 +78,10 @@ const Signs = () => {
   const classes = useStyles();
 
   const pathName = useLocation().pathname;
+  const history = useHistory();
+
+  const handleLogin = () => history.push('/calendar');
+  const handleRegistration = () => console.log('Rejestracja');
 
   return (
     <Formik
@@ -167,6 +171,7 @@ const Signs = () => {
                     variant="contained"
                     color="primary"
                     className={classes.submit}
+                    onClick={pathName === '/login' ? handleLogin : handleRegistration}
                   >
                     {pathName === '/login' ? 'Zaloguj się' : 'Zarejestruj się'}
                   </Button>
