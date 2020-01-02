@@ -1,7 +1,7 @@
 import React from 'react';
 import Sidebar from '../components/Sidebar';
 import { makeStyles } from '@material-ui/core/styles';
-import classes from '*.module.css';
+import Header from '../components/Header';
 
 const useStyles = makeStyles(theme => ({
   page: {
@@ -34,7 +34,7 @@ const SidebarTemplate = ({ children }: SidebarTemplateProps) => {
     <div className={classes.page}>
       <Sidebar />
       <div className={classes.wrapper}>
-        <div className={classes.header}></div>
+        <Header />
         <div className={classes.content}>{children}</div>
       </div>
     </div>

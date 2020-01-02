@@ -1,17 +1,28 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { NavLink } from 'react-router-dom';
-import { Typography, List, ListItem, ListItemIcon, Collapse, IconButton } from '@material-ui/core';
+import { Typography, List, ListItem, ListItemIcon, IconButton } from '@material-ui/core';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({
   navWrapper: {
     minHeight: '100vh',
-    width: '200px',
+    minWidth: '55px',
+    width: '55px',
     backgroundColor: theme.palette.secondary.main,
     borderRight: `1px solid ${theme.palette.grey[700]}`,
+    overflow: 'hidden',
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.standard,
+    }),
+  },
+  navWrapperActive: {
+    width: '200px',
   },
   navItemWrapper: {
     '&:hover': {
@@ -34,12 +45,12 @@ const useStyles = makeStyles(theme => ({
   },
   navIcon: {
     color: theme.palette.grey['300'],
-    fontSize: '18px',
+    fontSize: '22px',
   },
   exitIcon: {
     color: theme.palette.grey['300'],
     transform: 'rotate(-180deg)',
-    fontSize: '18px',
+    fontSize: '22px',
   },
   headerWrapper: {
     display: 'flex',
@@ -60,12 +71,19 @@ const SidebarNavigation = () => {
   const [activeSidebar, setActiveSidebar] = useState(false);
   const handleActiveSidebar = () => setActiveSidebar(!activeSidebar);
 
+  const NavIconButton = () =>
+    activeSidebar ? (
+      <NavigateBeforeIcon className={classes.headerIcon} />
+    ) : (
+      <NavigateNextIcon className={classes.headerIcon} />
+    );
+
   return (
     <>
-      <nav className={classes.navWrapper}>
+      <nav className={clsx(classes.navWrapper, activeSidebar && classes.navWrapperActive)}>
         <header className={classes.headerWrapper}>
-          <IconButton>
-            <NavigateBeforeIcon className={classes.headerIcon} />
+          <IconButton onClick={handleActiveSidebar}>
+            <NavIconButton />
           </IconButton>
         </header>
         <List>
