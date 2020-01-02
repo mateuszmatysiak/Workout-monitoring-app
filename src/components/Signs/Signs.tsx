@@ -63,19 +63,12 @@ const SignsSchema = object().shape({
   username: string()
     .min(5, 'Nazwa użytkownika musi posiadać co najmniej 5 znaków')
     .max(15, 'Nazwa użytkownika może posiadać maksymalnie 15 znaków')
-    .min(5, 'Nazwa użytkownika musi posiadać co najmniej 5 znaków')
-    .max(15, 'Nazwa użytkownika może posiadać maksymalnie 15 znaków')
-    .min(10, 'Login musi posiadać co najmniej 10 znaków')
-    .max(20, 'Login może posiadać maksymalnie 20 znaków')
     .required('To pole jest wymagane'),
   email: string()
     .email('Błędny adres email')
     .required('To pole jest wymagane'),
   password: string()
     .min(8, 'Hasło musi posiadać co najmniej 8 znaków')
-    .min(8, 'Hasło musi posiadać co najmniej 8 znaków')
-
-    .min(10, 'Hasło musi posiadać co najmniej 10 znaków')
     .required('To pole jest wymagane'),
 });
 
@@ -186,11 +179,6 @@ const Signs = () => {
                         className={classes.link}
                         to={pathName === '/login' ? '/register' : '/login'}
                       >
-                        {pathName === '/login'
-                          ? 'Nie masz konta? Zarejestruj się!'
-                          : 'Masz konto? Zaloguj się!'}
-                      </Link>
-                      <Link component={Link} to={pathName === '/login' ? '/register' : '/login'}>
                         {pathName === '/login'
                           ? 'Nie masz konta? Zarejestruj się!'
                           : 'Masz konto? Zaloguj się!'}
