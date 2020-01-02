@@ -1,5 +1,6 @@
 import React from 'react';
+import SidebarTemplate from 'templates/SidebarTemplate';
 
-const Calendar = () => <div>123</div>;
+const Calendar = () => <SidebarTemplate>Kalendarz</SidebarTemplate>;
 
 export default Calendar;

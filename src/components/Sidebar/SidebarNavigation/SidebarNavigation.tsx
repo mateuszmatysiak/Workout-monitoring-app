@@ -1,22 +1,25 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { NavLink } from 'react-router-dom';
-import { Typography, List, ListItem, ListItemIcon, Collapse } from '@material-ui/core';
+import { Typography, List, ListItem, ListItemIcon, Collapse, IconButton } from '@material-ui/core';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
+import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 
 const useStyles = makeStyles(theme => ({
   navWrapper: {
-    height: '33.33%',
-    backgroundColor: theme.palette.text.primary,
+    minHeight: '100vh',
+    width: '200px',
+    backgroundColor: theme.palette.secondary.main,
+    borderRight: `1px solid ${theme.palette.grey[700]}`,
   },
   navItemWrapper: {
     '&:hover': {
-      backgroundColor: 'rgba(0,0,0, .1)',
+      backgroundColor: 'rgba(255,255,255, .1)',
     },
 
     '&.active': {
-      backgroundColor: 'rgba(0,0,0, .1)',
+      backgroundColor: 'rgba(255,255,255, .1)',
     },
   },
   navItem: {
@@ -35,9 +38,19 @@ const useStyles = makeStyles(theme => ({
   },
   exitIcon: {
     color: theme.palette.grey['300'],
-    fontSize: '56px',
     transform: 'rotate(-180deg)',
-    padding: '12px',
+    fontSize: '18px',
+  },
+  headerWrapper: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    height: '60px',
+    borderBottom: `1px solid ${theme.palette.grey[700]}`,
+    paddingRight: '4px',
+  },
+  headerIcon: {
+    fill: theme.palette.grey[300],
   },
 }));
 
@@ -50,6 +63,11 @@ const SidebarNavigation = () => {
   return (
     <>
       <nav className={classes.navWrapper}>
+        <header className={classes.headerWrapper}>
+          <IconButton>
+            <NavigateBeforeIcon className={classes.headerIcon} />
+          </IconButton>
+        </header>
         <List>
           <ListItem component={NavLink} to="/calendar" className={classes.navItemWrapper}>
             <ListItemIcon className={classes.navIconWrapper}>
@@ -61,7 +79,7 @@ const SidebarNavigation = () => {
             <ListItemIcon className={classes.navIconWrapper}>
               <ExitToAppIcon className={classes.exitIcon} />
             </ListItemIcon>
-            <Typography className={classes.navItem}>Znajdz pracownika</Typography>
+            <Typography className={classes.navItem}>Wyloguj</Typography>
           </ListItem>
         </List>
       </nav>
