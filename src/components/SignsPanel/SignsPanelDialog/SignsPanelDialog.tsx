@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const SignsDialog = () => {
+const SignsPanelDialog = () => {
   const classes = useStyles();
   const [openDialog, setOpenDialog] = useState(false);
   const theme = useTheme();
@@ -62,4 +62,4 @@ const SignsDialog = () => {
   );
 };
 
-export default SignsDialog;
+export default SignsPanelDialog;
