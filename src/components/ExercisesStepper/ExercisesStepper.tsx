@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { Box } from '@material-ui/core';
-import StepConnector from '@material-ui/core/StepConnector';
 import { StepIconProps } from '@material-ui/core/StepIcon';
 import Check from '@material-ui/icons/Check';
 
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
-    backgroundColor: theme.palette.secondary.dark,
+    backgroundColor: theme.palette.secondary.light,
   },
   button: {
     marginRight: theme.spacing(1),
@@ -41,15 +40,19 @@ const getStepContent = (step: number) => {
     case 1:
       return 'Ustalanie serii dla danego ćwiczenia...';
     case 2:
-      return 'Ustalanie ilści powtórzeń oraz kilgramów dla danej serii...';
+      return 'Ustalanie ilości powtórzeń oraz kilogramów dla danej serii...';
     default:
       return 'Nieznany krok';
   }
 };
 
-const ExercisesStepper = () => {
+interface ExercisesStepperProps {
+  activeStep: number;
+  setActiveStep: any;
+}
+
+const ExercisesStepper = ({ activeStep, setActiveStep }: ExercisesStepperProps) => {
   const classes = useStyles();
-  const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set<number>());
   const steps = getSteps();
 
@@ -64,12 +67,12 @@ const ExercisesStepper = () => {
       newSkipped.delete(activeStep);
     }
 
-    setActiveStep(prevActiveStep => prevActiveStep + 1);
+    setActiveStep((prevActiveStep: any) => prevActiveStep + 1);
     setSkipped(newSkipped);
   };
 
   const handleBack = () => {
-    setActiveStep(prevActiveStep => prevActiveStep - 1);
+    setActiveStep((prevActiveStep: any) => prevActiveStep - 1);
   };
 
   const handleReset = () => {
@@ -123,9 +126,9 @@ const ExercisesStepper = () => {
       <div>
         {activeStep === steps.length ? (
           <Box textAlign="center" padding="0 16px 16px 16px">
-            <Typography className={classes.instructions}>Wszystkie kroki ukończone</Typography>
+            <Typography className={classes.instructions}>Stworzono plan treningowy</Typography>
             <Button onClick={handleReset} className={classes.button}>
-              Zresetuj
+              Stwórz plan treningowy
             </Button>
           </Box>
         ) : (
@@ -141,7 +144,7 @@ const ExercisesStepper = () => {
                 onClick={handleNext}
                 className={classes.button}
               >
-                {activeStep === steps.length - 1 ? 'Koniec' : 'Następny'}
+                {activeStep === steps.length - 1 ? 'Zapisz' : 'Następny'}
               </Button>
             </div>
           </Box>

@@ -35,7 +35,7 @@ export const Theme = createMuiTheme({
            common: { black: '#000', white: '#fff' },
            type: 'light',
            primary: { main: '#2C3A51', light: '#4a5b73', dark: '#D1D2D4' },
-           secondary: { main: '#424242', light: '#CCACA3', dark: '#121212' },
+           secondary: { main: '#424242', light: '#212121', dark: '#121212' },
            error: { main: '#f44336', light: '#e57373', dark: '#d32f2f' },
            grey: {
              '50': '#fafafa',

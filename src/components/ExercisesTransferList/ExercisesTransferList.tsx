@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   },
   cardHeader: {
     padding: theme.spacing(1, 2),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.secondary.dark,
     color: theme.palette.grey[300],
     borderBottom: `1px solid ${theme.palette.grey[700]}`,
   },
