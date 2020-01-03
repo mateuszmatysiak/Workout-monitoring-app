@@ -11,7 +11,9 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
   },
   content: {
-    height: '100vh',
+    overflow: 'auto',
+    height: '100%',
+    maxHeight: 'calc(100vh - 60px)',
     backgroundColor: theme.palette.secondary.dark,
     color: theme.palette.common.white,
     padding: '16px',

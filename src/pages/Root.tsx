@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import MainTemplate from 'templates/MainTemplate';
 import Signs from './Signs';
 import Calendar from './Calendar';
+import Exercises from './Exercises';
 
 const Root = () => {
   return (
@@ -13,6 +14,7 @@ const Root = () => {
             <Route path="/login" component={Signs} />
             <Route path="/register" component={Signs} />
             <Route path="/calendar" component={Calendar} />
+            <Route path="/exercises" component={Exercises} />
           </>
         </Switch>
       </MainTemplate>

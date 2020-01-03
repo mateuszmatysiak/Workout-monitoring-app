@@ -5,7 +5,8 @@ import { Typography, List, ListItem, ListItemIcon, IconButton } from '@material-
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import MenuIcon from '@material-ui/icons/Menu';
+import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
 import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({
@@ -75,7 +76,7 @@ const SidebarNavigation = () => {
     activeSidebar ? (
       <NavigateBeforeIcon className={classes.headerIcon} />
     ) : (
-      <NavigateNextIcon className={classes.headerIcon} />
+      <MenuIcon className={classes.headerIcon} />
     );
 
   return (
@@ -92,6 +93,12 @@ const SidebarNavigation = () => {
               <CalendarTodayIcon className={classes.navIcon} />
             </ListItemIcon>
             <Typography className={classes.navItem}>Kalendarz</Typography>
+          </ListItem>
+          <ListItem component={NavLink} to="/exercises" className={classes.navItemWrapper}>
+            <ListItemIcon className={classes.navIconWrapper}>
+              <FitnessCenterIcon className={classes.navIcon} />
+            </ListItemIcon>
+            <Typography className={classes.navItem}>Ćwiczenia</Typography>
           </ListItem>
           <ListItem component={NavLink} to="/login" className={classes.navItemWrapper}>
             <ListItemIcon className={classes.navIconWrapper}>
