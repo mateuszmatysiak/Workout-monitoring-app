@@ -58,7 +58,7 @@ const intersection = (a: number[], b: number[]) => a.filter(value => b.indexOf(v
 
 const union = (a: number[], b: number[]) => [...a, ...not(b, a)];
 
-const TransferList = () => {
+const ExercisesTransferList = () => {
   const classes = useStyles();
   const [checked, setChecked] = useState<number[]>([]);
   const [left, setLeft] = useState<any[]>([
@@ -188,4 +188,4 @@ const TransferList = () => {
   );
 };
 
-export default TransferList;
+export default ExercisesTransferList;
