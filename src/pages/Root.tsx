@@ -4,21 +4,25 @@ import MainTemplate from 'templates/MainTemplate';
 import Signs from './Signs';
 import Calendar from './Calendar';
 import Exercises from './Exercises';
+import { Provider } from 'react-redux';
+import store from '../store';
 
 const Root = () => {
   return (
-    <Router>
-      <MainTemplate>
-        <Switch>
-          <>
-            <Route path="/login" component={Signs} />
-            <Route path="/register" component={Signs} />
-            <Route path="/calendar" component={Calendar} />
-            <Route path="/exercises" component={Exercises} />
-          </>
-        </Switch>
-      </MainTemplate>
-    </Router>
+    <Provider store={store}>
+      <Router>
+        <MainTemplate>
+          <Switch>
+            <>
+              <Route path="/login" component={Signs} />
+              <Route path="/register" component={Signs} />
+              <Route path="/calendar" component={Calendar} />
+              <Route path="/exercises" component={Exercises} />
+            </>
+          </Switch>
+        </MainTemplate>
+      </Router>
+    </Provider>
   );
 };
 

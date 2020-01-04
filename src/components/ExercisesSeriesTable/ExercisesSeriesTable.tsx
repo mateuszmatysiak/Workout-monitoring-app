@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -42,27 +42,22 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const data = [
-  { name: 'Biceps' },
-  { name: 'Triceps' },
-  { name: 'Biceps' },
-  { name: 'Triceps' },
-  { name: 'Biceps' },
-  { name: 'Triceps' },
-  { name: 'Biceps' },
-  { name: 'Triceps' },
-  { name: 'Biceps' },
-  { name: 'Triceps' },
-  { name: 'Biceps' },
-  { name: 'Triceps' },
-  { name: 'Biceps' },
-  { name: 'Triceps' },
-  { name: 'Biceps' },
-  { name: 'Triceps' },
-];
+// const data = [{ name: 'Biceps' }, { name: 'Triceps' }];
 
-const ExercisesSeriesTable = () => {
+interface ExercisesSeriesTableProps {
+  data: any[];
+}
+
+const ExercisesSeriesTable = ({ data }: ExercisesSeriesTableProps) => {
   const classes = useStyles();
+  const [value, setValue] = useState('1');
+  const seriesData = data.map((item: any, index) => ({
+    id: index,
+    name: item,
+    value: value,
+  }));
+
+  console.log(seriesData);
 
   return (
     <TableContainer className={classes.container} component={Paper}>
@@ -76,27 +71,31 @@ const ExercisesSeriesTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((item: any, index: number) => (
-            <TableRow key={index}>
-              <TableCell className={classes.fontWhite} scope="row">
-                {item.name}
-              </TableCell>
-              <TableCell align="right">
-                <TextField
-                  type="number"
-                  variant="outlined"
-                  className={classes.textField}
-                  InputProps={{
-                    classes: {
-                      notchedOutline: classes.textFieldBorder,
-                      input: classes.textFieldFont,
-                    },
-                    inputMode: 'numeric',
-                  }}
-                />
-              </TableCell>
-            </TableRow>
-          ))}
+          {seriesData.map((item: any, index: number) => {
+            return (
+              <TableRow key={index}>
+                <TableCell className={classes.fontWhite} scope="row">
+                  {item.name}
+                </TableCell>
+                <TableCell align="right">
+                  <TextField
+                    type="number"
+                    variant="outlined"
+                    defaultValue={1}
+                    id={`${index}`}
+                    className={classes.textField}
+                    onChange={(e: any) => setValue(e.target.value)}
+                    InputProps={{
+                      classes: {
+                        notchedOutline: classes.textFieldBorder,
+                        input: classes.textFieldFont,
+                      },
+                    }}
+                  />
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </TableContainer>

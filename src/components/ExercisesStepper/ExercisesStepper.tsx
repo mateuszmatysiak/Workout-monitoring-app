@@ -49,9 +49,20 @@ const getStepContent = (step: number) => {
 interface ExercisesStepperProps {
   activeStep: number;
   setActiveStep: any;
+  right: string[];
+  left: string[];
+  setLeft: any;
+  setRight: any;
 }
 
-const ExercisesStepper = ({ activeStep, setActiveStep }: ExercisesStepperProps) => {
+const ExercisesStepper = ({
+  activeStep,
+  setActiveStep,
+  right,
+  left,
+  setLeft,
+  setRight,
+}: ExercisesStepperProps) => {
   const classes = useStyles();
   const [skipped, setSkipped] = useState(new Set<number>());
   const steps = getSteps();
@@ -73,10 +84,29 @@ const ExercisesStepper = ({ activeStep, setActiveStep }: ExercisesStepperProps) 
 
   const handleBack = () => {
     setActiveStep((prevActiveStep: any) => prevActiveStep - 1);
+    setLeft(left.filter((value: any) => right.indexOf(value) === -1));
   };
 
   const handleReset = () => {
     setActiveStep(0);
+    setLeft([
+      'Biceps',
+      'Triceps',
+      'Wznosy bokiem',
+      'Wyciskanie żołnierskie',
+      'Wyciskanie leżąc',
+      'Podciąganie',
+      'Szwedki',
+      'Pompki',
+      'Ab roller na kolanach',
+      'Unoszenie prostych nóg do drążka',
+      'Rewersy',
+      'Scyzoryk',
+      'Dead bug - nogi proste',
+      'Hollow body',
+      'Semi hollow body',
+    ]);
+    setRight([]);
   };
 
   const customStepStyles = makeStyles(theme => ({
@@ -135,7 +165,13 @@ const ExercisesStepper = ({ activeStep, setActiveStep }: ExercisesStepperProps) 
           <Box textAlign="center" padding="0 16px 16px 16px">
             <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
             <div>
-              <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
+              <Button
+                disabled={activeStep === 0}
+                onClick={handleBack}
+                className={classes.button}
+                variant="contained"
+                color="primary"
+              >
                 Cofnij
               </Button>
               <Button
@@ -143,6 +179,7 @@ const ExercisesStepper = ({ activeStep, setActiveStep }: ExercisesStepperProps) 
                 color="primary"
                 onClick={handleNext}
                 className={classes.button}
+                disabled={right.length === 0}
               >
                 {activeStep === steps.length - 1 ? 'Zapisz' : 'Następny'}
               </Button>

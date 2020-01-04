@@ -9,6 +9,9 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
+import SearchIcon from '@material-ui/icons/Search';
+import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -40,6 +43,20 @@ const useStyles = makeStyles(theme => ({
   text: {
     color: theme.palette.grey[300],
   },
+  textField: {
+    backgroundColor: theme.palette.secondary.main,
+    width: '100%',
+    padding: '8px',
+  },
+  textFieldBorder: {
+    borderWidth: '1px',
+    borderColor: `${theme.palette.grey[500]} !important`,
+    color: theme.palette.grey[500],
+  },
+  textFieldFont: {
+    color: theme.palette.grey[500],
+    padding: '8px 4px 8px 12px',
+  },
 }));
 
 const CustomCheckBox = withStyles({
@@ -58,28 +75,18 @@ const intersection = (a: number[], b: number[]) => a.filter(value => b.indexOf(v
 
 const union = (a: number[], b: number[]) => [...a, ...not(b, a)];
 
-const ExercisesTransferList = () => {
+interface ExercisesTransferListProps {
+  left: any;
+  setLeft: any;
+  right: any;
+  setRight: any;
+}
+
+const ExercisesTransferList = ({ left, setLeft, right, setRight }: ExercisesTransferListProps) => {
   const classes = useStyles();
   const [checked, setChecked] = useState<number[]>([]);
-  const [left, setLeft] = useState<any[]>([
-    'Biceps',
-    'Triceps',
-    'Wznosy bokiem',
-    'Wyciskanie żołnierskie',
-    'Wyciskanie leżąc',
-    'Podciąganie',
-    'Szwedki',
-    'Pompki',
-    'Ab roller na kolanach',
-    'Unoszenie prostych nóg do drążka',
-    'Rewersy',
-    'Scyzoryk',
-    'Dead bug - nogi proste',
-    'Hollow body',
-    'Semi hollow body',
-  ]);
-  const [right, setRight] = useState<any[]>([]);
 
+  console.log(left, right);
   const leftChecked = intersection(checked, left);
   const rightChecked = intersection(checked, right);
 
@@ -134,6 +141,22 @@ const ExercisesTransferList = () => {
         subheader={`${numberOfChecked(items)}/${items.length} wybranych`}
         subheaderTypographyProps={{ className: classes.text }}
       />
+      <TextField
+        placeholder="Wyszukaj"
+        variant="outlined"
+        className={classes.textField}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon style={{ color: '#9e9e9e' }} />
+            </InputAdornment>
+          ),
+          classes: {
+            notchedOutline: classes.textFieldBorder,
+            input: classes.textFieldFont,
+          },
+        }}
+      />
       <List className={classes.list} dense component="div" role="list">
         {items.map((value: number) => {
           return (
@@ -157,7 +180,7 @@ const ExercisesTransferList = () => {
   return (
     <Grid container spacing={2} justify="center" alignItems="center" className={classes.root}>
       <Grid xs={5} item>
-        {itemList('Wybory', left)}
+        {itemList('Wybory', not(left, right))}
       </Grid>
       <Grid item>
         <Grid container direction="column" alignItems="center">

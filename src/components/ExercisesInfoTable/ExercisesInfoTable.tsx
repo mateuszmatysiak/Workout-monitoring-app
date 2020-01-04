@@ -11,7 +11,6 @@ import { TextField } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   tableHeader: {
-    // width: '80%',
     backgroundColor: theme.palette.secondary.dark,
     color: theme.palette.common.white,
     top: 0,
@@ -25,9 +24,6 @@ const useStyles = makeStyles(theme => ({
   container: {
     maxHeight: 440,
     backgroundColor: theme.palette.secondary.main,
-  },
-  textField: {
-    // width: '0%',
   },
   textFieldBorder: {
     borderWidth: '1px',
@@ -71,14 +67,13 @@ const ExercisesInfoTable = () => {
             {item.series.map((item: any, id: any) => {
               return (
                 <TableRow key={id}>
-                  <TableCell style={{ width: '79%' }} className={classes.fontWhite} scope="row">
+                  <TableCell style={{ width: '70%' }} className={classes.fontWhite} scope="row">
                     Seria {item.value}
                   </TableCell>
-                  <TableCell style={{ width: '7%' }}>
+                  <TableCell style={{ width: '10%' }}>
                     <TextField
                       type="number"
                       variant="outlined"
-                      //   className={classes.textField}
                       InputProps={{
                         classes: {
                           notchedOutline: classes.textFieldBorder,
@@ -87,11 +82,10 @@ const ExercisesInfoTable = () => {
                       }}
                     />
                   </TableCell>
-                  <TableCell style={{ width: '7%' }}>
+                  <TableCell style={{ width: '10%' }}>
                     <TextField
                       type="number"
                       variant="outlined"
-                      //   className={classes.textField}
                       InputProps={{
                         classes: {
                           notchedOutline: classes.textFieldBorder,
@@ -100,11 +94,10 @@ const ExercisesInfoTable = () => {
                       }}
                     />
                   </TableCell>
-                  <TableCell style={{ width: '7%' }}>
+                  <TableCell style={{ width: '10%' }}>
                     <TextField
                       type="number"
                       variant="outlined"
-                      //   className={classes.textField}
                       InputProps={{
                         classes: {
                           notchedOutline: classes.textFieldBorder,
