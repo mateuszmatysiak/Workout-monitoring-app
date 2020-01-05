@@ -36,14 +36,15 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const data = [
-  { name: 'Biceps', series: [{ value: 1 }] },
-  { name: 'Triceps', series: [{ value: 1 }, { value: 2 }, { value: 3 }] },
-  { name: 'Scryzoryk', series: [{ value: 1 }, { value: 2 }] },
-];
+interface ExercisesInfoTableProps {
+  data: any;
+  setData: any;
+}
 
-const ExercisesInfoTable = () => {
+const ExercisesInfoTable = ({ data, setData }: ExercisesInfoTableProps) => {
   const classes = useStyles();
+
+  console.log(data);
 
   return (
     <TableContainer className={classes.container} component={Paper}>
@@ -68,12 +69,27 @@ const ExercisesInfoTable = () => {
               return (
                 <TableRow key={id}>
                   <TableCell style={{ width: '70%' }} className={classes.fontWhite} scope="row">
-                    Seria {item.value}
+                    Seria {item.nr}
                   </TableCell>
                   <TableCell style={{ width: '10%' }}>
                     <TextField
                       type="number"
                       variant="outlined"
+                      id={`${id}`}
+                      onChange={(e: any) => {
+                        setData(
+                          data.map((item: any) => ({
+                            ...item,
+                            series:
+                              `${item.id}` === e.target.id
+                                ? item.series.map((item: any) => ({
+                                    ...item,
+                                    kg: e.target.value,
+                                  }))
+                                : item.series.map((item: any) => item),
+                          })),
+                        );
+                      }}
                       InputProps={{
                         classes: {
                           notchedOutline: classes.textFieldBorder,
@@ -86,6 +102,21 @@ const ExercisesInfoTable = () => {
                     <TextField
                       type="number"
                       variant="outlined"
+                      id={`${id}`}
+                      onChange={(e: any) => {
+                        setData(
+                          data.map((item: any) => ({
+                            ...item,
+                            series:
+                              `${item.id}` === e.target.id
+                                ? item.series.map((item: any) => ({
+                                    ...item,
+                                    time: e.target.value,
+                                  }))
+                                : item.series.map((item: any) => item),
+                          })),
+                        );
+                      }}
                       InputProps={{
                         classes: {
                           notchedOutline: classes.textFieldBorder,
@@ -98,6 +129,21 @@ const ExercisesInfoTable = () => {
                     <TextField
                       type="number"
                       variant="outlined"
+                      id={`${id}`}
+                      onChange={(e: any) => {
+                        setData(
+                          data.map((item: any) => ({
+                            ...item,
+                            series:
+                              `${item.id}` === e.target.id
+                                ? item.series.map((item: any) => ({
+                                    ...item,
+                                    repeat: e.target.value,
+                                  }))
+                                : item.series.map((item: any) => item),
+                          })),
+                        );
+                      }}
                       InputProps={{
                         classes: {
                           notchedOutline: classes.textFieldBorder,

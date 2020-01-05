@@ -8,6 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { TextField } from '@material-ui/core';
+import _ from 'lodash';
 
 const useStyles = makeStyles(theme => ({
   table: {
@@ -42,23 +43,14 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-// const data = [{ name: 'Biceps' }, { name: 'Triceps' }];
-
 interface ExercisesSeriesTableProps {
   data: any[];
+  setData: any;
 }
 
-const ExercisesSeriesTable = ({ data }: ExercisesSeriesTableProps) => {
+const ExercisesSeriesTable = ({ data, setData }: ExercisesSeriesTableProps) => {
   const classes = useStyles();
-  const [value, setValue] = useState('1');
-  const seriesData = data.map((item: any, index) => ({
-    id: index,
-    name: item,
-    value: value,
-  }));
-
-  console.log(seriesData);
-
+  const [keys] = data.map((item: any) => item.series);
   return (
     <TableContainer className={classes.container} component={Paper}>
       <Table className={classes.table}>
@@ -71,7 +63,7 @@ const ExercisesSeriesTable = ({ data }: ExercisesSeriesTableProps) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {seriesData.map((item: any, index: number) => {
+          {data.map((item: any, index: number) => {
             return (
               <TableRow key={index}>
                 <TableCell className={classes.fontWhite} scope="row">
@@ -84,7 +76,22 @@ const ExercisesSeriesTable = ({ data }: ExercisesSeriesTableProps) => {
                     defaultValue={1}
                     id={`${index}`}
                     className={classes.textField}
-                    onChange={(e: any) => setValue(e.target.value)}
+                    onChange={(e: any) => {
+                      setData(
+                        data.map((item: any) => ({
+                          ...item,
+                          series:
+                            `${item.id}` === e.target.id
+                              ? _.fill(Array(parseInt(e.target.value)), {
+                                  nr: keys.length + 1,
+                                  kg: '',
+                                  time: '',
+                                  repeat: '',
+                                })
+                              : item.series.map((item: any) => item),
+                        })),
+                      );
+                    }}
                     InputProps={{
                       classes: {
                         notchedOutline: classes.textFieldBorder,

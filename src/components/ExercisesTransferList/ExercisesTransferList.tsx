@@ -80,13 +80,19 @@ interface ExercisesTransferListProps {
   setLeft: any;
   right: any;
   setRight: any;
+  setData: any;
 }
 
-const ExercisesTransferList = ({ left, setLeft, right, setRight }: ExercisesTransferListProps) => {
+const ExercisesTransferList = ({
+  left,
+  setLeft,
+  right,
+  setRight,
+  setData,
+}: ExercisesTransferListProps) => {
   const classes = useStyles();
   const [checked, setChecked] = useState<number[]>([]);
 
-  console.log(left, right);
   const leftChecked = intersection(checked, left);
   const rightChecked = intersection(checked, right);
 
@@ -115,6 +121,13 @@ const ExercisesTransferList = ({ left, setLeft, right, setRight }: ExercisesTran
 
   const handleCheckedRight = () => {
     setRight(right.concat(leftChecked));
+    setData(
+      right.concat(leftChecked).map((item: any, index: any) => ({
+        id: index,
+        name: item,
+        series: [{ nr: '', kg: '', time: '', repeat: '' }],
+      })),
+    );
     setLeft(not(left, leftChecked));
     setChecked(not(checked, leftChecked));
   };

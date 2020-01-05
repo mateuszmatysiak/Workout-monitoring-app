@@ -7,12 +7,7 @@ import ExercisesInfoTable from '../components/ExercisesInfoTable';
 
 const Exercises = () => {
   const [activeStep, setActiveStep] = useState(0);
-  const [right, setRight] = useState<any[]>([
-    {
-      id: '',
-      name: '',
-    },
-  ]);
+  const [right, setRight] = useState<any[]>([]);
   const [left, setLeft] = useState<any[]>([
     'Biceps',
     'Triceps',
@@ -30,6 +25,10 @@ const Exercises = () => {
     'Hollow body',
     'Semi hollow body',
   ]);
+  const [data, setData] = useState([
+    { id: '', name: '', series: [{ nr: '', kg: '', time: '', repeat: '' }] },
+  ]);
+  console.log(data);
   return (
     <SidebarTemplate>
       <ExercisesStepper
@@ -41,10 +40,16 @@ const Exercises = () => {
         setRight={setRight}
       />
       {activeStep === 0 && (
-        <ExercisesTransferList left={left} setLeft={setLeft} right={right} setRight={setRight} />
+        <ExercisesTransferList
+          left={left}
+          setLeft={setLeft}
+          right={right}
+          setRight={setRight}
+          setData={setData}
+        />
       )}
-      {activeStep === 1 && <ExercisesSeriesTable data={right} />}
-      {activeStep === 2 && <ExercisesInfoTable />}
+      {activeStep === 1 && <ExercisesSeriesTable data={data} setData={setData} />}
+      {activeStep === 2 && <ExercisesInfoTable data={data} setData={setData} />}
     </SidebarTemplate>
   );
 };
