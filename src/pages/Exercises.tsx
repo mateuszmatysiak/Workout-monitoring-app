@@ -26,7 +26,7 @@ const Exercises = () => {
     'Semi hollow body',
   ]);
   const [data, setData] = useState([
-    { id: '', name: '', series: [{ nr: '', kg: '', time: '', repeat: '' }] },
+    { id: '', name: '', series: [{ id: '', kg: '', time: '', repeat: '' }] },
   ]);
   console.log(data);
   return (

@@ -69,7 +69,7 @@ const CustomCheckBox = withStyles({
   checked: {},
 })((props: CheckboxProps) => <Checkbox color="primary" {...props} />);
 
-const not = (a: number[], b: number[]) => a.filter(value => b.indexOf(value) === -1);
+const not = (a: any[], b: any[]) => a.filter(value => b.indexOf(value) === -1);
 
 const intersection = (a: number[], b: number[]) => a.filter(value => b.indexOf(value) !== -1);
 
@@ -92,10 +92,27 @@ const ExercisesTransferList = ({
 }: ExercisesTransferListProps) => {
   const classes = useStyles();
   const [checked, setChecked] = useState<number[]>([]);
-
+  const [filteredLeft, setFilteredLeft] = useState<String[]>([
+    'Biceps',
+    'Triceps',
+    'Wznosy bokiem',
+    'Wyciskanie żołnierskie',
+    'Wyciskanie leżąc',
+    'Podciąganie',
+    'Szwedki',
+    'Pompki',
+    'Ab roller na kolanach',
+    'Unoszenie prostych nóg do drążka',
+    'Rewersy',
+    'Scyzoryk',
+    'Dead bug - nogi proste',
+    'Hollow body',
+    'Semi hollow body',
+  ]);
+  const [filteredRight, setFilteredRight] = useState<String[]>(right);
   const leftChecked = intersection(checked, left);
   const rightChecked = intersection(checked, right);
-
+  
   const handleToggle = (value: number) => () => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
@@ -121,11 +138,12 @@ const ExercisesTransferList = ({
 
   const handleCheckedRight = () => {
     setRight(right.concat(leftChecked));
+    setFilteredRight(right.concat(leftChecked));
     setData(
       right.concat(leftChecked).map((item: any, index: any) => ({
         id: index,
         name: item,
-        series: [{ nr: '', kg: '', time: '', repeat: '' }],
+        series: [{ id: '', kg: '', time: '', repeat: '' }],
       })),
     );
     setLeft(not(left, leftChecked));
@@ -138,7 +156,7 @@ const ExercisesTransferList = ({
     setChecked(not(checked, rightChecked));
   };
 
-  const itemList = (title: React.ReactNode, items: number[]) => (
+  const itemList = (title: React.ReactNode, items: any[]) => (
     <Card>
       <CardHeader
         className={classes.cardHeader}
@@ -158,6 +176,21 @@ const ExercisesTransferList = ({
         placeholder="Wyszukaj"
         variant="outlined"
         className={classes.textField}
+        onChange={(e: any) =>
+          title === 'Wybory'
+            ? setFilteredLeft(
+                left.filter((item: any) =>
+                  item.toLowerCase().includes(e.target.value.toLowerCase()),
+                ),
+              )
+            : console.log(
+                setFilteredRight(
+                  right.filter((item: any) =>
+                    item.toLowerCase().includes(e.target.value.toLowerCase()),
+                  ),
+                ),
+              )
+        }
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
@@ -193,7 +226,7 @@ const ExercisesTransferList = ({
   return (
     <Grid container spacing={2} justify="center" alignItems="center" className={classes.root}>
       <Grid xs={5} item>
-        {itemList('Wybory', not(left, right))}
+        {itemList('Wybory', not(filteredLeft, right))}
       </Grid>
       <Grid item>
         <Grid container direction="column" alignItems="center">
@@ -218,7 +251,7 @@ const ExercisesTransferList = ({
         </Grid>
       </Grid>
       <Grid xs={5} item>
-        {itemList('Wybrane', right)}
+        {itemList('Wybrane', not(filteredRight, left))}
       </Grid>
     </Grid>
   );

@@ -8,7 +8,6 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { TextField } from '@material-ui/core';
-import _ from 'lodash';
 
 const useStyles = makeStyles(theme => ({
   table: {
@@ -48,9 +47,26 @@ interface ExercisesSeriesTableProps {
   setData: any;
 }
 
+let arr: Array<any> = [];
+function createCopies(obj: any, copies: any) {
+  for (let i = 0; i < copies; i++) {
+    let newObj = JSON.parse(JSON.stringify(obj));
+    newObj.id = i;
+    arr.push(newObj);
+  }
+  return arr;
+}
+let obj = {
+  id: 0,
+  kg: '',
+  time: '',
+  repeat: '',
+};
+
 const ExercisesSeriesTable = ({ data, setData }: ExercisesSeriesTableProps) => {
   const classes = useStyles();
-  const [keys] = data.map((item: any) => item.series);
+  console.log(data);
+
   return (
     <TableContainer className={classes.container} component={Paper}>
       <Table className={classes.table}>
@@ -82,12 +98,7 @@ const ExercisesSeriesTable = ({ data, setData }: ExercisesSeriesTableProps) => {
                           ...item,
                           series:
                             `${item.id}` === e.target.id
-                              ? _.fill(Array(parseInt(e.target.value)), {
-                                  nr: keys.length + 1,
-                                  kg: '',
-                                  time: '',
-                                  repeat: '',
-                                })
+                              ? createCopies(obj, parseInt(e.target.value))
                               : item.series.map((item: any) => item),
                         })),
                       );
