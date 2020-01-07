@@ -28,7 +28,6 @@ const Exercises = () => {
   const [data, setData] = useState([
     { id: '', name: '', series: [{ id: '', kg: '', time: '', repeat: '' }] },
   ]);
-  console.log(data);
   return (
     <SidebarTemplate>
       <ExercisesStepper

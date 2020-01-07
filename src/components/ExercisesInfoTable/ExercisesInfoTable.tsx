@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -44,8 +44,6 @@ interface ExercisesInfoTableProps {
 const ExercisesInfoTable = ({ data, setData }: ExercisesInfoTableProps) => {
   const classes = useStyles();
 
-  console.log(data);
-
   return (
     <TableContainer className={classes.container} component={Paper}>
       {data.map((item: any, index: number) => (
@@ -65,30 +63,25 @@ const ExercisesInfoTable = ({ data, setData }: ExercisesInfoTableProps) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {item.series.map((item: any, id: any) => {
+            {item.series.map((series: any, id: any) => {
               return (
                 <TableRow key={id}>
                   <TableCell style={{ width: '70%' }} className={classes.fontWhite} scope="row">
-                    Seria {item.nr}
+                    Seria {series.id + 1}
                   </TableCell>
                   <TableCell style={{ width: '10%' }}>
                     <TextField
                       type="number"
                       variant="outlined"
-                      id={`${id}`}
+                      id={item.name}
                       onChange={(e: any) => {
-                        setData(
-                          data.map((item: any) => ({
-                            ...item,
-                            series:
-                              `${item.id}` === e.target.id
-                                ? item.series.map((item: any) => ({
-                                    ...item,
-                                    kg: e.target.value,
-                                  }))
-                                : item.series.map((item: any) => item),
-                          })),
-                        );
+                        data
+                          .filter((item: any) => item.name === e.target.id)
+                          .map((item: any) => {
+                            item.series[id].kg = e.target.value;
+                            console.log(item.series[id], item.series);
+                          });
+                        console.log(data);
                       }}
                       InputProps={{
                         classes: {
@@ -104,18 +97,9 @@ const ExercisesInfoTable = ({ data, setData }: ExercisesInfoTableProps) => {
                       variant="outlined"
                       id={`${id}`}
                       onChange={(e: any) => {
-                        setData(
-                          data.map((item: any) => ({
-                            ...item,
-                            series:
-                              `${item.id}` === e.target.id
-                                ? item.series.map((item: any) => ({
-                                    ...item,
-                                    time: e.target.value,
-                                  }))
-                                : item.series.map((item: any) => item),
-                          })),
-                        );
+                        console.log(data);
+                        console.log(id);
+                        item.series[id].time = e.target.value;
                       }}
                       InputProps={{
                         classes: {
@@ -131,18 +115,9 @@ const ExercisesInfoTable = ({ data, setData }: ExercisesInfoTableProps) => {
                       variant="outlined"
                       id={`${id}`}
                       onChange={(e: any) => {
-                        setData(
-                          data.map((item: any) => ({
-                            ...item,
-                            series:
-                              `${item.id}` === e.target.id
-                                ? item.series.map((item: any) => ({
-                                    ...item,
-                                    repeat: e.target.value,
-                                  }))
-                                : item.series.map((item: any) => item),
-                          })),
-                        );
+                        console.log(data);
+                        console.log(id);
+                        item.series[id].repeat = e.target.value;
                       }}
                       InputProps={{
                         classes: {
