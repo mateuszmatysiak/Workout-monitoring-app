@@ -81,6 +81,16 @@ const ExercisesInfoTable = ({ data, setData }: ExercisesInfoTableProps) => {
                             item.series[id].kg = e.target.value;
                             console.log(item.series[id], item.series);
                           });
+
+                        // setData(
+                        //   data.map((item: any) => ({
+                        //     ...item,
+                        //     series: item.series.map((item: any) => ({
+                        //       ...item,
+                        //       kg: e.target.value,
+                        //     })),
+                        //   })),
+                        // );
                         console.log(data);
                       }}
                       InputProps={{
