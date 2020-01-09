@@ -43,7 +43,7 @@ interface ExercisesInfoTableProps {
 
 const ExercisesInfoTable = ({ data, setData }: ExercisesInfoTableProps) => {
   const classes = useStyles();
-
+  console.log(data)
   return (
     <TableContainer className={classes.container} component={Paper}>
       {data.map((item: any, index: number) => (
@@ -73,15 +73,37 @@ const ExercisesInfoTable = ({ data, setData }: ExercisesInfoTableProps) => {
                     <TextField
                       type="number"
                       variant="outlined"
-                      id={item.name}
+                      value={series.kg}
+                      id={`${id}`}
                       onChange={(e: any) => {
-                        data
+                        console.log(series.id, item.id)
+                        console.log(data
                           .filter((item: any) => item.name === e.target.id)
                           .map((item: any) => {
                             item.series[id].kg = e.target.value;
                             console.log(item.series[id], item.series);
-                          });
-                        console.log(data);
+                          }));
+
+                        setData(
+                          data.map((elem: any) => {
+                            if (elem.id === item.id) {
+                              return {
+                                ...elem,
+                                series: elem.series.map((ser: any) => {
+                                  if (ser.id === series.id) {
+                                    return {
+                                      ...series,
+                                      kg: e.target.value
+                                    }
+                                  }
+                                  return ser;
+                                })
+                              }
+                            }
+
+                            return elem;
+                          }),
+                        );
                       }}
                       InputProps={{
                         classes: {
