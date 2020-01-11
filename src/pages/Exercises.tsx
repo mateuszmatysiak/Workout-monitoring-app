@@ -24,6 +24,30 @@ const Exercises = () => {
     'Dead bug - nogi proste',
     'Hollow body',
     'Semi hollow body',
+    'a',
+    'b',
+    'c',
+    'd',
+    'e',
+    'f',
+    'aa',
+    'bb',
+    'cc',
+    'dd',
+    'ee',
+    'ff',
+    'aaa',
+    'bbb',
+    'ccc',
+    'ddd',
+    'eee',
+    'fff',
+    'aaaa',
+    'bbbb',
+    'cccc',
+    'dddd',
+    'eeee',
+    'ffff',
   ]);
   const [data, setData] = useState([
     { id: '', name: '', series: [{ id: '', kg: '', time: '', repeat: '' }] },
@@ -37,6 +61,7 @@ const Exercises = () => {
         left={left}
         setLeft={setLeft}
         setRight={setRight}
+        data={data}
       />
       {activeStep === 0 && (
         <ExercisesTransferList

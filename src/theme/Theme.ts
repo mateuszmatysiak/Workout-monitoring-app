@@ -17,7 +17,7 @@ export const Theme = createMuiTheme({
            MuiCssBaseline: {
              '@global': {
                '*::-webkit-scrollbar': {
-                 width: '10px',
+                 width: '3px',
                },
 
                '*::-webkit-scrollbar-track': {
@@ -174,7 +174,7 @@ export const Theme = createMuiTheme({
            body2: {
              fontFamily: '"Montserrat", "Helvetica", "Arial", sans-serif',
              fontWeight: 400,
-             fontSize: '0.6rem',
+             fontSize: '0.8rem',
              lineHeight: 1.43,
              letterSpacing: '0.01071em',
            },

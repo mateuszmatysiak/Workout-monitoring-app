@@ -12,11 +12,15 @@ import Check from '@material-ui/icons/Check';
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
-    backgroundColor: theme.palette.secondary.light,
+    backgroundColor: theme.palette.secondary.main,
+    borderBottom: `1px solid ${theme.palette.grey[700]}`,
+  },
+  stepper: {
+    backgroundColor: theme.palette.secondary.main,
   },
   button: {
     marginRight: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.secondary.dark,
     color: theme.palette.common.white,
   },
   instructions: {
@@ -53,6 +57,7 @@ interface ExercisesStepperProps {
   left: string[];
   setLeft: any;
   setRight: any;
+  data: any;
 }
 
 const ExercisesStepper = ({
@@ -62,6 +67,7 @@ const ExercisesStepper = ({
   left,
   setLeft,
   setRight,
+  data,
 }: ExercisesStepperProps) => {
   const classes = useStyles();
   const [skipped, setSkipped] = useState(new Set<number>());
@@ -77,35 +83,24 @@ const ExercisesStepper = ({
       newSkipped = new Set(newSkipped.values());
       newSkipped.delete(activeStep);
     }
-
     setActiveStep((prevActiveStep: any) => prevActiveStep + 1);
     setSkipped(newSkipped);
+
+    if (activeStep === 2) console.log(data);
   };
 
   const handleBack = () => {
     setActiveStep((prevActiveStep: any) => prevActiveStep - 1);
     setLeft(left.filter((value: any) => right.indexOf(value) === -1));
+    if (activeStep === 1) {
+      setLeft(left.concat(right));
+      setRight([]);
+    }
   };
 
   const handleReset = () => {
     setActiveStep(0);
-    setLeft([
-      'Biceps',
-      'Triceps',
-      'Wznosy bokiem',
-      'Wyciskanie żołnierskie',
-      'Wyciskanie leżąc',
-      'Podciąganie',
-      'Szwedki',
-      'Pompki',
-      'Ab roller na kolanach',
-      'Unoszenie prostych nóg do drążka',
-      'Rewersy',
-      'Scyzoryk',
-      'Dead bug - nogi proste',
-      'Hollow body',
-      'Semi hollow body',
-    ]);
+    setLeft(left);
     setRight([]);
   };
 
@@ -142,8 +137,8 @@ const ExercisesStepper = ({
 
   return (
     <div className={classes.root}>
-      <Stepper alternativeLabel className={classes.root} activeStep={activeStep}>
-        {steps.map((label, index) => {
+      <Stepper alternativeLabel className={classes.stepper} activeStep={activeStep}>
+        {steps.map((label: any) => {
           return (
             <Step key={label}>
               <StepLabel StepIconComponent={CustomStepIcon}>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles, useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
 import Card from '@material-ui/core/Card';
@@ -12,14 +12,26 @@ import Button from '@material-ui/core/Button';
 import SearchIcon from '@material-ui/icons/Search';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
+import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles(theme => ({
   card: {
-    width: '50%',
+    borderRadius: 0,
+    boxShadow: 'unset',
   },
   root: {
-    margin: 'auto',
+    margin: 'unset',
     color: theme.palette.grey[300],
+    height: 'calc(100% - 192px)',
+
+    [theme.breakpoints.down('xs')]: {
+      flexDirection: 'column',
+    },
   },
   cardHeader: {
     padding: theme.spacing(1, 2),
@@ -27,14 +39,39 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.grey[300],
     borderBottom: `1px solid ${theme.palette.grey[700]}`,
   },
+  listWrapper: {
+    [theme.breakpoints.down('xs')]: {
+      maxWidth: 'unset',
+    },
+  },
   list: {
-    height: 550,
+    height: '590px',
+    borderTop: `1px solid ${theme.palette.grey[700]}`,
     backgroundColor: theme.palette.secondary.main,
     overflow: 'auto',
+
+    [theme.breakpoints.down('xs')]: {
+      height: '300px',
+    },
+  },
+  buttonWrapper: {
+    display: 'flex',
+    padding: '32px 8px',
+    backgroundColor: theme.palette.secondary.main,
+    border: `1px solid ${theme.palette.grey[700]}`,
+    borderTop: 'unset',
+    borderBottom: 'unset',
+
+    [theme.breakpoints.down('xs')]: {
+      maxWidth: 'unset',
+      borderLeft: 'unset',
+      borderTop: `1px solid ${theme.palette.grey[700]}`,
+    },
   },
   button: {
     margin: theme.spacing(0.5, 0),
     color: theme.palette.grey[300],
+    borderColor: theme.palette.grey[300],
     backgroundColor: theme.palette.secondary.main,
   },
   checkbox: {
@@ -46,16 +83,26 @@ const useStyles = makeStyles(theme => ({
   textField: {
     backgroundColor: theme.palette.secondary.main,
     width: '100%',
-    padding: '8px',
   },
   textFieldBorder: {
     borderWidth: '1px',
-    borderColor: `${theme.palette.grey[500]} !important`,
-    color: theme.palette.grey[500],
+    borderColor: `${theme.palette.grey[700]} !important`,
+    color: theme.palette.grey[300],
+    borderRadius: 0,
+    border: 'unset',
   },
   textFieldFont: {
-    color: theme.palette.grey[500],
+    color: theme.palette.grey[300],
     padding: '8px 4px 8px 12px',
+  },
+  searchIcon: {
+    color: theme.palette.grey[300],
+    marginLeft: '12px',
+  },
+  noItems: {
+    padding: '16px',
+    textAlign: 'center',
+    color: theme.palette.grey[300],
   },
 }));
 
@@ -76,9 +123,9 @@ const intersection = (a: number[], b: number[]) => a.filter(value => b.indexOf(v
 const union = (a: number[], b: number[]) => [...a, ...not(b, a)];
 
 interface ExercisesTransferListProps {
-  left: any;
+  left: any[];
   setLeft: any;
-  right: any;
+  right: any[];
   setRight: any;
   setData: any;
 }
@@ -91,28 +138,14 @@ const ExercisesTransferList = ({
   setData,
 }: ExercisesTransferListProps) => {
   const classes = useStyles();
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down('xs'));
   const [checked, setChecked] = useState<number[]>([]);
-  const [filteredLeft, setFilteredLeft] = useState<String[]>([
-    'Biceps',
-    'Triceps',
-    'Wznosy bokiem',
-    'Wyciskanie żołnierskie',
-    'Wyciskanie leżąc',
-    'Podciąganie',
-    'Szwedki',
-    'Pompki',
-    'Ab roller na kolanach',
-    'Unoszenie prostych nóg do drążka',
-    'Rewersy',
-    'Scyzoryk',
-    'Dead bug - nogi proste',
-    'Hollow body',
-    'Semi hollow body',
-  ]);
+  const [filteredLeft, setFilteredLeft] = useState<String[]>(left);
   const [filteredRight, setFilteredRight] = useState<String[]>(right);
   const leftChecked = intersection(checked, left);
   const rightChecked = intersection(checked, right);
-  
+
   const handleToggle = (value: number) => () => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
@@ -143,7 +176,7 @@ const ExercisesTransferList = ({
       right.concat(leftChecked).map((item: any, index: any) => ({
         id: index,
         name: item,
-        series: [{ id: '', kg: '', time: '', repeat: '' }],
+        series: [{ id: 0, kg: '1', time: '1', repeat: '1' }],
       })),
     );
     setLeft(not(left, leftChecked));
@@ -157,7 +190,7 @@ const ExercisesTransferList = ({
   };
 
   const itemList = (title: React.ReactNode, items: any[]) => (
-    <Card>
+    <Card className={classes.card}>
       <CardHeader
         className={classes.cardHeader}
         avatar={
@@ -183,18 +216,16 @@ const ExercisesTransferList = ({
                   item.toLowerCase().includes(e.target.value.toLowerCase()),
                 ),
               )
-            : console.log(
-                setFilteredRight(
-                  right.filter((item: any) =>
-                    item.toLowerCase().includes(e.target.value.toLowerCase()),
-                  ),
+            : setFilteredRight(
+                right.filter((item: any) =>
+                  item.toLowerCase().includes(e.target.value.toLowerCase()),
                 ),
               )
         }
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <SearchIcon style={{ color: '#9e9e9e' }} />
+              <SearchIcon className={classes.searchIcon} />
             </InputAdornment>
           ),
           classes: {
@@ -204,32 +235,38 @@ const ExercisesTransferList = ({
         }}
       />
       <List className={classes.list} dense component="div" role="list">
-        {items.map((value: number) => {
-          return (
-            <ListItem key={value} role="listitem" button onClick={handleToggle(value)}>
-              <ListItemIcon>
-                <CustomCheckBox
-                  checked={checked.indexOf(value) !== -1}
-                  tabIndex={-1}
-                  disableRipple
-                />
-              </ListItemIcon>
-              <ListItemText className={classes.text} id={`${value}`} primary={value} />
-            </ListItem>
-          );
-        })}
+        {items.length ? (
+          items.map((value: number) => {
+            return (
+              <ListItem key={value} role="listitem" button onClick={handleToggle(value)}>
+                <ListItemIcon>
+                  <CustomCheckBox
+                    checked={checked.indexOf(value) !== -1}
+                    tabIndex={-1}
+                    disableRipple
+                  />
+                </ListItemIcon>
+                <ListItemText className={classes.text} id={`${value}`} primary={value} />
+              </ListItem>
+            );
+          })
+        ) : (
+          <Typography className={classes.noItems}>
+            {left.length === 0 ? 'Brak ćwiczeń do wybrania' : 'Brak wybranych ćwiczeń'}
+          </Typography>
+        )}
         <ListItem />
       </List>
     </Card>
   );
 
   return (
-    <Grid container spacing={2} justify="center" alignItems="center" className={classes.root}>
-      <Grid xs={5} item>
-        {itemList('Wybory', not(filteredLeft, right))}
+    <Grid container justify="center" className={classes.root}>
+      <Grid xs={5} item className={classes.listWrapper}>
+        {itemList('Wybory', not(filteredLeft, right).sort())}
       </Grid>
-      <Grid item>
-        <Grid container direction="column" alignItems="center">
+      <Grid item xs={2} className={classes.buttonWrapper}>
+        <Grid container direction="column">
           <Button
             variant="outlined"
             size="large"
@@ -237,7 +274,7 @@ const ExercisesTransferList = ({
             onClick={handleCheckedRight}
             disabled={leftChecked.length === 0}
           >
-            &gt;
+            {mobile ? <ArrowDropDownIcon /> : <ArrowRightIcon />}
           </Button>
           <Button
             variant="outlined"
@@ -246,11 +283,11 @@ const ExercisesTransferList = ({
             onClick={handleCheckedLeft}
             disabled={rightChecked.length === 0}
           >
-            &lt;
+            {mobile ? <ArrowDropUpIcon /> : <ArrowLeftIcon />}
           </Button>
         </Grid>
       </Grid>
-      <Grid xs={5} item>
+      <Grid xs={5} item className={classes.listWrapper}>
         {itemList('Wybrane', not(filteredRight, left))}
       </Grid>
     </Grid>

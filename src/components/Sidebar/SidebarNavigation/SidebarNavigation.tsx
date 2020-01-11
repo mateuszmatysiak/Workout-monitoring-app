@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { NavLink } from 'react-router-dom';
-import { Typography, List, ListItem, ListItemIcon, IconButton } from '@material-ui/core';
+import {
+  Typography,
+  List,
+  ListItem,
+  ListItemIcon,
+  IconButton,
+  useMediaQuery,
+} from '@material-ui/core';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
@@ -21,10 +28,17 @@ const useStyles = makeStyles(theme => ({
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.standard,
     }),
+    zIndex: 2,
+    [theme.breakpoints.down('xs')]: {
+      position: 'fixed',
+      top: 0,
+      left: 0,
+    },
   },
   navWrapperActive: {
     width: '200px',
   },
+  navWrapperMobile: {},
   navItemWrapper: {
     '&:hover': {
       backgroundColor: 'rgba(255,255,255, .1)',
@@ -71,6 +85,8 @@ const SidebarNavigation = () => {
 
   const [activeSidebar, setActiveSidebar] = useState(false);
   const handleActiveSidebar = () => setActiveSidebar(!activeSidebar);
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down('xs'));
 
   const NavIconButton = () =>
     activeSidebar ? (

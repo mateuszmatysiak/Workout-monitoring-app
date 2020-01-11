@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -11,24 +11,40 @@ import { TextField } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   tableHeader: {
-    backgroundColor: theme.palette.secondary.dark,
-    color: theme.palette.common.white,
+    position: 'sticky',
     top: 0,
     left: 0,
     zIndex: 2,
-    position: 'sticky',
-  },
-  fontWhite: {
+    backgroundColor: theme.palette.secondary.dark,
     color: theme.palette.common.white,
+    borderColor: theme.palette.grey[700],
+  },
+  titleTable: {
+    width: '70%',
+    color: theme.palette.common.white,
+    borderColor: theme.palette.grey[700],
   },
   container: {
-    maxHeight: 440,
     backgroundColor: theme.palette.secondary.main,
+    borderRadius: 0,
+    boxShadow: 'unset',
+  },
+  tableCell: {
+    borderColor: theme.palette.grey[700],
+    textAlign: 'center',
+    maxWidth: '60px',
+  },
+  textField: {
+    minWidth: '40px',
+    maxWidth: '60px',
   },
   textFieldBorder: {
     borderWidth: '1px',
     borderColor: `${theme.palette.grey[300]} !important`,
     color: theme.palette.grey[300],
+    borderRadius: 0,
+    border: 'none',
+    borderBottom: `2px solid ${theme.palette.grey[300]}`,
   },
   textFieldFont: {
     color: theme.palette.grey[300],
@@ -43,7 +59,6 @@ interface ExercisesInfoTableProps {
 
 const ExercisesInfoTable = ({ data, setData }: ExercisesInfoTableProps) => {
   const classes = useStyles();
-
   return (
     <TableContainer className={classes.container} component={Paper}>
       {data.map((item: any, index: number) => (
@@ -51,14 +66,14 @@ const ExercisesInfoTable = ({ data, setData }: ExercisesInfoTableProps) => {
           <TableHead>
             <TableRow>
               <TableCell className={classes.tableHeader}>{item.name}</TableCell>
-              <TableCell className={classes.tableHeader} align="right">
-                KG
+              <TableCell className={classes.tableHeader} align="center">
+                Ciężar [kg]
               </TableCell>
-              <TableCell className={classes.tableHeader} align="right">
-                Czas
+              <TableCell className={classes.tableHeader} align="center">
+                Czas [m]
               </TableCell>
-              <TableCell className={classes.tableHeader} align="right">
-                Powtórzenia
+              <TableCell className={classes.tableHeader} align="center">
+                Powt.
               </TableCell>
             </TableRow>
           </TableHead>
@@ -66,74 +81,141 @@ const ExercisesInfoTable = ({ data, setData }: ExercisesInfoTableProps) => {
             {item.series.map((series: any, id: any) => {
               return (
                 <TableRow key={id}>
-                  <TableCell style={{ width: '70%' }} className={classes.fontWhite} scope="row">
+                  <TableCell className={classes.titleTable} scope="row">
                     Seria {series.id + 1}
                   </TableCell>
-                  <TableCell style={{ width: '10%' }}>
+                  <TableCell className={classes.tableCell}>
                     <TextField
                       type="number"
                       variant="outlined"
-                      id={item.name}
+                      className={classes.textField}
+                      value={series.kg}
+                      id={`${id}`}
                       onChange={(e: any) => {
-                        data
-                          .filter((item: any) => item.name === e.target.id)
-                          .map((item: any) => {
-                            item.series[id].kg = e.target.value;
-                            console.log(item.series[id], item.series);
-                          });
-
-                        // setData(
-                        //   data.map((item: any) => ({
-                        //     ...item,
-                        //     series: item.series.map((item: any) => ({
-                        //       ...item,
-                        //       kg: e.target.value,
-                        //     })),
-                        //   })),
-                        // );
-                        console.log(data);
+                        setData(
+                          data.map((elem: any) => {
+                            if (elem.id === item.id) {
+                              return {
+                                ...elem,
+                                series: elem.series.map((ser: any) => {
+                                  if (ser.id === series.id) {
+                                    return {
+                                      ...series,
+                                      kg: e.target.value,
+                                    };
+                                  }
+                                  return ser;
+                                }),
+                              };
+                            }
+                            return elem;
+                          }),
+                        );
                       }}
                       InputProps={{
                         classes: {
                           notchedOutline: classes.textFieldBorder,
                           input: classes.textFieldFont,
                         },
+                      }}
+                      inputProps={{
+                        min: 1,
+                        max: 999,
+                      }}
+                      onInput={(e: any) => {
+                        e.target.value = Math.max(0, parseInt(e.target.value))
+                          .toString()
+                          .slice(0, 3);
                       }}
                     />
                   </TableCell>
-                  <TableCell style={{ width: '10%' }}>
+                  <TableCell className={classes.tableCell}>
                     <TextField
                       type="number"
                       variant="outlined"
+                      className={classes.textField}
+                      value={series.time}
                       id={`${id}`}
                       onChange={(e: any) => {
-                        console.log(data);
-                        console.log(id);
-                        item.series[id].time = e.target.value;
+                        setData(
+                          data.map((elem: any) => {
+                            if (elem.id === item.id) {
+                              return {
+                                ...elem,
+                                series: elem.series.map((ser: any) => {
+                                  if (ser.id === series.id) {
+                                    return {
+                                      ...series,
+                                      time: e.target.value,
+                                    };
+                                  }
+                                  return ser;
+                                }),
+                              };
+                            }
+                            return elem;
+                          }),
+                        );
                       }}
                       InputProps={{
                         classes: {
                           notchedOutline: classes.textFieldBorder,
                           input: classes.textFieldFont,
                         },
+                      }}
+                      inputProps={{
+                        min: 1,
+                        max: 999,
+                      }}
+                      onInput={(e: any) => {
+                        e.target.value = Math.max(0, parseInt(e.target.value))
+                          .toString()
+                          .slice(0, 3);
                       }}
                     />
                   </TableCell>
-                  <TableCell style={{ width: '10%' }}>
+                  <TableCell className={classes.tableCell}>
                     <TextField
                       type="number"
                       variant="outlined"
+                      className={classes.textField}
+                      value={series.repeat}
                       id={`${id}`}
                       onChange={(e: any) => {
-                        console.log(data);
-                        console.log(id);
-                        item.series[id].repeat = e.target.value;
+                        setData(
+                          data.map((elem: any) => {
+                            if (elem.id === item.id) {
+                              return {
+                                ...elem,
+                                series: elem.series.map((ser: any) => {
+                                  if (ser.id === series.id) {
+                                    return {
+                                      ...series,
+                                      repeat: e.target.value,
+                                    };
+                                  }
+                                  return ser;
+                                }),
+                              };
+                            }
+                            return elem;
+                          }),
+                        );
                       }}
                       InputProps={{
                         classes: {
                           notchedOutline: classes.textFieldBorder,
                           input: classes.textFieldFont,
                         },
+                      }}
+                      inputProps={{
+                        min: 1,
+                        max: 999,
+                      }}
+                      onInput={(e: any) => {
+                        e.target.value = Math.max(0, parseInt(e.target.value))
+                          .toString()
+                          .slice(0, 3);
                       }}
                     />
                   </TableCell>

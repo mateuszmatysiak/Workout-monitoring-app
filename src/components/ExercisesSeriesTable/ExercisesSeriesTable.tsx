@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -10,31 +10,33 @@ import Paper from '@material-ui/core/Paper';
 import { TextField } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
-  table: {
-    minWidth: 650,
-  },
   tableHeader: {
-    backgroundColor: theme.palette.secondary.dark,
-    color: theme.palette.common.white,
+    position: 'sticky',
     top: 0,
     left: 0,
     zIndex: 2,
-    position: 'sticky',
-  },
-  fontWhite: {
+    backgroundColor: theme.palette.secondary.dark,
     color: theme.palette.common.white,
+    borderColor: theme.palette.grey[700],
+  },
+  tableCell: {
+    color: theme.palette.common.white,
+    borderColor: theme.palette.grey[700],
   },
   container: {
-    maxHeight: 440,
     backgroundColor: theme.palette.secondary.main,
+    borderRadius: 0,
+    boxShadow: 'unset',
   },
   textField: {
-    width: '10%',
+    width: '65px',
   },
   textFieldBorder: {
-    borderWidth: '1px',
     borderColor: `${theme.palette.grey[300]} !important`,
     color: theme.palette.grey[300],
+    borderRadius: 0,
+    border: 'none',
+    borderBottom: `2px solid ${theme.palette.grey[300]}`,
   },
   textFieldFont: {
     color: theme.palette.grey[300],
@@ -90,6 +92,7 @@ function getNumber(seriesArray: any, ex: any) {
     if (obj.exname === ex) {
       seriesQuantity++;
     }
+    return null;
   });
   return seriesQuantity;
 }
@@ -111,18 +114,16 @@ function getParams(seriesArray: any, param: any) {
 
 let obj = {
   id: '',
-  kg: '',
-  time: '',
-  repeat: '',
+  kg: '1',
+  time: '1',
+  repeat: '1',
 };
 
 const ExercisesSeriesTable = ({ data, setData }: ExercisesSeriesTableProps) => {
   const classes = useStyles();
-  console.log(data);
-
   return (
     <TableContainer className={classes.container} component={Paper}>
-      <Table className={classes.table}>
+      <Table>
         <TableHead>
           <TableRow>
             <TableCell className={classes.tableHeader}>Rodzaj ćwiczenia</TableCell>
@@ -135,14 +136,14 @@ const ExercisesSeriesTable = ({ data, setData }: ExercisesSeriesTableProps) => {
           {data.map((item: any, index: number) => {
             return (
               <TableRow key={index}>
-                <TableCell className={classes.fontWhite} scope="row">
+                <TableCell className={classes.tableCell} scope="row">
                   {item.name}
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align="right" className={classes.tableCell}>
                   <TextField
                     type="number"
                     variant="outlined"
-                    defaultValue={1}
+                    value={data[index].series.length}
                     id={`${index}`}
                     className={classes.textField}
                     onChange={(e: any) => {
@@ -161,6 +162,15 @@ const ExercisesSeriesTable = ({ data, setData }: ExercisesSeriesTableProps) => {
                         notchedOutline: classes.textFieldBorder,
                         input: classes.textFieldFont,
                       },
+                    }}
+                    inputProps={{
+                      min: 1,
+                      max: 999,
+                    }}
+                    onInput={(e: any) => {
+                      e.target.value = Math.max(0, parseInt(e.target.value))
+                        .toString()
+                        .slice(0, 3);
                     }}
                   />
                 </TableCell>
