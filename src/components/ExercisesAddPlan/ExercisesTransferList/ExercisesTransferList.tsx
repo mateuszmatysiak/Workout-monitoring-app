@@ -45,8 +45,9 @@ const useStyles = makeStyles(theme => ({
     },
   },
   list: {
-    height: '590px',
+    height: '450px',
     borderTop: `1px solid ${theme.palette.grey[700]}`,
+    borderBottom: `1px solid ${theme.palette.grey[700]}`,
     backgroundColor: theme.palette.secondary.main,
     overflow: 'auto',
 
