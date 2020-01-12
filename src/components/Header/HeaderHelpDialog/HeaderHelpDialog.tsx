@@ -12,6 +12,12 @@ import { useTheme } from '@material-ui/core/styles';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 
 const useStyles = makeStyles(theme => ({
+  wrapper: {
+    backgroundColor: theme.palette.secondary.main,
+  },
+  text: {
+    color: theme.palette.grey[300],
+  },
   cursor: {
     cursor: 'pointer',
   },
@@ -43,16 +49,20 @@ const HeaderHelpDialog = () => {
         </IconButton>
       </Tooltip>
       <Dialog fullScreen={fullScreen} open={openDialog} onClose={handleClickClose}>
-        <DialogTitle>FAQ</DialogTitle>
-        <DialogContent>
-          <DialogContentText>Pytania i odpowiedzi na temat naszej aplikacji.</DialogContentText>
-          <DialogContentText>Wkrótce...</DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClickClose} color="primary">
-            Wyjdź
-          </Button>
-        </DialogActions>
+        <div className={classes.wrapper}>
+          <DialogTitle className={classes.text}>FAQ</DialogTitle>
+          <DialogContent>
+            <DialogContentText className={classes.text}>
+              Pytania i odpowiedzi na temat naszej aplikacji.
+            </DialogContentText>
+            <DialogContentText className={classes.text}>Wkrótce...</DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClickClose} color="primary">
+              Wyjdź
+            </Button>
+          </DialogActions>
+        </div>
       </Dialog>
     </>
   );

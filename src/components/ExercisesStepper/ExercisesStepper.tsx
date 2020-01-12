@@ -100,7 +100,7 @@ const ExercisesStepper = ({
 
   const handleReset = () => {
     setActiveStep(0);
-    setLeft(left);
+    setLeft(left.concat(right));
     setRight([]);
   };
 
@@ -153,7 +153,7 @@ const ExercisesStepper = ({
           <Box textAlign="center" padding="0 16px 16px 16px">
             <Typography className={classes.instructions}>Stworzono plan treningowy</Typography>
             <Button onClick={handleReset} className={classes.button}>
-              Stwórz plan treningowy
+              Stwórz nowy plan treningowy
             </Button>
           </Box>
         ) : (
