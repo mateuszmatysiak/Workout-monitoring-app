@@ -18,6 +18,10 @@ import { object, string } from 'yup';
 const useStyles = makeStyles(theme => ({
   root: {
     height: '100vh',
+    backgroundColor: theme.palette.secondary.main,
+  },
+  wrapperForm: {
+    backgroundColor: theme.palette.secondary.main,
   },
   image: {
     backgroundImage: `url(${BgImg})`,
@@ -32,6 +36,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    backgroundColor: theme.palette.secondary.main,
   },
   avatar: {
     margin: theme.spacing(1),
@@ -56,6 +61,14 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       textDecoration: `underline`,
     },
+  },
+  textFieldBorder: {
+    borderWidth: '1px',
+    borderColor: `${theme.palette.grey[300]} !important`,
+    color: theme.palette.grey[300],
+  },
+  textFieldFont: {
+    color: theme.palette.grey[300],
   },
 }));
 
@@ -96,12 +109,21 @@ const SingsPanel = () => {
         return (
           <Grid container component="main" className={classes.root}>
             <Grid item xs={false} sm={4} md={7} className={classes.image} />
-            <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+            <Grid
+              item
+              xs={12}
+              sm={8}
+              md={5}
+              component={Paper}
+              elevation={6}
+              square
+              className={classes.wrapperForm}
+            >
               <div className={classes.paper}>
                 <Avatar className={classes.avatar}>
-                  <FitnessCenterIcon />
+                  <FitnessCenterIcon style={{ color: '#424242' }} />
                 </Avatar>
-                <Typography component="h1" variant="h5">
+                <Typography component="h1" variant="h5" style={{ color: '#e0e0e0' }}>
                   {pathName === '/login' ? 'Logowanie' : 'Rejestracja'}
                 </Typography>
                 <Form className={classes.form} noValidate>
@@ -118,6 +140,15 @@ const SingsPanel = () => {
                     onBlur={handleBlur}
                     value={values.username}
                     component={TextField}
+                    InputProps={{
+                      classes: {
+                        notchedOutline: classes.textFieldBorder,
+                        input: classes.textFieldFont,
+                      },
+                    }}
+                    InputLabelProps={{
+                      className: classes.textFieldFont,
+                    }}
                   />
                   <ErrorMessage name="username">
                     {msg => <div className={classes.error}>{msg}</div>}
@@ -136,6 +167,15 @@ const SingsPanel = () => {
                       onBlur={handleBlur}
                       value={values.email}
                       component={TextField}
+                      InputProps={{
+                        classes: {
+                          notchedOutline: classes.textFieldBorder,
+                          input: classes.textFieldFont,
+                        },
+                      }}
+                      InputLabelProps={{
+                        className: classes.textFieldFont,
+                      }}
                     />
                   )}
                   <ErrorMessage name="email">
@@ -155,13 +195,23 @@ const SingsPanel = () => {
                     value={values.password}
                     autoComplete="current-password"
                     component={TextField}
+                    InputProps={{
+                      classes: {
+                        notchedOutline: classes.textFieldBorder,
+                        input: classes.textFieldFont,
+                      },
+                    }}
+                    InputLabelProps={{
+                      className: classes.textFieldFont,
+                    }}
                   />
                   <ErrorMessage name="password">
                     {msg => <div className={classes.error}>{msg}</div>}
                   </ErrorMessage>
                   {pathName === '/login' ? (
                     <FormControlLabel
-                      control={<Checkbox value="remember" color="primary" />}
+                      style={{ color: '#e0e0e0' }}
+                      control={<Checkbox value="remember" style={{ color: '#e0e0e0' }} />}
                       label="Zapamiętaj mnie"
                     />
                   ) : null}

@@ -12,6 +12,17 @@ import { useTheme } from '@material-ui/core/styles';
 import Link from '@material-ui/core/Link';
 
 const useStyles = makeStyles(theme => ({
+  wrapper: {
+    backgroundColor: theme.palette.secondary.main,
+  },
+  textFieldBorder: {
+    borderWidth: '1px',
+    borderColor: `${theme.palette.grey[300]} !important`,
+    color: theme.palette.grey[300],
+  },
+  textFieldFont: {
+    color: theme.palette.grey[300],
+  },
   cursor: {
     cursor: 'pointer',
   },
@@ -37,26 +48,37 @@ const SignsPanelDialog = () => {
         Zapomniałeś hasło?
       </Link>
       <Dialog fullScreen={fullScreen} open={openDialog} onClose={handleClickClose}>
-        <DialogTitle>Resetowanie hasła</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Aby zresetować hasło, wprowadź poniżej swój adres e-mail lub nazwę użytkownika.
-          </DialogContentText>
-          <TextField
-            onChange={(e: any) => console.log(e.target.value)}
-            fullWidth
-            label="Wpisz swoją nazwę użytkownika lub email"
-            variant="outlined"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClickClose} color="primary">
-            Anuluj
-          </Button>
-          <Button onClick={handleClickClose} color="primary" autoFocus>
-            Resetuj hasło
-          </Button>
-        </DialogActions>
+        <div className={classes.wrapper}>
+          <DialogTitle className={classes.textFieldFont}>Resetowanie hasła</DialogTitle>
+          <DialogContent>
+            <DialogContentText className={classes.textFieldFont}>
+              Aby zresetować hasło, wprowadź poniżej swój adres e-mail lub nazwę użytkownika.
+            </DialogContentText>
+            <TextField
+              onChange={(e: any) => console.log(e.target.value)}
+              fullWidth
+              label="Wpisz swoją nazwę użytkownika lub email"
+              variant="outlined"
+              InputProps={{
+                classes: {
+                  notchedOutline: classes.textFieldBorder,
+                  input: classes.textFieldFont,
+                },
+              }}
+              InputLabelProps={{
+                className: classes.textFieldFont,
+              }}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClickClose} color="primary">
+              Anuluj
+            </Button>
+            <Button onClick={handleClickClose} color="primary" autoFocus>
+              Resetuj hasło
+            </Button>
+          </DialogActions>
+        </div>
       </Dialog>
     </div>
   );
