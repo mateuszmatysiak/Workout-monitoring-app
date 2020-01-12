@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.standard,
     }),
     zIndex: 3,
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('md')]: {
       position: 'fixed',
       top: 0,
       left: 0,
@@ -31,7 +31,6 @@ const useStyles = makeStyles(theme => ({
   navWrapperActive: {
     width: '200px',
   },
-  navWrapperMobile: {},
   navItemWrapper: {
     '&:hover': {
       backgroundColor: 'rgba(255,255,255, .1)',
