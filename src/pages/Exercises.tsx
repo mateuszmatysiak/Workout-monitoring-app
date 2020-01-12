@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import SidebarTemplate from '../templates/SidebarTemplate';
-import ExercisesTransferList from '../components/ExercisesTransferList';
-import ExercisesStepper from '../components/ExercisesStepper';
-import ExercisesSeriesTable from '../components/ExercisesSeriesTable';
-import ExercisesInfoTable from '../components/ExercisesInfoTable';
+import ExercisesTransferList from '../components/ExercisesAddPlan/ExercisesTransferList';
+import ExercisesStepper from '../components/ExercisesAddPlan/ExercisesStepper';
+import ExercisesSeriesTable from '../components/ExercisesAddPlan/ExercisesSeriesTable';
+import ExercisesInfoTable from '../components/ExercisesAddPlan/ExercisesInfoTable';
 
 const Exercises = () => {
   const [activeStep, setActiveStep] = useState(0);
