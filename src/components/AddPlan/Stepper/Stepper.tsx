@@ -31,6 +31,27 @@ const useStyles = makeStyles(theme => ({
     color: 'red',
   },
 }));
+
+const customStepStyles = makeStyles(theme => ({
+  root: {
+    color: '#eaeaf0',
+    display: 'flex',
+    height: 22,
+    alignItems: 'center',
+  },
+  circle: {
+    width: 12,
+    height: 12,
+    borderRadius: '50%',
+    backgroundColor: theme.palette.grey[300],
+  },
+  completed: {
+    color: theme.palette.grey[300],
+    zIndex: 1,
+    fontSize: 18,
+  },
+}));
+
 const getSteps = () => [
   'Wybierz swoje ćwiczenia',
   'Ustal ilość serii dla wybranych ćwiczeń',
@@ -57,7 +78,7 @@ interface ExercisesStepperProps {
   left: string[];
   setLeft: any;
   setRight: any;
-  data: any;
+  data: any[];
 }
 
 const ExercisesStepper = ({
@@ -103,26 +124,6 @@ const ExercisesStepper = ({
     setLeft(left.concat(right));
     setRight([]);
   };
-
-  const customStepStyles = makeStyles(theme => ({
-    root: {
-      color: '#eaeaf0',
-      display: 'flex',
-      height: 22,
-      alignItems: 'center',
-    },
-    circle: {
-      width: 12,
-      height: 12,
-      borderRadius: '50%',
-      backgroundColor: theme.palette.grey[300],
-    },
-    completed: {
-      color: theme.palette.grey[300],
-      zIndex: 1,
-      fontSize: 18,
-    },
-  }));
 
   const CustomStepIcon = (props: StepIconProps) => {
     const classes = customStepStyles();

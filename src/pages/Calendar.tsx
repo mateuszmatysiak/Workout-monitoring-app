@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import SidebarTemplate from 'templates/SidebarTemplate';
-import ExercisesCalendar from '../components/ExercisesCalendar';
-import ExercisesCalendarSidebar from '../components/ExercisesCalendar/ExercisesCalendarSidebar';
+import ExercisesCalendar from '../components/Calendar';
+import CalendarSidebar from '../components/Calendar/CalendarSidebar';
 
 const Calendar = () => {
   const [selectedDays, setSelectedDays] = useState([]) as any[];
   const [data, setData] = useState<any>({
     title: '',
     trainingPlan: [],
-    datesFrom: [],
-    datesTo: [],
+    dates: selectedDays,
   });
+  const [calendarTrainingPlans, setCalendarTrainingPlans] = useState<any>({});
   const [trainingPlanData, setTrainingPlanData] = useState([
     {
       id: 0,
@@ -97,14 +97,18 @@ const Calendar = () => {
       ],
     },
   ]);
-
   return (
     <SidebarTemplate>
-      <ExercisesCalendar selectedDays={selectedDays} setSelectedDays={setSelectedDays} />
-      <ExercisesCalendarSidebar
+      <ExercisesCalendar
+        selectedDays={data.dates}
+        setSelectedDays={setSelectedDays}
+        calendarTrainingPlans={calendarTrainingPlans}
+      />
+      <CalendarSidebar
         data={data}
         setData={setData}
         trainingPlanData={trainingPlanData}
+        selectedDays={selectedDays}
         setSelectedDays={setSelectedDays}
       />
     </SidebarTemplate>

@@ -7,6 +7,8 @@ import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import MenuIcon from '@material-ui/icons/Menu';
 import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import DashboardIcon from '@material-ui/icons/Dashboard';
 import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({
@@ -29,9 +31,10 @@ const useStyles = makeStyles(theme => ({
     },
   },
   navWrapperActive: {
-    width: '200px',
+    width: '270px',
   },
   navItemWrapper: {
+    padding: '16px',
     '&:hover': {
       backgroundColor: 'rgba(255,255,255, .1)',
     },
@@ -44,6 +47,7 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     marginLeft: '16px',
     fontSize: '12px',
+    whiteSpace: 'nowrap',
     fontWeight: theme.typography.fontWeightMedium,
     color: theme.palette.grey['300'],
   },
@@ -100,11 +104,23 @@ const SidebarNavigation = () => {
             </ListItemIcon>
             <Typography className={classes.navItem}>Kalendarz</Typography>
           </ListItem>
-          <ListItem component={NavLink} to="/exercises" className={classes.navItemWrapper}>
+          <ListItem component={NavLink} to="/add-plan" className={classes.navItemWrapper}>
             <ListItemIcon className={classes.navIconWrapper}>
               <FitnessCenterIcon className={classes.navIcon} />
             </ListItemIcon>
-            <Typography className={classes.navItem}>Ćwiczenia</Typography>
+            <Typography className={classes.navItem}>Nowy plan treningowy</Typography>
+          </ListItem>
+          <ListItem component={NavLink} to="/training-plans" className={classes.navItemWrapper}>
+            <ListItemIcon className={classes.navIconWrapper}>
+              <DashboardIcon className={classes.navIcon} />
+            </ListItemIcon>
+            <Typography className={classes.navItem}>Gotowe plany treningowe</Typography>
+          </ListItem>
+          <ListItem component={NavLink} to="/add-exercise" className={classes.navItemWrapper}>
+            <ListItemIcon className={classes.navIconWrapper}>
+              <AddCircleIcon className={classes.navIcon} />
+            </ListItemIcon>
+            <Typography className={classes.navItem}>Nowe ćwiczenie</Typography>
           </ListItem>
           <ListItem component={NavLink} to="/login" className={classes.navItemWrapper}>
             <ListItemIcon className={classes.navIconWrapper}>

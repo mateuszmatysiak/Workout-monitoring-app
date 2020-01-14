@@ -10,7 +10,6 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import SearchIcon from '@material-ui/icons/Search';
-import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
@@ -18,6 +17,7 @@ import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import Typography from '@material-ui/core/Typography';
+import TextField from '../../TextField';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -75,10 +75,7 @@ const useStyles = makeStyles(theme => ({
     borderColor: theme.palette.grey[300],
     backgroundColor: theme.palette.secondary.main,
   },
-  checkbox: {
-    color: theme.palette.grey[300],
-  },
-  text: {
+  color: {
     color: theme.palette.grey[300],
   },
   textField: {
@@ -94,7 +91,7 @@ const useStyles = makeStyles(theme => ({
   },
   textFieldFont: {
     color: theme.palette.grey[300],
-    padding: '8px 4px 8px 12px',
+    padding: '12px 4px 12px 12px',
   },
   searchIcon: {
     color: theme.palette.grey[300],
@@ -123,7 +120,7 @@ const intersection = (a: number[], b: number[]) => a.filter(value => b.indexOf(v
 
 const union = (a: number[], b: number[]) => [...a, ...not(b, a)];
 
-interface ExercisesTransferListProps {
+interface TransferListProps {
   left: any[];
   setLeft: any;
   right: any[];
@@ -131,13 +128,7 @@ interface ExercisesTransferListProps {
   setData: any;
 }
 
-const ExercisesTransferList = ({
-  left,
-  setLeft,
-  right,
-  setRight,
-  setData,
-}: ExercisesTransferListProps) => {
+const TransferList = ({ left, setLeft, right, setRight, setData }: TransferListProps) => {
   const classes = useStyles();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('xs'));
@@ -190,6 +181,16 @@ const ExercisesTransferList = ({
     setChecked(not(checked, rightChecked));
   };
 
+  const handleSetFiltered = (value: any, title: any) => {
+    title === 'Wybory'
+      ? setFilteredLeft(
+          left.filter((item: any) => item.toLowerCase().includes(value.toLowerCase())),
+        )
+      : setFilteredRight(
+          right.filter((item: any) => item.toLowerCase().includes(value.toLowerCase())),
+        );
+  };
+
   const itemList = (title: React.ReactNode, items: any[]) => (
     <Card className={classes.card}>
       <CardHeader
@@ -204,35 +205,19 @@ const ExercisesTransferList = ({
         }
         title={title}
         subheader={`${numberOfChecked(items)}/${items.length} wybranych`}
-        subheaderTypographyProps={{ className: classes.text }}
+        subheaderTypographyProps={{ className: classes.color }}
       />
       <TextField
-        placeholder="Wyszukaj"
-        variant="outlined"
         className={classes.textField}
-        onChange={(e: any) =>
-          title === 'Wybory'
-            ? setFilteredLeft(
-                left.filter((item: any) =>
-                  item.toLowerCase().includes(e.target.value.toLowerCase()),
-                ),
-              )
-            : setFilteredRight(
-                right.filter((item: any) =>
-                  item.toLowerCase().includes(e.target.value.toLowerCase()),
-                ),
-              )
+        onChange={(e: any) => handleSetFiltered(e.target.value, title)}
+        Icon={
+          <InputAdornment position="start">
+            <SearchIcon className={classes.searchIcon} />
+          </InputAdornment>
         }
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <SearchIcon className={classes.searchIcon} />
-            </InputAdornment>
-          ),
-          classes: {
-            notchedOutline: classes.textFieldBorder,
-            input: classes.textFieldFont,
-          },
+        inputClasses={{
+          notchedOutline: classes.textFieldBorder,
+          input: classes.textFieldFont,
         }}
       />
       <List className={classes.list} dense component="div" role="list">
@@ -247,7 +232,7 @@ const ExercisesTransferList = ({
                     disableRipple
                   />
                 </ListItemIcon>
-                <ListItemText className={classes.text} id={`${value}`} primary={value} />
+                <ListItemText className={classes.color} id={`${value}`} primary={value} />
               </ListItem>
             );
           })
@@ -295,4 +280,4 @@ const ExercisesTransferList = ({
   );
 };
 
-export default ExercisesTransferList;
+export default TransferList;

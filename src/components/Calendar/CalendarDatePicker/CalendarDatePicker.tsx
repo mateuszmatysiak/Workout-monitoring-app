@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-interface ExercisesCalendarDatePickerProps {
+interface CalendarDatePickerProps {
   label: string;
   data: any;
   setData: any;
@@ -33,13 +33,13 @@ interface ExercisesCalendarDatePickerProps {
   maxDate?: any;
 }
 
-const ExercisesCalendarDatePicker = ({
+const CalendarDatePicker = ({
   label,
   data,
   setData,
   minDate,
   maxDate,
-}: ExercisesCalendarDatePickerProps) => {
+}: CalendarDatePickerProps) => {
   const classes = useStyles();
   const [from, setFrom] = useState(null);
   const [to, setTo] = useState(null);
@@ -109,4 +109,4 @@ const ExercisesCalendarDatePicker = ({
   );
 };
 
-export default ExercisesCalendarDatePicker;
+export default CalendarDatePicker;

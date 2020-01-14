@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import SidebarTemplate from '../templates/SidebarTemplate';
-import ExercisesTransferList from '../components/ExercisesAddPlan/ExercisesTransferList';
-import ExercisesStepper from '../components/ExercisesAddPlan/ExercisesStepper';
-import ExercisesSeriesTable from '../components/ExercisesAddPlan/ExercisesSeriesTable';
-import ExercisesInfoTable from '../components/ExercisesAddPlan/ExercisesInfoTable';
+import ExercisesTransferList from '../components/AddPlan/TransferList';
+import ExercisesStepper from '../components/AddPlan/Stepper';
+import ExercisesSeriesTable from '../components/AddPlan/SeriesTable';
+import ExercisesInfoTable from '../components/AddPlan/InfoTable';
 
-const Exercises = () => {
+const AddPlan = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [right, setRight] = useState<any[]>([]);
   const [left, setLeft] = useState<any[]>([
@@ -78,4 +78,4 @@ const Exercises = () => {
   );
 };
 
-export default Exercises;
+export default AddPlan;

@@ -25,10 +25,14 @@ const Header = () => {
   const pathName = useLocation().pathname;
   const getTitle = () => {
     switch (pathName) {
-      case '/exercises':
-        return 'Tworzenie planu treningowego';
+      case '/add-plan':
+        return 'Stwórz swój plan treningowy';
       case '/calendar':
         return 'Kalendarz';
+      case '/training-plans':
+        return 'Wybierz plan z przygotowanych przez nas planów treningowych';
+      case '/add-exercise':
+        return 'Dodaj swoje ćwiczenie';
       default:
         return 'Aplikacja stworzona przez Marcina Musiała i Mateusza Matysiaka';
     }

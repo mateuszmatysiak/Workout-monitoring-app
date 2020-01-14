@@ -16,15 +16,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-interface ExercisesCalendarSideButtonProps {
+interface CalendarSideButtonProps {
   openSidebar: any;
   setOpenSidebar: any;
 }
 
-const ExercisesCalendarSideButton = ({
-  openSidebar,
-  setOpenSidebar,
-}: ExercisesCalendarSideButtonProps) => {
+const CalendarSideButton = ({ openSidebar, setOpenSidebar }: CalendarSideButtonProps) => {
   const classes = useStyles();
 
   const handleOpenSidebar = () => setOpenSidebar({ right: true });
@@ -37,4 +34,4 @@ const ExercisesCalendarSideButton = ({
   );
 };
 
-export default ExercisesCalendarSideButton;
+export default CalendarSideButton;
