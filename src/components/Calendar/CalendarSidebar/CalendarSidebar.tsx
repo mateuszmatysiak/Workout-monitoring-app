@@ -5,22 +5,8 @@ import CalendarSideButton from '../CalendarSideButton';
 import { Typography, Button } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import DayPicker, { DateUtils } from 'react-day-picker';
-import 'react-day-picker/lib/style.css';
-import {
-  WEEKDAYS_SHORT,
-  MONTHS,
-  WEEKDAYS_LONG,
-  FIRST_DAY_OF_WEEK,
-  LABELS,
-} from '../../../utils/localization';
+import DayPicker from '../../DayPicker';
+import TrainingPlanTable from '../../TrainingPlanTable';
 
 const useStyles = makeStyles(theme => ({
   list: {
@@ -39,13 +25,6 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
   },
-  table: {
-    padding: '16px',
-    backgroundColor: theme.palette.secondary.main,
-  },
-  tableHeader: {
-    backgroundColor: theme.palette.secondary.dark,
-  },
   title: {
     padding: '16px',
   },
@@ -60,11 +39,6 @@ const useStyles = makeStyles(theme => ({
   textFieldFont: {
     color: theme.palette.grey[300],
   },
-  datepickersWrapper: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    margin: '16px',
-  },
   buttonWrapper: {
     width: '100%',
     textAlign: 'center',
@@ -73,49 +47,16 @@ const useStyles = makeStyles(theme => ({
   button: {
     width: '100%',
   },
-  daypicker: {
-    minHeight: '100%',
-  },
-  cell: {
-    height: '12vh',
-    width: '7vw',
-    position: 'relative',
-    cursor: 'pointer',
-  },
-  date: {
-    position: 'absolute',
-    color: 'lightgray',
-    bottom: 0,
-    right: 0,
-    fontSize: 20,
-  },
-  wrapper: {
-    display: 'flex',
-    justifyContent: 'center',
-    height: '100%',
-  },
 }));
-
-const modifiersStyles = {
-  selected: {
-    color: '#ffc107',
-    backgroundColor: 'rgba(255,255,255, .1)',
-    borderRadius: 0,
-    border: '1px solid rgba(255,255,255, .4)',
-  },
-  today: {
-    borderBottom: '2px solid yellow',
-  },
-};
 
 type DrawerSide = 'right';
 
 interface CalendarSidebarProps {
-  data: any;
-  setData: any;
-  selectedDays: any;
-  setSelectedDays: any;
-  trainingPlanData: any[];
+  data?: any;
+  setData?: any;
+  selectedDays?: any;
+  setSelectedDays?: any;
+  trainingPlanData?: any[];
 }
 
 const CalendarSidebar = ({
@@ -127,7 +68,6 @@ const CalendarSidebar = ({
 }: CalendarSidebarProps) => {
   const classes = useStyles();
   const [openSidebar, setOpenSidebar] = useState({ right: false });
-  const [temporaryDays, setTemporaryDays] = useState([]);
   const { trainingPlan }: any = data;
 
   const toggleDrawer = (side: DrawerSide, open: boolean) => (
@@ -144,33 +84,19 @@ const CalendarSidebar = ({
     setOpenSidebar({ ...openSidebar, [side]: open });
   };
 
-  const handleConnectDays = () => {
-    setSelectedDays([temporaryDays]);
+  const handleRestart = () => {
     setOpenSidebar({ right: false });
+    setData({ ...data, dates: selectedDays });
     // setData({
     //   title: '',
     //   trainingPlan: [],
     //   dates: [],
     // });
+    // setSelectedDays([]);
   };
 
-  const handleDayClick = (day: never, { selected }: any) => {
-    if (selected) {
-      const selectedIndex = selectedDays.findIndex((selectedDay: any) =>
-        DateUtils.isSameDay(selectedDay, day),
-      );
-      selectedDays.splice(selectedIndex, 1);
-      setSelectedDays(selectedDays);
-      setTemporaryDays(temporaryDays.concat(selectedDays));
-    } else {
-      selectedDays.push(day);
-      setTemporaryDays(temporaryDays.concat(selectedDays));
-      setSelectedDays(selectedDays);
-    }
-  };
-
-  const [tableData] = trainingPlan.map((item: any) => item.training);
-  const [selectValue] = trainingPlan.map((item: any) => item.name);
+  const [tableData] = (trainingPlan || []).map((item: any) => item.training);
+  const [selectValue] = (trainingPlan || []).map((item: any) => item.name);
 
   return (
     <div style={{ background: 'red' }}>
@@ -203,7 +129,7 @@ const CalendarSidebar = ({
               onChange={(e: any) => {
                 setData({
                   ...data,
-                  trainingPlan: trainingPlanData.filter(
+                  trainingPlan: (trainingPlanData || []).filter(
                     (item: any) => item.name === e.target.value,
                   ),
                 });
@@ -219,7 +145,7 @@ const CalendarSidebar = ({
                 className: classes.textFieldFont,
               }}
             >
-              {trainingPlanData.map(({ id, name }: any) => {
+              {(trainingPlanData || []).map(({ id, name }: any) => {
                 return (
                   <MenuItem key={id} value={name}>
                     {name}
@@ -227,89 +153,20 @@ const CalendarSidebar = ({
                 );
               })}
             </TextField>
-            <div className={classes.wrapper}>
-              <DayPicker
-                className={classes.daypicker}
-                selectedDays={selectedDays}
-                showWeekNumbers
-                locale={'pl'}
-                months={MONTHS['pl']}
-                weekdaysLong={WEEKDAYS_LONG['pl']}
-                weekdaysShort={WEEKDAYS_SHORT['pl']}
-                firstDayOfWeek={FIRST_DAY_OF_WEEK['pl']}
-                labels={LABELS['pl']}
-                modifiersStyles={modifiersStyles}
-                onDayClick={handleDayClick}
-              />
-            </div>
+            <DayPicker selectedDays={selectedDays} setSelectedDays={setSelectedDays} />
             <div className={classes.buttonWrapper}>
               <Button
                 variant="contained"
                 className={classes.button}
                 color="primary"
-                onClick={handleConnectDays}
-                disabled={
-                  data.title.length && data.trainingPlan.length && data.dates.length ? false : true
-                }
+                onClick={handleRestart}
+                disabled={data.title.length && data.trainingPlan.length ? false : true}
               >
                 Zapisz
               </Button>
             </div>
           </div>
-          {trainingPlan.length ? (
-            <div className={classes.table}>
-              <TableContainer
-                component={Paper}
-                style={{
-                  border: '1px solid #e0e0e0',
-                  borderBottom: 'unset',
-                  background: '#424242',
-                  height: '100%',
-                }}
-              >
-                {tableData.map((item: any) => {
-                  return (
-                    <Table key={item.id}>
-                      <TableHead className={classes.tableHeader}>
-                        <TableRow>
-                          <TableCell className={classes.textFieldFont}>{item.name}</TableCell>
-                          <TableCell className={classes.textFieldFont} align="right">
-                            Ciężar [kg]
-                          </TableCell>
-                          <TableCell className={classes.textFieldFont} align="right">
-                            Czas [m]
-                          </TableCell>
-                          <TableCell className={classes.textFieldFont} align="right">
-                            Powt.
-                          </TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {item.series.map(({ id, kg, time, repeat }: any) => {
-                          return (
-                            <TableRow key={id}>
-                              <TableCell className={classes.textFieldFont}>
-                                Seria {id + 1}
-                              </TableCell>
-                              <TableCell className={classes.textFieldFont} align="right">
-                                {kg}
-                              </TableCell>
-                              <TableCell className={classes.textFieldFont} align="right">
-                                {time}
-                              </TableCell>
-                              <TableCell className={classes.textFieldFont} align="right">
-                                {repeat}
-                              </TableCell>
-                            </TableRow>
-                          );
-                        })}
-                      </TableBody>
-                    </Table>
-                  );
-                })}
-              </TableContainer>
-            </div>
-          ) : null}
+          {trainingPlan.length ? <TrainingPlanTable data={tableData} /> : null}
         </div>
       </Drawer>
       <CalendarSideButton openSidebar={openSidebar.right} setOpenSidebar={setOpenSidebar} />
