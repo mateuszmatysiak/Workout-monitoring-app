@@ -7,7 +7,6 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-// import { TextField } from '@material-ui/core';
 import TextField from '../../TextField';
 
 const useStyles = makeStyles(theme => ({
@@ -16,7 +15,7 @@ const useStyles = makeStyles(theme => ({
     top: 0,
     left: 0,
     zIndex: 2,
-    backgroundColor: theme.palette.secondary.dark,
+    backgroundColor: theme.palette.secondary.light,
     color: theme.palette.common.white,
     borderColor: theme.palette.grey[700],
   },
@@ -129,7 +128,7 @@ const InfoTable = ({ data, setData }: ExercisesInfoTableProps) => {
                       onChange={(e: any) =>
                         handleAddInfoToTable(item.id, series.id, series, e.target.value, 'kg')
                       }
-                      onInput={(e: any) => handleOnInput(e.target.vallue)}
+                      onInput={(e: any) => handleOnInput(e.target.value)}
                     />
                   </TableCell>
                   <TableCell className={classes.tableCell}>
@@ -141,7 +140,7 @@ const InfoTable = ({ data, setData }: ExercisesInfoTableProps) => {
                       onChange={(e: any) =>
                         handleAddInfoToTable(item.id, series.id, series, e.target.value, 'time')
                       }
-                      onInput={(e: any) => handleOnInput(e.target.vallue)}
+                      onInput={(e: any) => handleOnInput(e.target.value)}
                     />
                   </TableCell>
                   <TableCell className={classes.tableCell}>
@@ -153,7 +152,7 @@ const InfoTable = ({ data, setData }: ExercisesInfoTableProps) => {
                       onChange={(e: any) =>
                         handleAddInfoToTable(item.id, series.id, series, e.target.value, 'repeat')
                       }
-                      onInput={(e: any) => handleOnInput(e.target.vallue)}
+                      onInput={(e: any) => handleOnInput(e.target.value)}
                     />
                   </TableCell>
                 </TableRow>

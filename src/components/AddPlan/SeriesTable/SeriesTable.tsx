@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
     top: 0,
     left: 0,
     zIndex: 2,
-    backgroundColor: theme.palette.secondary.dark,
+    backgroundColor: theme.palette.secondary.light,
     color: theme.palette.common.white,
     borderColor: theme.palette.grey[700],
   },

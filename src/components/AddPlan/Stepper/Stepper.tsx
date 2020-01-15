@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import { Box } from '@material-ui/core';
+import { Box, useMediaQuery } from '@material-ui/core';
 import { StepIconProps } from '@material-ui/core/StepIcon';
 import Check from '@material-ui/icons/Check';
 
@@ -15,20 +15,26 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.secondary.main,
     borderBottom: `1px solid ${theme.palette.grey[700]}`,
   },
-  stepper: {
-    backgroundColor: theme.palette.secondary.main,
-  },
   button: {
     marginRight: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.dark,
+    backgroundColor: theme.palette.secondary.light,
     color: theme.palette.common.white,
   },
   instructions: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
   },
-  stepLabel: {
-    color: 'red',
+  stepper: {
+    backgroundColor: theme.palette.secondary.main,
+    [theme.breakpoints.down('xs')]: {
+      height: '400px',
+      alignItems: 'center',
+    },
+  },
+  step: {
+    [theme.breakpoints.down('xs')]: {
+      overflow: 'hidden',
+    },
   },
 }));
 
@@ -56,6 +62,7 @@ const getSteps = () => [
   'Wybierz swoje ćwiczenia',
   'Ustal ilość serii dla wybranych ćwiczeń',
   'Ustal ilość powtórzeń oraz kilogramów dla danej serii',
+  'Podaj nazwę planu treningowego',
 ];
 
 const getStepContent = (step: number) => {
@@ -66,6 +73,8 @@ const getStepContent = (step: number) => {
       return 'Ustalanie serii dla danego ćwiczenia...';
     case 2:
       return 'Ustalanie ilości powtórzeń oraz kilogramów dla danej serii...';
+    case 3:
+      return 'Podaj nazwę planu treningowego...';
     default:
       return 'Nieznany krok';
   }
@@ -79,6 +88,8 @@ interface ExercisesStepperProps {
   setLeft: any;
   setRight: any;
   data: any[];
+  setData: any;
+  planName: any;
 }
 
 const ExercisesStepper = ({
@@ -89,10 +100,14 @@ const ExercisesStepper = ({
   setLeft,
   setRight,
   data,
+  setData,
+  planName,
 }: ExercisesStepperProps) => {
   const classes = useStyles();
   const [skipped, setSkipped] = useState(new Set<number>());
   const steps = getSteps();
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down('xs'));
 
   const isStepSkipped = (step: number) => {
     return skipped.has(step);
@@ -107,7 +122,7 @@ const ExercisesStepper = ({
     setActiveStep((prevActiveStep: any) => prevActiveStep + 1);
     setSkipped(newSkipped);
 
-    if (activeStep === 2) console.log(data);
+    if (activeStep === 3) setData({ ...planName, training: { ...data } });
   };
 
   const handleBack = () => {
@@ -123,6 +138,7 @@ const ExercisesStepper = ({
     setActiveStep(0);
     setLeft(left.concat(right));
     setRight([]);
+    setData([]);
   };
 
   const CustomStepIcon = (props: StepIconProps) => {
@@ -138,10 +154,15 @@ const ExercisesStepper = ({
 
   return (
     <div className={classes.root}>
-      <Stepper alternativeLabel className={classes.stepper} activeStep={activeStep}>
+      <Stepper
+        orientation={mobile ? 'vertical' : 'horizontal'}
+        alternativeLabel
+        className={classes.stepper}
+        activeStep={activeStep}
+      >
         {steps.map((label: any) => {
           return (
-            <Step key={label}>
+            <Step key={label} className={classes.step}>
               <StepLabel StepIconComponent={CustomStepIcon}>
                 <Box color="#e0e0e0">{label}</Box>
               </StepLabel>
@@ -175,7 +196,9 @@ const ExercisesStepper = ({
                 color="primary"
                 onClick={handleNext}
                 className={classes.button}
-                disabled={right.length === 0}
+                disabled={
+                  activeStep === steps.length - 1 ? planName.name.length === 0 : right.length === 0
+                }
               >
                 {activeStep === steps.length - 1 ? 'Zapisz' : 'Następny'}
               </Button>

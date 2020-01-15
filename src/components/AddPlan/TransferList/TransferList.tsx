@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
   },
   cardHeader: {
     padding: theme.spacing(1, 2),
-    backgroundColor: theme.palette.secondary.dark,
+    backgroundColor: theme.palette.secondary.light,
     color: theme.palette.grey[300],
     borderBottom: `1px solid ${theme.palette.grey[700]}`,
   },
@@ -210,6 +210,7 @@ const TransferList = ({ left, setLeft, right, setRight, setData }: TransferListP
       <TextField
         className={classes.textField}
         onChange={(e: any) => handleSetFiltered(e.target.value, title)}
+        placeholder="Wyszukaj"
         Icon={
           <InputAdornment position="start">
             <SearchIcon className={classes.searchIcon} />
