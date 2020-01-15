@@ -14,6 +14,7 @@ import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 const useStyles = makeStyles(theme => ({
   wrapper: {
     backgroundColor: theme.palette.secondary.main,
+    height: '100%',
   },
   text: {
     color: theme.palette.grey[300],

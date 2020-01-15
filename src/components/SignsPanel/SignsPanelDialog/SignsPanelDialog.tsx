@@ -14,6 +14,7 @@ import Link from '@material-ui/core/Link';
 const useStyles = makeStyles(theme => ({
   wrapper: {
     backgroundColor: theme.palette.secondary.main,
+    height: '100%',
   },
   textFieldBorder: {
     borderWidth: '1px',
