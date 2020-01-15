@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import DayPicker, { DateUtils } from 'react-day-picker';
+import React from 'react';
+import DayPicker from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 import { makeStyles } from '@material-ui/core/styles';
 import {
