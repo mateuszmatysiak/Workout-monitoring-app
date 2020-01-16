@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import SidebarTemplate from '../templates/SidebarTemplate';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Button } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
+import { withSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -50,8 +51,29 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const AddExercise = () => {
+const AddExercise = (props: any) => {
   const classes = useStyles();
+  const [exercise, setExercise] = useState('');
+  const { enqueueSnackbar } = props;
+  const handleAddExerciese = () => {
+    fetch('http://localhost:3100/exercises', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name: exercise }),
+    }).then(() =>
+      enqueueSnackbar('Dodano ćwiczenie', {
+        variant: 'success',
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'right',
+        },
+      }),
+    );
+    setExercise('');
+  };
+
   return (
     <SidebarTemplate>
       <div className={classes.root}>
@@ -61,7 +83,8 @@ const AddExercise = () => {
             variant="outlined"
             label="Podaj nazwę ćwiczenia"
             className={classes.textField}
-            onChange={(e: any) => console.log(e.target.value)}
+            value={exercise}
+            onChange={(e: any) => setExercise(e.target.value)}
             InputProps={{
               classes: {
                 notchedOutline: classes.textFieldBorder,
@@ -73,7 +96,13 @@ const AddExercise = () => {
             }}
           />
           <div className={classes.buttonWrapper}>
-            <Button variant="contained" className={classes.button} color="primary">
+            <Button
+              onClick={handleAddExerciese}
+              variant="contained"
+              className={classes.button}
+              color="primary"
+              disabled={!exercise.length ? true : false}
+            >
               Wyślij
             </Button>
           </div>
@@ -83,4 +112,4 @@ const AddExercise = () => {
   );
 };
 
-export default AddExercise;
+export default withSnackbar(AddExercise);

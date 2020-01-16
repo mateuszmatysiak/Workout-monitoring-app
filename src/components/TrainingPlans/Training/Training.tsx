@@ -58,6 +58,7 @@ const Training = ({ id, img, title, description, training, data, setData }: Trai
     //   trainingPlan: [],
     //   dates: [],
     // });
+    console.log(data)
   };
 
   const handleClose = () => {

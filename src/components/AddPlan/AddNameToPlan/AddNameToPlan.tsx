@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { TextField, Typography, Box } from '@material-ui/core';
 
@@ -18,6 +18,15 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+let ID = function() {
+  return (
+    '_' +
+    Math.random()
+      .toString(36)
+      .substr(2, 9)
+  );
+};
+
 interface AddNameToPlanProps {
   planName: any;
   setPlanName: any;
@@ -25,14 +34,20 @@ interface AddNameToPlanProps {
 
 const AddNameToPlan = ({ planName, setPlanName }: AddNameToPlanProps) => {
   const classes = useStyles();
+
+  const handleAddPlanName = (value: any) => {
+    setPlanName({ id: ID(), name: value });
+  };
+
   return (
     <Box textAlign="center" margin="16px" maxWidth="100%">
       <Typography variant="h5">Podaj nazwę tworzonego planu treningowego</Typography>
       <TextField
         variant="outlined"
         label="Tytuł planu treningowego"
+        value={planName.name}
         className={classes.textField}
-        onChange={(e: any) => setPlanName({ id: 0, name: e.target.value })}
+        onChange={(e: any) => handleAddPlanName(e.target.value)}
         InputProps={{
           classes: {
             notchedOutline: classes.textFieldBorder,

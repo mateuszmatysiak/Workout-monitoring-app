@@ -90,6 +90,7 @@ interface ExercisesStepperProps {
   data: any[];
   setData: any;
   planName: any;
+  setPlanName: any;
 }
 
 const ExercisesStepper = ({
@@ -102,6 +103,7 @@ const ExercisesStepper = ({
   data,
   setData,
   planName,
+  setPlanName,
 }: ExercisesStepperProps) => {
   const classes = useStyles();
   const [skipped, setSkipped] = useState(new Set<number>());
@@ -139,6 +141,7 @@ const ExercisesStepper = ({
     setLeft(left.concat(right));
     setRight([]);
     setData([]);
+    setPlanName({ id: '', name: '' });
   };
 
   const CustomStepIcon = (props: StepIconProps) => {
