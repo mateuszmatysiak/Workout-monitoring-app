@@ -4,7 +4,6 @@ import TransferList from '../components/AddPlan/TransferList';
 import Stepper from '../components/AddPlan/Stepper';
 import SeriesTable from '../components/AddPlan/SeriesTable';
 import InfoTable from '../components/AddPlan/InfoTable';
-
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Box } from '@material-ui/core';
 import { withSnackbar } from 'notistack';

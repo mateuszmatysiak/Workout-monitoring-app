@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SidebarTemplate from 'templates/SidebarTemplate';
 import ExercisesCalendar from '../components/Calendar';
 import CalendarSidebar from '../components/Calendar/CalendarSidebar';
 
 const Calendar = () => {
+  const [loading, setLoading] = useState(true);
   const [selectedDays, setSelectedDays] = useState([]) as any[];
   const [data, setData] = useState<any>({
     title: '',
@@ -11,98 +12,29 @@ const Calendar = () => {
     dates: selectedDays,
   });
   const [calendarTrainingPlans, setCalendarTrainingPlans] = useState<any>({});
-  const [trainingPlanData, setTrainingPlanData] = useState([
-    {
-      id: 0,
-      name: 'P01',
-      training: [
-        {
-          id: 0,
-          name: 'Biceps',
-          series: [
-            {
-              id: 0,
-              kg: '50',
-              time: '1',
-              repeat: '5',
-            },
-            {
-              id: 1,
-              kg: '50',
-              time: '1',
-              repeat: '5',
-            },
-            {
-              id: 2,
-              kg: '50',
-              time: '1',
-              repeat: '5',
-            },
-          ],
-        },
-        {
-          id: 1,
-          name: 'Triceps',
-          series: [
-            {
-              id: 0,
-              kg: '50',
-              time: '1',
-              repeat: '5',
-            },
-            {
-              id: 1,
-              kg: '50',
-              time: '1',
-              repeat: '5',
-            },
-            {
-              id: 2,
-              kg: '50',
-              time: '1',
-              repeat: '5',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      id: 1,
-      name: 'PPP',
-      training: [
-        {
-          id: 0,
-          name: 'Elowina',
-          series: [
-            {
-              id: 0,
-              kg: '50',
-              time: '1',
-              repeat: '5',
-            },
-          ],
-        },
-        {
-          id: 1,
-          name: 'tree',
-          series: [
-            {
-              id: 0,
-              kg: '50',
-              time: '1',
-              repeat: '5',
-            },
-          ],
-        },
-      ],
-    },
-  ]);
+  const [trainingPlanData, setTrainingPlanData] = useState([]);
+
+  useEffect(() => {
+    setLoading(true);
+    fetch('http://localhost:3100/workoutplan', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name: '' }),
+    })
+      .then((res: any) => res.json())
+      .then((data: any) => setTrainingPlanData(data))
+      .then(() => setLoading(false));
+  }, []);
+
   return (
     <SidebarTemplate>
       <ExercisesCalendar
         selectedDays={data.dates}
         setSelectedDays={setSelectedDays}
         calendarTrainingPlans={calendarTrainingPlans}
+        loading={loading}
       />
       <CalendarSidebar
         data={data}

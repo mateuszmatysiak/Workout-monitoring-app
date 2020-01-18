@@ -28,6 +28,7 @@ const useStyles = makeStyles(theme => ({
   },
   dialogContent: {
     backgroundColor: theme.palette.secondary.main,
+    padding: '16px 24px',
   },
 }));
 

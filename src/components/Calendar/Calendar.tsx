@@ -9,6 +9,8 @@ import {
   FIRST_DAY_OF_WEEK,
   LABELS,
 } from '../../utils/localization';
+import { Box } from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles(theme => ({
   daypicker: {
@@ -49,9 +51,14 @@ interface ExercisesCalendarProps {
   selectedDays: any[];
   setSelectedDays: (value: string) => void;
   calendarTrainingPlans: any;
+  loading: boolean;
 }
 
-const ExercisesCalendar = ({ selectedDays, calendarTrainingPlans }: ExercisesCalendarProps) => {
+const ExercisesCalendar = ({
+  selectedDays,
+  calendarTrainingPlans,
+  loading,
+}: ExercisesCalendarProps) => {
   const classes = useStyles();
 
   function renderDay(day: any) {
@@ -70,19 +77,25 @@ const ExercisesCalendar = ({ selectedDays, calendarTrainingPlans }: ExercisesCal
   }
   return (
     <div className={classes.wrapper}>
-      <DayPicker
-        className={classes.daypicker}
-        selectedDays={selectedDays}
-        showWeekNumbers
-        renderDay={renderDay}
-        modifiersStyles={modifiersStyles}
-        locale={'pl'}
-        months={MONTHS['pl']}
-        weekdaysLong={WEEKDAYS_LONG['pl']}
-        weekdaysShort={WEEKDAYS_SHORT['pl']}
-        firstDayOfWeek={FIRST_DAY_OF_WEEK['pl']}
-        labels={LABELS['pl']}
-      />
+      {loading ? (
+        <Box textAlign="center" margin="16px">
+          <CircularProgress />
+        </Box>
+      ) : (
+        <DayPicker
+          className={classes.daypicker}
+          selectedDays={selectedDays}
+          showWeekNumbers
+          renderDay={renderDay}
+          modifiersStyles={modifiersStyles}
+          locale={'pl'}
+          months={MONTHS['pl']}
+          weekdaysLong={WEEKDAYS_LONG['pl']}
+          weekdaysShort={WEEKDAYS_SHORT['pl']}
+          firstDayOfWeek={FIRST_DAY_OF_WEEK['pl']}
+          labels={LABELS['pl']}
+        />
+      )}
     </div>
   );
 };

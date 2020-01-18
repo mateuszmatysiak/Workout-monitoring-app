@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SidebarTemplate from '../templates/SidebarTemplate';
 import { Chip, Paper, Box } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
@@ -14,6 +14,8 @@ import couplesTraining from '../assets/dlaPar.jpg';
 import groupTraining from '../assets/grupowy.jpeg';
 import bikeTraining from '../assets/rower.jpg';
 import Training from '../components/TrainingPlans/Training';
+import clsx from 'clsx';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -24,6 +26,10 @@ const useStyles = makeStyles(theme => ({
   },
   chip: {
     margin: '4px 8px',
+    border: `3px solid transparent`,
+  },
+  chipActive: {
+    border: `3px solid #4466df`,
   },
   paper: {
     margin: '16px',
@@ -40,165 +46,43 @@ const chips = [
   { id: 4, label: 'Grupowe', Icon: <GroupIcon /> },
 ];
 
-const training = {
-  strength: [
-    {
-      id: 0,
-      title: 'Trening siłowy',
-      description: 'Zdobądź swoją mase mięśniową z naszym treningiem',
-      img: strengthTraining,
-      training: [
-        {
-          id: 0,
-          name: 'Bieganie',
-          series: [
-            { id: 0, kg: '1', time: '15', repeat: '1' },
-            { id: 1, kg: '1', time: '15', repeat: '1' },
-          ],
-        },
-        {
-          id: 1,
-          name: 'Ab roller na kolanach',
-          series: [
-            { id: 0, kg: '1', time: '15', repeat: '1' },
-            { id: 1, kg: '1', time: '15', repeat: '1' },
-          ],
-        },
-      ],
-    },
-  ],
-  cardio: [
-    {
-      id: 0,
-      title: 'Trening kardio',
-      description: 'Spal zbędne kilogramy z naszym planem treningowym',
-      img: cardioTraining,
-      training: [
-        {
-          id: 0,
-          name: 'Bieganie',
-          series: [
-            { id: 0, kg: '1', time: '15', repeat: '1' },
-            { id: 1, kg: '1', time: '15', repeat: '1' },
-          ],
-        },
-        {
-          id: 1,
-          name: 'Ab roller na kolanach',
-          series: [
-            { id: 0, kg: '1', time: '15', repeat: '1' },
-            { id: 1, kg: '1', time: '15', repeat: '1' },
-          ],
-        },
-      ],
-    },
-    {
-      id: 1,
-      title: 'Trening na spalenie kalorii',
-      description: 'Testowy opis na spalanie kalorii',
-      img: cardioTraining,
-      training: [
-        {
-          id: 0,
-          name: 'Bieganie',
-          series: [
-            { id: 0, kg: '1', time: '15', repeat: '1' },
-            { id: 1, kg: '1', time: '15', repeat: '1' },
-          ],
-        },
-        {
-          id: 1,
-          name: 'Ab roller na kolanach',
-          series: [
-            { id: 0, kg: '1', time: '15', repeat: '1' },
-            { id: 1, kg: '1', time: '15', repeat: '1' },
-          ],
-        },
-      ],
-    },
-  ],
-  couples: [
-    {
-      id: 0,
-      title: 'Trening dla par',
-      description: 'Ćwicząc razem spalacie więcej kalorii',
-      img: couplesTraining,
-      training: [
-        {
-          id: 0,
-          name: 'Bieganie',
-          series: [
-            { id: 0, kg: '1', time: '15', repeat: '1' },
-            { id: 1, kg: '1', time: '15', repeat: '1' },
-          ],
-        },
-        {
-          id: 1,
-          name: 'Ab roller na kolanach',
-          series: [
-            { id: 0, kg: '1', time: '15', repeat: '1' },
-            { id: 1, kg: '1', time: '15', repeat: '1' },
-          ],
-        },
-      ],
-    },
-  ],
-  group: [
-    {
-      id: 0,
-      title: 'Trening dla grup',
-      description: 'W grupie raźniej',
-      img: groupTraining,
-      training: [
-        {
-          id: 0,
-          name: 'Bieganie',
-          series: [
-            { id: 0, kg: '1', time: '15', repeat: '1' },
-            { id: 1, kg: '1', time: '15', repeat: '1' },
-          ],
-        },
-        {
-          id: 1,
-          name: 'Ab roller na kolanach',
-          series: [
-            { id: 0, kg: '1', time: '15', repeat: '1' },
-            { id: 1, kg: '1', time: '15', repeat: '1' },
-          ],
-        },
-      ],
-    },
-  ],
-  bike: [
-    {
-      id: 0,
-      title: 'Trening dla rowerzystów',
-      description: 'Pedałuj z nami',
-      img: bikeTraining,
-      training: [
-        {
-          id: 0,
-          name: 'Bieganie',
-          series: [
-            { id: 0, kg: '1', time: '15', repeat: '1' },
-            { id: 1, kg: '1', time: '15', repeat: '1' },
-          ],
-        },
-        {
-          id: 1,
-          name: 'Ab roller na kolanach',
-          series: [
-            { id: 0, kg: '1', time: '15', repeat: '1' },
-            { id: 1, kg: '1', time: '15', repeat: '1' },
-          ],
-        },
-      ],
-    },
-  ],
-};
-
 const TrainingPlans = () => {
   const classes = useStyles();
+  const [loading, setLoading] = useState(true);
+  const [trainingData, setTrainingData] = useState([]);
+  const training = {
+    cardio: trainingData
+      .filter(
+        ({ name }: any) => name === 'Trening kardio' || name === 'Trening na spalanie kalorii',
+      )
+      .map((item: any) => ({ ...item, img: cardioTraining })),
+    strength: trainingData
+      .filter((item: any) => item.name === 'Trening siłowy')
+      .map((item: any) => ({ ...item, img: strengthTraining })),
+    couples: trainingData
+      .filter((item: any) => item.name === 'Trening dla par')
+      .map((item: any) => ({ ...item, img: couplesTraining })),
+    group: trainingData
+      .filter((item: any) => item.name === 'Trening dla grup')
+      .map((item: any) => ({ ...item, img: groupTraining })),
+    bike: trainingData
+      .filter((item: any) => item.name === 'Trening dla rowerzystów')
+      .map((item: any) => ({ ...item, img: bikeTraining })),
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    fetch('http://localhost:3100/workoutplanexample', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name: '' }),
+    })
+      .then((res: any) => res.json())
+      .then((data: any) => setTrainingData(data))
+      .then(() => setLoading(false));
+  }, []);
 
   const [pageNumber, setPageNumber] = useState(0);
   const [data, setData] = useState({
@@ -207,11 +91,20 @@ const TrainingPlans = () => {
     dates: [],
   });
   const handleChangePageNumber = (value: number) => setPageNumber(value);
+
   const addTraining = (value: any[], page: number) =>
     pageNumber === page &&
-    value.map(({ id, title, description, img, training }: any) => (
-      <Grid key={id} item xs={12} md={6} lg={4}>
-        <Training id={id} title={title} description={description} img={img} training={training} data={data} setData={setData} />
+    value.map(({ id, name, description, img, training }: any) => (
+      <Grid key={name} item xs={12} md={6} lg={4}>
+        <Training
+          id={id}
+          title={name}
+          description={description}
+          img={img}
+          training={training}
+          data={data}
+          setData={setData}
+        />
       </Grid>
     ));
 
@@ -227,21 +120,27 @@ const TrainingPlans = () => {
                 label={label}
                 onClick={() => handleChangePageNumber(id)}
                 variant="default"
-                className={classes.chip}
+                className={clsx(classes.chip, pageNumber === id ? classes.chipActive : null)}
               />
             );
           })}
         </Paper>
       </Box>
-      <Paper className={classes.root}>
-        <Grid container spacing={2} style={{ padding: 16 }}>
-          {addTraining(training.cardio, 0)}
-          {addTraining(training.strength, 1)}
-          {addTraining(training.couples, 2)}
-          {addTraining(training.bike, 3)}
-          {addTraining(training.group, 4)}
-        </Grid>
-      </Paper>
+      {loading ? (
+        <Box textAlign="center" margin="16px">
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Paper className={classes.root}>
+          <Grid container spacing={2} style={{ padding: 16 }}>
+            {addTraining(training.cardio, 0)}
+            {addTraining(training.strength, 1)}
+            {addTraining(training.couples, 2)}
+            {addTraining(training.bike, 3)}
+            {addTraining(training.group, 4)}
+          </Grid>
+        </Paper>
+      )}
     </SidebarTemplate>
   );
 };

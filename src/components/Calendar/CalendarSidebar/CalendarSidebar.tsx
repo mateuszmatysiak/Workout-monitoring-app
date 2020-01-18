@@ -145,9 +145,9 @@ const CalendarSidebar = ({
                 className: classes.textFieldFont,
               }}
             >
-              {(trainingPlanData || []).map(({ id, name }: any) => {
+              {(trainingPlanData || []).map(({ name }: any, index: any) => {
                 return (
-                  <MenuItem key={id} value={name}>
+                  <MenuItem key={index} value={name}>
                     {name}
                   </MenuItem>
                 );
