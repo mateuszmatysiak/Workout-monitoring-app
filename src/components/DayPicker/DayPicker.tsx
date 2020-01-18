@@ -35,7 +35,7 @@ const modifiersStyles = {
 
 interface DayPickerProps {
   selectedDays: any;
-  setSelectedDays: any;
+  setSelectedDays: (value: any) => void;
 }
 
 const DayPickerComponent = ({ selectedDays, setSelectedDays }: DayPickerProps) => {

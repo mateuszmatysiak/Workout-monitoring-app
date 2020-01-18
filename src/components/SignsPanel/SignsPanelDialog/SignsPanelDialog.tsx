@@ -44,7 +44,7 @@ const SignsPanelDialog = () => {
   };
 
   return (
-    <div>
+    <>
       <Link onClick={handleClickOpen} className={classes.cursor}>
         Zapomniałeś hasło?
       </Link>
@@ -81,7 +81,7 @@ const SignsPanelDialog = () => {
           </DialogActions>
         </div>
       </Dialog>
-    </div>
+    </>
   );
 };
 

@@ -18,7 +18,7 @@ import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import Typography from '@material-ui/core/Typography';
 import TextField from '../../TextField';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import AddNameToPlan from '../AddNameToPlan';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -121,22 +121,39 @@ const intersection = (a: number[], b: number[]) => a.filter(value => b.indexOf(v
 
 const union = (a: number[], b: number[]) => [...a, ...not(b, a)];
 
+const removeDuplicates = (data: any) => {
+  return data.filter(function(value: any, index: number, array: any) {
+    return array.indexOf(value) === index;
+  });
+};
+
 interface TransferListProps {
   left: any[];
-  setLeft: any;
+  setLeft: (value: string[]) => void;
   right: any[];
-  setRight: any;
-  setData: any;
+  setRight: (value: string[]) => void;
+  setData: (value: any) => void;
+  setPlanName: (value: string) => void;
+  planName: string;
 }
 
-const TransferList = ({ left, setLeft, right, setRight, setData }: TransferListProps) => {
+const TransferList = ({
+  left,
+  setLeft,
+  right,
+  setRight,
+  setData,
+  planName,
+  setPlanName,
+}: TransferListProps) => {
   const classes = useStyles();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('xs'));
   const [checked, setChecked] = useState<number[]>([]);
-  const [filteredLeft, setFilteredLeft] = useState<String[]>(left);
+  const [filteredLeft, setFilteredLeft] = useState<String[]>(removeDuplicates(left));
   const [filteredRight, setFilteredRight] = useState<String[]>(right);
-  const leftChecked = intersection(checked, left);
+
+  const leftChecked = intersection(checked, removeDuplicates(left));
   const rightChecked = intersection(checked, right);
 
   const handleToggle = (value: number) => () => {
@@ -165,13 +182,16 @@ const TransferList = ({ left, setLeft, right, setRight, setData }: TransferListP
   const handleCheckedRight = () => {
     setRight(right.concat(leftChecked));
     setFilteredRight(right.concat(leftChecked));
-    setData(
-      right.concat(leftChecked).map((item: any, index: any) => ({
-        id: index,
-        name: item,
-        series: [{ id: 0, kg: '1', time: '1', repeat: '1' }],
-      })),
-    );
+    setData([
+      {
+        name: planName,
+        training: right.concat(leftChecked).map((item: any, index: any) => ({
+          id: index,
+          name: item,
+          series: [{ id: 0, kg: 1, time: 1, repeat: 1 }],
+        })),
+      },
+    ]);
     setLeft(not(left, leftChecked));
     setChecked(not(checked, leftChecked));
   };
@@ -185,7 +205,9 @@ const TransferList = ({ left, setLeft, right, setRight, setData }: TransferListP
   const handleSetFiltered = (value: any, title: any) => {
     title === 'Wybory'
       ? setFilteredLeft(
-          left.filter((item: any) => item.toLowerCase().includes(value.toLowerCase())),
+          removeDuplicates(left).filter((item: any) =>
+            item.toLowerCase().includes(value.toLowerCase()),
+          ),
         )
       : setFilteredRight(
           right.filter((item: any) => item.toLowerCase().includes(value.toLowerCase())),
@@ -224,9 +246,9 @@ const TransferList = ({ left, setLeft, right, setRight, setData }: TransferListP
       />
       <List className={classes.list} dense component="div" role="list">
         {items.length ? (
-          items.map((value: number) => {
+          items.map((value: number, index: number) => {
             return (
-              <ListItem key={value} role="listitem" button onClick={handleToggle(value)}>
+              <ListItem key={index} role="listitem" button onClick={handleToggle(value)}>
                 <ListItemIcon>
                   <CustomCheckBox
                     checked={checked.indexOf(value) !== -1}
@@ -249,36 +271,39 @@ const TransferList = ({ left, setLeft, right, setRight, setData }: TransferListP
   );
 
   return (
-    <Grid container justify="center" className={classes.root}>
-      <Grid xs={5} item className={classes.listWrapper}>
-        {itemList('Wybory', not(filteredLeft, right).sort())}
-      </Grid>
-      <Grid item xs={2} className={classes.buttonWrapper}>
-        <Grid container direction="column">
-          <Button
-            variant="outlined"
-            size="large"
-            className={classes.button}
-            onClick={handleCheckedRight}
-            disabled={leftChecked.length === 0}
-          >
-            {mobile ? <ArrowDropDownIcon /> : <ArrowRightIcon />}
-          </Button>
-          <Button
-            variant="outlined"
-            size="large"
-            className={classes.button}
-            onClick={handleCheckedLeft}
-            disabled={rightChecked.length === 0}
-          >
-            {mobile ? <ArrowDropUpIcon /> : <ArrowLeftIcon />}
-          </Button>
+    <>
+      <AddNameToPlan planName={planName} setPlanName={setPlanName} />
+      <Grid container justify="center" className={classes.root}>
+        <Grid xs={5} item className={classes.listWrapper}>
+          {itemList('Wybory', not(filteredLeft, right).sort())}
+        </Grid>
+        <Grid item xs={2} className={classes.buttonWrapper}>
+          <Grid container direction="column">
+            <Button
+              variant="outlined"
+              size="large"
+              className={classes.button}
+              onClick={handleCheckedRight}
+              disabled={leftChecked.length === 0}
+            >
+              {mobile ? <ArrowDropDownIcon /> : <ArrowRightIcon />}
+            </Button>
+            <Button
+              variant="outlined"
+              size="large"
+              className={classes.button}
+              onClick={handleCheckedLeft}
+              disabled={rightChecked.length === 0}
+            >
+              {mobile ? <ArrowDropUpIcon /> : <ArrowLeftIcon />}
+            </Button>
+          </Grid>
+        </Grid>
+        <Grid xs={5} item className={classes.listWrapper}>
+          {itemList('Wybrane', not(filteredRight, left))}
         </Grid>
       </Grid>
-      <Grid xs={5} item className={classes.listWrapper}>
-        {itemList('Wybrane', not(filteredRight, left))}
-      </Grid>
-    </Grid>
+    </>
   );
 };
 

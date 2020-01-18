@@ -18,11 +18,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface TextFieldProps {
-  onChange: any;
-  onInput?: any;
+  onChange: (value: any) => void;
+  onInput?: (value: any) => void;
   value?: any;
   type?: string;
-  id?: any;
+  id?: string;
   className?: any;
   placeholder?: string;
   label?: string;

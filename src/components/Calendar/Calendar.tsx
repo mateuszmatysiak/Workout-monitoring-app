@@ -46,8 +46,8 @@ const modifiersStyles = {
 };
 
 interface ExercisesCalendarProps {
-  selectedDays: [];
-  setSelectedDays: any;
+  selectedDays: any[];
+  setSelectedDays: (value: string) => void;
   calendarTrainingPlans: any;
 }
 

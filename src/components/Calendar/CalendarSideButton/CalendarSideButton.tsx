@@ -17,8 +17,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface CalendarSideButtonProps {
-  openSidebar: any;
-  setOpenSidebar: any;
+  openSidebar: boolean;
+  setOpenSidebar: (value: any) => void;
 }
 
 const CalendarSideButton = ({ openSidebar, setOpenSidebar }: CalendarSideButtonProps) => {

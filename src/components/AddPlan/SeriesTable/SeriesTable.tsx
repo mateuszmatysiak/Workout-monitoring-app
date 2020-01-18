@@ -35,28 +35,32 @@ const useStyles = makeStyles(theme => ({
 }));
 
 let obj = {
-  id: '',
-  kg: '1',
-  time: '1',
-  repeat: '1',
+  id: 0,
+  kg: 1,
+  time: 1,
+  repeat: 1,
 };
 
 interface ExercisesSeriesTableProps {
   data: any[];
-  setData: any;
+  setData: (value: any) => void;
 }
 
 const SeriesTable = ({ data, setData }: ExercisesSeriesTableProps) => {
   const classes = useStyles();
+  const [training] = data.map(({ training }: any) => training);
 
   const handleCreateSeries = (value: string, id: string, arr: number) => {
     setData(
       data.map((item: any) => ({
         ...item,
-        series:
-          `${item.id}` === id
-            ? createCopies(obj, parseInt(value), arr)
-            : item.series.map((item: any) => item),
+        training: item.training.map((item: any) => ({
+          ...item,
+          series:
+            `${item.id}` === id
+              ? createCopies(obj, parseInt(value), arr)
+              : item.series.map((item: any) => item),
+        })),
       })),
     );
   };
@@ -79,16 +83,16 @@ const SeriesTable = ({ data, setData }: ExercisesSeriesTableProps) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((item: any, index: number) => {
+          {training.map(({ name }: any, index: number) => {
             return (
               <TableRow key={index}>
                 <TableCell className={classes.tableCell} scope="row">
-                  {item.name}
+                  {name}
                 </TableCell>
                 <TableCell align="right" className={classes.tableCell}>
                   <TextField
                     type="number"
-                    value={data[index].series.length}
+                    value={training[index].series.length}
                     id={`${index}`}
                     className={classes.textField}
                     onChange={(e: any) =>

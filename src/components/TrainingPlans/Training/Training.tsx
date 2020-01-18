@@ -38,7 +38,7 @@ interface TrainingProps {
   description: string;
   training: any;
   data: any;
-  setData: any;
+  setData: (value: any) => void;
 }
 
 const Training = ({ id, img, title, description, training, data, setData }: TrainingProps) => {

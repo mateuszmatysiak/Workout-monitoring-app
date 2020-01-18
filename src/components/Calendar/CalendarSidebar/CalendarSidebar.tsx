@@ -52,11 +52,11 @@ const useStyles = makeStyles(theme => ({
 type DrawerSide = 'right';
 
 interface CalendarSidebarProps {
-  data?: any;
-  setData?: any;
-  selectedDays?: any;
-  setSelectedDays?: any;
-  trainingPlanData?: any[];
+  data: any;
+  setData: (value: any) => void;
+  selectedDays: string[];
+  setSelectedDays: (value: any) => void;
+  trainingPlanData: any[];
 }
 
 const CalendarSidebar = ({

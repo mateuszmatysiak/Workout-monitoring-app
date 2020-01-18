@@ -27,10 +27,10 @@ const useStyles = makeStyles(theme => ({
 
 interface CalendarDatePickerProps {
   label: string;
-  data: any;
-  setData: any;
-  minDate?: any;
-  maxDate?: any;
+  data: any[];
+  setData: (value: any) => void;
+  minDate?: string;
+  maxDate?: string;
 }
 
 const CalendarDatePicker = ({

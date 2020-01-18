@@ -62,7 +62,6 @@ const getSteps = () => [
   'Wybierz swoje ćwiczenia',
   'Ustal ilość serii dla wybranych ćwiczeń',
   'Ustal ilość powtórzeń oraz kilogramów dla danej serii',
-  'Podaj nazwę planu treningowego',
 ];
 
 const getStepContent = (step: number) => {
@@ -73,8 +72,6 @@ const getStepContent = (step: number) => {
       return 'Ustalanie serii dla danego ćwiczenia...';
     case 2:
       return 'Ustalanie ilości powtórzeń oraz kilogramów dla danej serii...';
-    case 3:
-      return 'Podaj nazwę planu treningowego...';
     default:
       return 'Nieznany krok';
   }
@@ -82,15 +79,16 @@ const getStepContent = (step: number) => {
 
 interface ExercisesStepperProps {
   activeStep: number;
-  setActiveStep: any;
+  setActiveStep: (value: any) => void;
   right: string[];
   left: string[];
-  setLeft: any;
-  setRight: any;
+  setLeft: (value: any) => void;
+  setRight: (value: any[]) => void;
   data: any[];
-  setData: any;
-  planName: any;
-  setPlanName: any;
+  setData: (value: any) => void;
+  addPlan: () => void;
+  planName: string;
+  setPlanName: (value: string) => void;
 }
 
 const ExercisesStepper = ({
@@ -100,8 +98,8 @@ const ExercisesStepper = ({
   left,
   setLeft,
   setRight,
-  data,
   setData,
+  addPlan,
   planName,
   setPlanName,
 }: ExercisesStepperProps) => {
@@ -124,7 +122,10 @@ const ExercisesStepper = ({
     setActiveStep((prevActiveStep: any) => prevActiveStep + 1);
     setSkipped(newSkipped);
 
-    if (activeStep === 3) setData({ ...planName, training: { ...data } });
+    if (activeStep === 2) {
+      addPlan();
+      setPlanName('');
+    }
   };
 
   const handleBack = () => {
@@ -141,7 +142,6 @@ const ExercisesStepper = ({
     setLeft(left.concat(right));
     setRight([]);
     setData([]);
-    setPlanName({ id: '', name: '' });
   };
 
   const CustomStepIcon = (props: StepIconProps) => {
@@ -200,7 +200,9 @@ const ExercisesStepper = ({
                 onClick={handleNext}
                 className={classes.button}
                 disabled={
-                  activeStep === steps.length - 1 ? planName.name.length === 0 : right.length === 0
+                  activeStep === steps.length - 1
+                    ? false
+                    : right.length === 0 || planName.length === 0
                 }
               >
                 {activeStep === steps.length - 1 ? 'Zapisz' : 'Następny'}

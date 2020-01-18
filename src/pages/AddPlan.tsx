@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import SidebarTemplate from '../templates/SidebarTemplate';
-import ExercisesTransferList from '../components/AddPlan/TransferList';
-import ExercisesStepper from '../components/AddPlan/Stepper';
+import TransferList from '../components/AddPlan/TransferList';
+import Stepper from '../components/AddPlan/Stepper';
 import SeriesTable from '../components/AddPlan/SeriesTable';
 import InfoTable from '../components/AddPlan/InfoTable';
-import AddNameToPlan from '../components/AddPlan/AddNameToPlan';
+
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Box } from '@material-ui/core';
+import { withSnackbar } from 'notistack';
 
-const AddPlan = () => {
-  const [activeStep, setActiveStep] = useState(0);
-  const [right, setRight] = useState<any[]>([]);
-  const [left, setLeft] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+const AddPlan = (props: any) => {
+  const { enqueueSnackbar } = props;
   const [data, setData] = useState([]);
-  const [planName, setPlanName] = useState({ id: '', name: '' });
+  const [left, setLeft] = useState<any[]>([]);
+  const [right, setRight] = useState<any[]>([]);
+  const [activeStep, setActiveStep] = useState(0);
+  const [planName, setPlanName] = useState<string>('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setLoading(true);
@@ -24,18 +26,37 @@ const AddPlan = () => {
       .catch((err: any) => console.log(err))
       .then(() => setLoading(false));
   }, []);
-  console.log(data);
+
+  const addPlan = () => {
+    fetch('http://localhost:3100/workoutplan', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data[0]),
+    }).then(() =>
+      enqueueSnackbar(`Dodano plan treningowy o nazwie ${planName}`, {
+        variant: 'success',
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'right',
+        },
+      }),
+    );
+  };
+
   return (
     <SidebarTemplate>
-      <ExercisesStepper
-        activeStep={activeStep}
-        setActiveStep={setActiveStep}
-        right={right}
-        left={left}
-        setLeft={setLeft}
-        setRight={setRight}
+      <Stepper
         data={data}
         setData={setData}
+        left={left}
+        setLeft={setLeft}
+        right={right}
+        setRight={setRight}
+        activeStep={activeStep}
+        setActiveStep={setActiveStep}
+        addPlan={addPlan}
         planName={planName}
         setPlanName={setPlanName}
       />
@@ -45,20 +66,21 @@ const AddPlan = () => {
         </Box>
       ) : (
         activeStep === 0 && (
-          <ExercisesTransferList
+          <TransferList
             left={left}
             setLeft={setLeft}
             right={right}
             setRight={setRight}
             setData={setData}
+            planName={planName}
+            setPlanName={setPlanName}
           />
         )
       )}
       {activeStep === 1 && <SeriesTable data={data} setData={setData} />}
       {activeStep === 2 && <InfoTable data={data} setData={setData} />}
-      {activeStep === 3 && <AddNameToPlan planName={planName} setPlanName={setPlanName} />}
     </SidebarTemplate>
   );
 };
 
-export default AddPlan;
+export default withSnackbar(AddPlan);

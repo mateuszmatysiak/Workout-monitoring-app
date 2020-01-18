@@ -8,6 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import TextField from '../../TextField';
+import { ListItemText } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   tableHeader: {
@@ -53,38 +54,42 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface ExercisesInfoTableProps {
-  data: any;
-  setData: any;
+  data: any[];
+  setData: (value: any) => void;
 }
 
 const InfoTable = ({ data, setData }: ExercisesInfoTableProps) => {
   const classes = useStyles();
+  const [training] = data.map(({ training }: any) => training);
 
   const handleAddInfoToTable = (
     itemId: number,
     seriesId: number,
-    series: any,
+    series: any[],
     value: number,
-    type: any,
+    type: string,
   ) => {
     setData(
-      data.map((elem: any) => {
-        if (elem.id === itemId) {
-          return {
-            ...elem,
-            series: elem.series.map((ser: any) => {
-              if (ser.id === seriesId) {
-                return {
-                  ...series,
-                  [type]: value,
-                };
-              }
-              return ser;
-            }),
-          };
-        }
-        return elem;
-      }),
+      data.map((item: any) => ({
+        ...item,
+        training: training.map((elem: any) => {
+          if (elem.id === itemId) {
+            return {
+              ...elem,
+              series: elem.series.map((ser: any) => {
+                if (ser.id === seriesId) {
+                  return {
+                    ...series,
+                    [type]: value,
+                  };
+                }
+                return ser;
+              }),
+            };
+          }
+          return elem;
+        }),
+      })),
     );
   };
 
@@ -96,7 +101,7 @@ const InfoTable = ({ data, setData }: ExercisesInfoTableProps) => {
 
   return (
     <TableContainer className={classes.container} component={Paper}>
-      {data.map((item: any, index: number) => (
+      {training.map((item: any, index: number) => (
         <Table key={index}>
           <TableHead>
             <TableRow>
@@ -125,9 +130,15 @@ const InfoTable = ({ data, setData }: ExercisesInfoTableProps) => {
                       value={series.kg}
                       id={`${id}`}
                       className={classes.textField}
-                      onChange={(e: any) =>
-                        handleAddInfoToTable(item.id, series.id, series, e.target.value, 'kg')
-                      }
+                      onChange={(e: any) => {
+                        handleAddInfoToTable(
+                          item.id,
+                          series.id,
+                          series,
+                          parseInt(e.target.value),
+                          'kg',
+                        );
+                      }}
                       onInput={(e: any) => handleOnInput(e.target.value)}
                     />
                   </TableCell>
@@ -138,7 +149,13 @@ const InfoTable = ({ data, setData }: ExercisesInfoTableProps) => {
                       id={`${id}`}
                       className={classes.textField}
                       onChange={(e: any) =>
-                        handleAddInfoToTable(item.id, series.id, series, e.target.value, 'time')
+                        handleAddInfoToTable(
+                          item.id,
+                          series.id,
+                          series,
+                          parseInt(e.target.value),
+                          'time',
+                        )
                       }
                       onInput={(e: any) => handleOnInput(e.target.value)}
                     />
@@ -150,7 +167,13 @@ const InfoTable = ({ data, setData }: ExercisesInfoTableProps) => {
                       id={`${id}`}
                       className={classes.textField}
                       onChange={(e: any) =>
-                        handleAddInfoToTable(item.id, series.id, series, e.target.value, 'repeat')
+                        handleAddInfoToTable(
+                          item.id,
+                          series.id,
+                          series,
+                          parseInt(e.target.value),
+                          'repeat',
+                        )
                       }
                       onInput={(e: any) => handleOnInput(e.target.value)}
                     />
