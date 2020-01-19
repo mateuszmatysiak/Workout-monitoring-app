@@ -80,7 +80,7 @@ const TrainingPlans = () => {
       body: JSON.stringify({ name: '' }),
     })
       .then((res: any) => res.json())
-      .then((data: any) => setTrainingData(data))
+      .then((data: any) => console.log(data))
       .then(() => setLoading(false));
   }, []);
 

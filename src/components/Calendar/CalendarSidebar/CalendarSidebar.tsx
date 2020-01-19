@@ -7,6 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import DayPicker from '../../DayPicker';
 import TrainingPlanTable from '../../TrainingPlanTable';
+import { withSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   list: {
@@ -51,21 +52,16 @@ const useStyles = makeStyles(theme => ({
 
 type DrawerSide = 'right';
 
-interface CalendarSidebarProps {
-  data: any;
-  setData: (value: any) => void;
-  selectedDays: string[];
-  setSelectedDays: (value: any) => void;
-  trainingPlanData: any[];
-}
+// interface CalendarSidebarProps {
+//   data: any;
+//   setData: (value: any) => void;
+//   selectedDays: string[];
+//   setSelectedDays: (value: any) => void;
+//   trainingPlanData: any[];
+// }
 
-const CalendarSidebar = ({
-  data,
-  setData,
-  selectedDays,
-  setSelectedDays,
-  trainingPlanData,
-}: CalendarSidebarProps) => {
+const CalendarSidebar = (props: any) => {
+  const { data, setData, selectedDays, setSelectedDays, trainingPlanData, enqueueSnackbar } = props;
   const classes = useStyles();
   const [openSidebar, setOpenSidebar] = useState({ right: false });
   const { trainingPlan }: any = data;
@@ -84,22 +80,36 @@ const CalendarSidebar = ({
     setOpenSidebar({ ...openSidebar, [side]: open });
   };
 
-  const handleRestart = () => {
+  const handleAddPlanWithDate = () => {
     setOpenSidebar({ right: false });
-    setData({ ...data, dates: selectedDays });
-    // setData({
-    //   title: '',
-    //   trainingPlan: [],
-    //   dates: [],
-    // });
-    // setSelectedDays([]);
+    fetch('http://localhost:3100/workoutplan', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ ...data, dates: selectedDays }),
+    }).then(() =>
+      enqueueSnackbar('Dodano plan treningowy do kalendarza', {
+        variant: 'success',
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'right',
+        },
+      }),
+    );
+    setData({
+      title: '',
+      trainingPlan: [],
+      dates: selectedDays,
+    });
+    setSelectedDays([]);
   };
 
   const [tableData] = (trainingPlan || []).map((item: any) => item.training);
   const [selectValue] = (trainingPlan || []).map((item: any) => item.name);
 
   return (
-    <div style={{ background: 'red' }}>
+    <div>
       <Drawer anchor="right" open={openSidebar.right} onClose={toggleDrawer('right', false)}>
         <div className={classes.list}>
           <Typography variant="h5" className={classes.title}>
@@ -159,7 +169,7 @@ const CalendarSidebar = ({
                 variant="contained"
                 className={classes.button}
                 color="primary"
-                onClick={handleRestart}
+                onClick={handleAddPlanWithDate}
                 disabled={data.title.length && data.trainingPlan.length ? false : true}
               >
                 Zapisz
@@ -174,4 +184,4 @@ const CalendarSidebar = ({
   );
 };
 
-export default CalendarSidebar;
+export default withSnackbar(CalendarSidebar);

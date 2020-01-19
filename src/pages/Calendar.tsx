@@ -11,7 +11,10 @@ const Calendar = () => {
     trainingPlan: [],
     dates: selectedDays,
   });
-  const [calendarTrainingPlans, setCalendarTrainingPlans] = useState<any>({});
+  const [calendarTrainingPlans, setCalendarTrainingPlans] = useState<any>({
+    dates: [],
+    calendarDates: [],
+  });
   const [trainingPlanData, setTrainingPlanData] = useState([]);
 
   useEffect(() => {
@@ -26,6 +29,12 @@ const Calendar = () => {
       .then((res: any) => res.json())
       .then((data: any) => setTrainingPlanData(data))
       .then(() => setLoading(false));
+
+    fetch('http://localhost:3100/userworkout')
+      .then((res: any) => res.json())
+      .then(({ dates, calendarDates }: any) =>
+        setCalendarTrainingPlans({ dates: dates, calendarDates: calendarDates }),
+      );
   }, []);
 
   return (

@@ -12,6 +12,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import DayPicker from '../../DayPicker';
 import TrainingPlanTable from '../../TrainingPlanTable';
+import { withSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -32,17 +33,18 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-interface TrainingProps {
-  id: number;
-  img: any;
-  title: string;
-  description: string;
-  training: any;
-  data: any;
-  setData: (value: any) => void;
-}
+// interface TrainingProps {
+//   id: number;
+//   img: any;
+//   title: string;
+//   description: string;
+//   training: any;
+//   data: any;
+//   setData: (value: any) => void;
+// }
 
-const Training = ({ id, img, title, description, training, data, setData }: TrainingProps) => {
+const Training = (props: any) => {
+  const { id, img, title, description, training, setData, enqueueSnackbar } = props;
   const classes = useStyles({});
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -54,12 +56,21 @@ const Training = ({ id, img, title, description, training, data, setData }: Trai
     setData(data);
     setOpenSidebar(false);
     setSelectedDays([]);
-    // setData({
-    //   title: '',
-    //   trainingPlan: [],
-    //   dates: [],
-    // });
-    console.log(data)
+    fetch('http://localhost:3100/workoutplan', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    }).then(() =>
+      enqueueSnackbar('Dodano wybrany plan treningowy do kalendarza', {
+        variant: 'success',
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'right',
+        },
+      }),
+    );
   };
 
   const handleClose = () => {
@@ -101,7 +112,7 @@ const Training = ({ id, img, title, description, training, data, setData }: Trai
           <Button
             color="primary"
             onClick={() =>
-              handleAddToCalendar({ name: title, trainingPlan: training, dates: selectedDays })
+              handleAddToCalendar({ title: title, trainingPlan: training, dates: selectedDays })
             }
           >
             Dodaj do kalendarza
@@ -112,4 +123,4 @@ const Training = ({ id, img, title, description, training, data, setData }: Trai
   );
 };
 
-export default Training;
+export default withSnackbar(Training);

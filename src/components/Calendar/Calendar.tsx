@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import DayPicker from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 import { makeStyles } from '@material-ui/core/styles';
@@ -21,6 +21,10 @@ const useStyles = makeStyles(theme => ({
     width: '7vw',
     position: 'relative',
     cursor: 'pointer',
+
+    '&:focus': {
+      background: 'transparent',
+    },
   },
   date: {
     position: 'absolute',
@@ -28,6 +32,10 @@ const useStyles = makeStyles(theme => ({
     bottom: 0,
     right: 0,
     fontSize: 20,
+  },
+  titleInCell: {
+    fontSize: '10px',
+    textAlign: 'left',
   },
   wrapper: {
     display: 'flex',
@@ -37,6 +45,12 @@ const useStyles = makeStyles(theme => ({
 
 const modifiersStyles = {
   selected: {
+    color: '#ffc107',
+    backgroundColor: 'rgba(255,255,255, .1)',
+    borderRadius: 0,
+    border: '1px solid rgba(255,255,255, .4)',
+  },
+  active: {
     color: '#ffc107',
     backgroundColor: 'rgba(255,255,255, .1)',
     borderRadius: 0,
@@ -60,15 +74,21 @@ const ExercisesCalendar = ({
   loading,
 }: ExercisesCalendarProps) => {
   const classes = useStyles();
+  const { dates, calendarDates } = calendarTrainingPlans;
+
+  const fixedCalendarDates = calendarDates.map((item: any) => new Date(item));
+  const modifiers = {
+    active: fixedCalendarDates,
+  };
 
   function renderDay(day: any) {
     const date = day.getDate();
     return (
       <div className={classes.cell}>
         <div className={classes.date}>{date}</div>
-        {calendarTrainingPlans[date] &&
-          calendarTrainingPlans[date].map((name: any, index: any) => (
-            <div key={index} style={{ fontSize: '20px', textAlign: 'left' }}>
+        {dates[date] &&
+          dates[date].map((name: any, index: any) => (
+            <div key={index} className={classes.titleInCell}>
               {name}
             </div>
           ))}
@@ -88,12 +108,14 @@ const ExercisesCalendar = ({
           showWeekNumbers
           renderDay={renderDay}
           modifiersStyles={modifiersStyles}
+          modifiers={modifiers}
           locale={'pl'}
           months={MONTHS['pl']}
           weekdaysLong={WEEKDAYS_LONG['pl']}
           weekdaysShort={WEEKDAYS_SHORT['pl']}
           firstDayOfWeek={FIRST_DAY_OF_WEEK['pl']}
           labels={LABELS['pl']}
+          onDayClick={(e: any) => console.log(e)}
         />
       )}
     </div>
