@@ -82,13 +82,20 @@ const ExercisesCalendar = ({
     active: fixedCalendarDates,
   };
 
-  function renderDay(day: any, { active }: any) {
-    const date = day.getDate();
+  // const dates: any = {
+  //   '1': ['Test']
+  // }
 
+  console.log(new Date('2020,01,01'))
+
+  function renderDay(day: any, item: any) {
+    const date = day.getDate();
+    // console.log(day, fixedCalendarDates)
+    console.log(fixedCalendarDates.filter((date: any) => date === day))
     return (
       <div className={classes.cell}>
         <div className={classes.date}>{date}</div>
-        {dates[date] && active &&
+        {dates[date] && item.active &&
           dates[date].map((name: any, index: any) => (
             <div key={index} className={classes.titleInCell}>
               {name}
@@ -119,11 +126,12 @@ const ExercisesCalendar = ({
               firstDayOfWeek={FIRST_DAY_OF_WEEK['pl']}
               labels={LABELS['pl']}
               onDayClick={(e: any) => console.log(e)}
+              showOutsideDays={true}
             />
             <Helmet>
               <style>{`
             .DayPicker-wrapper {
-              outline: none
+              outline: none;
             }
             .DayPicker-Day {
               outline: none;
@@ -133,6 +141,12 @@ const ExercisesCalendar = ({
               background-color: #ffffff1a;
               border-radius: 0;
               border: 1px solid transparent;
+            }
+            .DayPicker-NavButton--prev {
+              outline: none;
+            }
+            .DayPicker-NavButton--next {
+              outline: none;
             }
             `}</style>
             </Helmet>

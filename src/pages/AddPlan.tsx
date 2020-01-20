@@ -34,7 +34,7 @@ const AddPlan = (props: any) => {
       },
       body: JSON.stringify(data[0]),
     }).then(() =>
-      enqueueSnackbar(`Dodano plan treningowy o nazwie ${planName}`, {
+      enqueueSnackbar(`Dodano plan treningowy o nazwie: ${planName}`, {
         variant: 'success',
         anchorOrigin: {
           vertical: 'bottom',

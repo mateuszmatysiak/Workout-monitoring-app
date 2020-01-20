@@ -80,9 +80,9 @@ const CalendarSidebar = (props: any) => {
     setOpenSidebar({ ...openSidebar, [side]: open });
   };
 
-  const handleAddPlanWithDate = () => {
+  async function handleAddPlanWithDate() {
     setOpenSidebar({ right: false });
-    fetch('http://localhost:3100/workoutplan', {
+    await fetch('http://localhost:3100/workoutplan', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -97,11 +97,10 @@ const CalendarSidebar = (props: any) => {
         },
       }),
     );
-    setTimeout(() => fetch('http://localhost:3100/userworkout')
+    await fetch('http://localhost:3100/userworkout')
       .then((res: any) => res.json())
       .then(({ dates, calendarDates }: any) =>
-        setCalendarTrainingPlans({ dates: dates, calendarDates: calendarDates }),
-      ), 1)
+        setCalendarTrainingPlans({ dates: dates, calendarDates: calendarDates }))
     setData({
       title: '',
       trainingPlan: [],

@@ -49,27 +49,13 @@ const chips = [
 const TrainingPlans = () => {
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
-  const [trainingData, setTrainingData] = useState([]);
-  const training = {
-    cardio: trainingData
-      .filter(
-        ({ name }: any) => name === 'Trening kardio' || name === 'Trening na spalanie kalorii',
-      )
-      .map((item: any) => ({ ...item, img: cardioTraining })),
-    strength: trainingData
-      .filter((item: any) => item.name === 'Trening siłowy')
-      .map((item: any) => ({ ...item, img: strengthTraining })),
-    couples: trainingData
-      .filter((item: any) => item.name === 'Trening dla par')
-      .map((item: any) => ({ ...item, img: couplesTraining })),
-    group: trainingData
-      .filter((item: any) => item.name === 'Trening dla grup')
-      .map((item: any) => ({ ...item, img: groupTraining })),
-    bike: trainingData
-      .filter((item: any) => item.name === 'Trening dla rowerzystów')
-      .map((item: any) => ({ ...item, img: bikeTraining })),
-  };
-
+  const [trainingData, setTrainingData] = useState({
+    cardio: [],
+    group: [],
+    bike: [],
+    couples: [],
+    strength: [],
+  });
   useEffect(() => {
     setLoading(true);
     fetch('http://localhost:3100/workoutplanexample', {
@@ -80,7 +66,7 @@ const TrainingPlans = () => {
       body: JSON.stringify({ name: '' }),
     })
       .then((res: any) => res.json())
-      .then((data: any) => console.log(data))
+      .then((data: any) => setTrainingData(data))
       .then(() => setLoading(false));
   }, []);
 
@@ -131,16 +117,16 @@ const TrainingPlans = () => {
           <CircularProgress />
         </Box>
       ) : (
-        <Paper className={classes.root}>
-          <Grid container spacing={2} style={{ padding: 16 }}>
-            {addTraining(training.cardio, 0)}
-            {addTraining(training.strength, 1)}
-            {addTraining(training.couples, 2)}
-            {addTraining(training.bike, 3)}
-            {addTraining(training.group, 4)}
-          </Grid>
-        </Paper>
-      )}
+          <Paper className={classes.root}>
+            <Grid container spacing={2} style={{ padding: 16 }}>
+              {addTraining((trainingData.cardio || []), 0)}
+              {addTraining((trainingData.strength || []), 1)}
+              {addTraining((trainingData.couples || []), 2)}
+              {addTraining((trainingData.bike || []), 3)}
+              {addTraining((trainingData.group || []), 4)}
+            </Grid>
+          </Paper>
+        )}
     </SidebarTemplate>
   );
 };
