@@ -51,6 +51,7 @@ const Calendar = () => {
         trainingPlanData={trainingPlanData}
         selectedDays={selectedDays}
         setSelectedDays={setSelectedDays}
+        setCalendarTrainingPlans={setCalendarTrainingPlans}
       />
     </SidebarTemplate>
   );

@@ -61,7 +61,7 @@ type DrawerSide = 'right';
 // }
 
 const CalendarSidebar = (props: any) => {
-  const { data, setData, selectedDays, setSelectedDays, trainingPlanData, enqueueSnackbar } = props;
+  const { data, setData, selectedDays, setSelectedDays, trainingPlanData, setCalendarTrainingPlans, enqueueSnackbar } = props;
   const classes = useStyles();
   const [openSidebar, setOpenSidebar] = useState({ right: false });
   const { trainingPlan }: any = data;
@@ -97,6 +97,11 @@ const CalendarSidebar = (props: any) => {
         },
       }),
     );
+    setTimeout(() => fetch('http://localhost:3100/userworkout')
+      .then((res: any) => res.json())
+      .then(({ dates, calendarDates }: any) =>
+        setCalendarTrainingPlans({ dates: dates, calendarDates: calendarDates }),
+      ), 1)
     setData({
       title: '',
       trainingPlan: [],

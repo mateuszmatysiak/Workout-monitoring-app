@@ -11,6 +11,7 @@ import {
 } from '../../utils/localization';
 import { Box } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Helmet from 'react-helmet';
 
 const useStyles = makeStyles(theme => ({
   daypicker: {
@@ -81,12 +82,13 @@ const ExercisesCalendar = ({
     active: fixedCalendarDates,
   };
 
-  function renderDay(day: any) {
+  function renderDay(day: any, { active }: any) {
     const date = day.getDate();
+
     return (
       <div className={classes.cell}>
         <div className={classes.date}>{date}</div>
-        {dates[date] &&
+        {dates[date] && active &&
           dates[date].map((name: any, index: any) => (
             <div key={index} className={classes.titleInCell}>
               {name}
@@ -102,22 +104,40 @@ const ExercisesCalendar = ({
           <CircularProgress />
         </Box>
       ) : (
-        <DayPicker
-          className={classes.daypicker}
-          selectedDays={selectedDays}
-          showWeekNumbers
-          renderDay={renderDay}
-          modifiersStyles={modifiersStyles}
-          modifiers={modifiers}
-          locale={'pl'}
-          months={MONTHS['pl']}
-          weekdaysLong={WEEKDAYS_LONG['pl']}
-          weekdaysShort={WEEKDAYS_SHORT['pl']}
-          firstDayOfWeek={FIRST_DAY_OF_WEEK['pl']}
-          labels={LABELS['pl']}
-          onDayClick={(e: any) => console.log(e)}
-        />
-      )}
+          <>
+            <DayPicker
+              className={classes.daypicker}
+              selectedDays={selectedDays}
+              showWeekNumbers
+              renderDay={renderDay}
+              modifiersStyles={modifiersStyles}
+              modifiers={modifiers}
+              locale={'pl'}
+              months={MONTHS['pl']}
+              weekdaysLong={WEEKDAYS_LONG['pl']}
+              weekdaysShort={WEEKDAYS_SHORT['pl']}
+              firstDayOfWeek={FIRST_DAY_OF_WEEK['pl']}
+              labels={LABELS['pl']}
+              onDayClick={(e: any) => console.log(e)}
+            />
+            <Helmet>
+              <style>{`
+            .DayPicker-wrapper {
+              outline: none
+            }
+            .DayPicker-Day {
+              outline: none;
+              border: 1px solid transparent;
+            }
+            .DayPicker:not(.DayPicker--interactionDisabled) .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover {
+              background-color: #ffffff1a;
+              border-radius: 0;
+              border: 1px solid transparent;
+            }
+            `}</style>
+            </Helmet>
+          </>
+        )}
     </div>
   );
 };
