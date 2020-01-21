@@ -2,8 +2,24 @@ import React, { useState, useEffect } from 'react';
 import SidebarTemplate from 'templates/SidebarTemplate';
 import ExercisesCalendar from '../components/Calendar';
 import CalendarSidebar from '../components/Calendar/CalendarSidebar';
+import CalendarDetails from '../components/Calendar/CalendarDetails';
+import { makeStyles } from '@material-ui/core/styles';
+import { Box } from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
+const useStyles = makeStyles(theme => ({
+  wrapper: {
+    display: 'flex',
+    height: '100%',
+
+    [theme.breakpoints.down('md')]: {
+      flexDirection: 'column',
+    },
+  },
+}));
 
 const Calendar = () => {
+  const classes = useStyles();
   const [loading, setLoading] = useState(true);
   const [selectedDays, setSelectedDays] = useState([]) as any[];
   const [data, setData] = useState<any>({
@@ -39,20 +55,28 @@ const Calendar = () => {
 
   return (
     <SidebarTemplate>
-      <ExercisesCalendar
-        selectedDays={data.dates}
-        setSelectedDays={setSelectedDays}
-        calendarTrainingPlans={calendarTrainingPlans}
-        loading={loading}
-      />
-      <CalendarSidebar
-        data={data}
-        setData={setData}
-        trainingPlanData={trainingPlanData}
-        selectedDays={selectedDays}
-        setSelectedDays={setSelectedDays}
-        setCalendarTrainingPlans={setCalendarTrainingPlans}
-      />
+      {loading ? (
+        <Box textAlign="center" margin="16px">
+          <CircularProgress />
+        </Box>
+      ) : (
+        <div className={classes.wrapper}>
+          <ExercisesCalendar
+            selectedDays={data.dates}
+            setSelectedDays={setSelectedDays}
+            calendarTrainingPlans={calendarTrainingPlans}
+          />
+          <CalendarDetails />
+          <CalendarSidebar
+            data={data}
+            setData={setData}
+            trainingPlanData={trainingPlanData}
+            selectedDays={selectedDays}
+            setSelectedDays={setSelectedDays}
+            setCalendarTrainingPlans={setCalendarTrainingPlans}
+          />
+        </div>
+      )}
     </SidebarTemplate>
   );
 };

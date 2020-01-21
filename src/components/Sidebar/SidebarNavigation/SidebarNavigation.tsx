@@ -104,11 +104,11 @@ const SidebarNavigation = () => {
             </ListItemIcon>
             <Typography className={classes.navItem}>Kalendarz</Typography>
           </ListItem>
-          <ListItem component={NavLink} to="/add-plan" className={classes.navItemWrapper}>
+          <ListItem component={NavLink} to="/plan-managment" className={classes.navItemWrapper}>
             <ListItemIcon className={classes.navIconWrapper}>
               <FitnessCenterIcon className={classes.navIcon} />
             </ListItemIcon>
-            <Typography className={classes.navItem}>Nowy plan treningowy</Typography>
+            <Typography className={classes.navItem}>Zarządzanie planami</Typography>
           </ListItem>
           <ListItem component={NavLink} to="/training-plans" className={classes.navItemWrapper}>
             <ListItemIcon className={classes.navIconWrapper}>

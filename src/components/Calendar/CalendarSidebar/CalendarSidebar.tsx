@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import CalendarSideButton from '../CalendarSideButton';
-import { Typography, Button } from '@material-ui/core';
+import { Typography, Button, Box } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import DayPicker from '../../DayPicker';
@@ -61,7 +61,15 @@ type DrawerSide = 'right';
 // }
 
 const CalendarSidebar = (props: any) => {
-  const { data, setData, selectedDays, setSelectedDays, trainingPlanData, setCalendarTrainingPlans, enqueueSnackbar } = props;
+  const {
+    data,
+    setData,
+    selectedDays,
+    setSelectedDays,
+    trainingPlanData,
+    setCalendarTrainingPlans,
+    enqueueSnackbar,
+  } = props;
   const classes = useStyles();
   const [openSidebar, setOpenSidebar] = useState({ right: false });
   const { trainingPlan }: any = data;
@@ -100,14 +108,15 @@ const CalendarSidebar = (props: any) => {
     await fetch('http://localhost:3100/userworkout')
       .then((res: any) => res.json())
       .then(({ dates, calendarDates }: any) =>
-        setCalendarTrainingPlans({ dates: dates, calendarDates: calendarDates }))
+        setCalendarTrainingPlans({ dates: dates, calendarDates: calendarDates }),
+      );
     setData({
       title: '',
       trainingPlan: [],
       dates: selectedDays,
     });
     setSelectedDays([]);
-  };
+  }
 
   const [tableData] = (trainingPlan || []).map((item: any) => item.training);
   const [selectValue] = (trainingPlan || []).map((item: any) => item.name);
@@ -180,7 +189,11 @@ const CalendarSidebar = (props: any) => {
               </Button>
             </div>
           </div>
-          {trainingPlan.length ? <TrainingPlanTable data={tableData} /> : null}
+          {trainingPlan.length ? (
+            <Box padding="16px">
+              <TrainingPlanTable data={tableData} />
+            </Box>
+          ) : null}
         </div>
       </Drawer>
       <CalendarSideButton openSidebar={openSidebar.right} setOpenSidebar={setOpenSidebar} />

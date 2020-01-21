@@ -17,6 +17,8 @@ const useStyles = makeStyles(theme => ({
   title: {
     color: theme.palette.grey[300],
     padding: '0 16px',
+    textTransform: 'uppercase',
+    fontWeight: 700,
   },
 }));
 
@@ -25,8 +27,8 @@ const Header = () => {
   const pathName = useLocation().pathname;
   const getTitle = () => {
     switch (pathName) {
-      case '/add-plan':
-        return 'Stwórz swój plan treningowy';
+      case '/plan-managment':
+        return 'Zarządzaj swoimi planami treningowymi';
       case '/calendar':
         return 'Kalendarz';
       case '/training-plans':

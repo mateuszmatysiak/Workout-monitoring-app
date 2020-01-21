@@ -61,7 +61,6 @@ const useStyles = makeStyles(theme => ({
     padding: '32px 8px',
     backgroundColor: theme.palette.secondary.main,
     border: `1px solid ${theme.palette.grey[700]}`,
-    borderTop: 'unset',
     borderBottom: 'unset',
 
     [theme.breakpoints.down('xs')]: {

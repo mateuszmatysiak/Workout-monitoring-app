@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import SidebarTemplate from '../templates/SidebarTemplate';
-import TransferList from '../components/AddPlan/TransferList';
-import Stepper from '../components/AddPlan/Stepper';
-import SeriesTable from '../components/AddPlan/SeriesTable';
-import InfoTable from '../components/AddPlan/InfoTable';
+import TransferList from '../AddPlan/TransferList';
+import Stepper from '../AddPlan/Stepper';
+import SeriesTable from '../AddPlan/SeriesTable';
+import InfoTable from '../AddPlan/InfoTable';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Box } from '@material-ui/core';
 import { withSnackbar } from 'notistack';
@@ -45,7 +44,7 @@ const AddPlan = (props: any) => {
   };
 
   return (
-    <SidebarTemplate>
+    <>
       <Stepper
         data={data}
         setData={setData}
@@ -78,7 +77,7 @@ const AddPlan = (props: any) => {
       )}
       {activeStep === 1 && <SeriesTable data={data} setData={setData} />}
       {activeStep === 2 && <InfoTable data={data} setData={setData} />}
-    </SidebarTemplate>
+    </>
   );
 };
 
