@@ -59,15 +59,27 @@ interface ExercisesCalendarProps {
   selectedDays: any[];
   setSelectedDays: (value: string) => void;
   calendarTrainingPlans: any;
+  getTrainingPlan: (value: any) => void;
 }
 
-const ExercisesCalendar = ({ selectedDays, calendarTrainingPlans }: ExercisesCalendarProps) => {
+const ExercisesCalendar = ({
+  selectedDays,
+  calendarTrainingPlans,
+  getTrainingPlan,
+}: ExercisesCalendarProps) => {
   const classes = useStyles();
   const { dates, calendarDates } = calendarTrainingPlans;
 
   const fixedCalendarDates = calendarDates.map((item: any) => new Date(item));
   const modifiers = {
     active: fixedCalendarDates,
+  };
+
+  const isActive = (value: any) => {
+    const isTrue = calendarTrainingPlans.calendarDates
+      .map((item: any) => new Date(item).getDate())
+      .includes(value.getDate());
+    isTrue && getTrainingPlan(value);
   };
 
   function renderDay(day: any, item: any) {
@@ -99,7 +111,7 @@ const ExercisesCalendar = ({ selectedDays, calendarTrainingPlans }: ExercisesCal
         weekdaysShort={WEEKDAYS_SHORT['pl']}
         firstDayOfWeek={FIRST_DAY_OF_WEEK['pl']}
         labels={LABELS['pl']}
-        onDayClick={(e: any) => console.log(e)}
+        onDayClick={(e: any) => isActive(e)}
         showOutsideDays={true}
       />
       <Helmet>

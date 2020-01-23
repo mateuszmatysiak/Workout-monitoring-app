@@ -60,6 +60,7 @@ interface DialogProps {
   deleteDialog?: boolean;
   onlyOneButton?: boolean;
   bigDialog?: boolean;
+  disabled?: boolean;
 }
 
 const DialogComponent = ({
@@ -72,6 +73,7 @@ const DialogComponent = ({
   deleteDialog,
   onlyOneButton,
   bigDialog,
+  disabled,
 }: DialogProps) => {
   const classes = useStyles();
   const [openDialog, setOpenDialog] = useState(false);
@@ -95,7 +97,11 @@ const DialogComponent = ({
     <>
       <Box display="flex" alignItems="center">
         <Tooltip title={tooltipTitle}>
-          <IconButton onClick={handleClickOpen}>{Icon}</IconButton>
+          <span>
+            <IconButton disabled={disabled} onClick={handleClickOpen}>
+              {Icon}
+            </IconButton>
+          </span>
         </Tooltip>
       </Box>
       <Dialog

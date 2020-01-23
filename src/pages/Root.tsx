@@ -20,7 +20,7 @@ const Root = () => {
               <Route path="/register" component={Signs} />
               <Route path="/calendar" component={Calendar} />
               <Route path="/plan-managment" component={PlanManagment} />
-              <Route path="/add-exercise" component={AddExercise} />
+              <Route path="/exercise-managment" component={AddExercise} />
               <Route path="/training-plans" component={TrainingPlans} />
             </>
           </Switch>

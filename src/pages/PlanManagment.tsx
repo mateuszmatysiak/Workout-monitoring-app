@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
   paper: {
+    display: 'flex',
     backgroundColor: theme.palette.secondary.light,
     color: theme.palette.grey[300],
     margin: '16px',

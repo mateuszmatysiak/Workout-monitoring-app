@@ -1,8 +1,9 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import HeaderHelpDialog from './HeaderHelpDialog';
-import { Typography } from '@material-ui/core';
-import { useLocation } from 'react-router-dom';
+import { Typography, ListItem, ListItemIcon, Box } from '@material-ui/core';
+import { useLocation, NavLink } from 'react-router-dom';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const useStyles = makeStyles(theme => ({
   header: {
@@ -19,6 +20,31 @@ const useStyles = makeStyles(theme => ({
     padding: '0 16px',
     textTransform: 'uppercase',
     fontWeight: 700,
+
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '8px',
+    },
+  },
+  navItemWrapper: {
+    width: 'unset',
+    borderRadius: '5px',
+    '&:hover': {
+      backgroundColor: 'rgba(0,0,0, .1)',
+    },
+  },
+  navItem: {
+    marginLeft: '16px',
+    fontSize: '14px',
+    whiteSpace: 'nowrap',
+    fontWeight: theme.typography.fontWeightMedium,
+    color: theme.palette.grey['300'],
+  },
+  navIconWrapper: {
+    minWidth: 0,
+  },
+  exitIcon: {
+    color: theme.palette.grey['300'],
+    fontSize: '24px',
   },
 }));
 
@@ -33,8 +59,8 @@ const Header = () => {
         return 'Kalendarz';
       case '/training-plans':
         return 'Wybierz plan z przygotowanych przez nas planów treningowych';
-      case '/add-exercise':
-        return 'Dodaj swoje ćwiczenie';
+      case '/exercise-managment':
+        return 'Zarządzaj swoimi ćwiczeniami';
       default:
         return 'Aplikacja stworzona przez Marcina Musiała i Mateusza Matysiaka';
     }
@@ -42,7 +68,15 @@ const Header = () => {
   return (
     <header className={classes.header}>
       <Typography className={classes.title}>{getTitle()}</Typography>
-      <HeaderHelpDialog />
+      <Box display="flex" marginRight="8px">
+        <HeaderHelpDialog />
+        <ListItem component={NavLink} to="/login" className={classes.navItemWrapper}>
+          <ListItemIcon className={classes.navIconWrapper}>
+            <ExitToAppIcon className={classes.exitIcon} />
+          </ListItemIcon>
+          <Typography className={classes.navItem}>Wyloguj</Typography>
+        </ListItem>
+      </Box>
     </header>
   );
 };

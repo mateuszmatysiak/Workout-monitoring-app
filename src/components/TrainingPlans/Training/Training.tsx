@@ -12,7 +12,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import DayPicker from '../../DayPicker';
 import TrainingPlanTable from '../../TrainingPlanTable';
-import { withSnackbar } from 'notistack';
+import { withSnackbar, WithSnackbarProps } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -33,18 +33,26 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-// interface TrainingProps {
-//   id: number;
-//   img: any;
-//   title: string;
-//   description: string;
-//   training: any;
-//   data: any;
-//   setData: (value: any) => void;
-// }
+interface TrainingProps extends WithSnackbarProps {
+  id: number;
+  img: any;
+  title: string;
+  description: string;
+  training: any;
+  data: any;
+  setData: (value: any) => void;
+  enqueueSnackbar: any;
+}
 
-const Training = (props: any) => {
-  const { id, img, title, description, training, setData, enqueueSnackbar } = props;
+const Training = ({
+  id,
+  img,
+  title,
+  description,
+  training,
+  setData,
+  enqueueSnackbar,
+}: TrainingProps) => {
   const classes = useStyles({});
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));

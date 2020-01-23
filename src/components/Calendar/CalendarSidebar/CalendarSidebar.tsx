@@ -7,7 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import DayPicker from '../../DayPicker';
 import TrainingPlanTable from '../../TrainingPlanTable';
-import { withSnackbar } from 'notistack';
+import { withSnackbar, WithSnackbarProps } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   list: {
@@ -52,24 +52,25 @@ const useStyles = makeStyles(theme => ({
 
 type DrawerSide = 'right';
 
-// interface CalendarSidebarProps {
-//   data: any;
-//   setData: (value: any) => void;
-//   selectedDays: string[];
-//   setSelectedDays: (value: any) => void;
-//   trainingPlanData: any[];
-// }
+interface CalendarSidebarProps extends WithSnackbarProps {
+  data: any;
+  setData: (value: any) => void;
+  selectedDays: string[];
+  setSelectedDays: (value: any) => void;
+  trainingPlanData: any[];
+  setCalendarTrainingPlans: (value: any) => void;
+  enqueueSnackbar: any;
+}
 
-const CalendarSidebar = (props: any) => {
-  const {
-    data,
-    setData,
-    selectedDays,
-    setSelectedDays,
-    trainingPlanData,
-    setCalendarTrainingPlans,
-    enqueueSnackbar,
-  } = props;
+const CalendarSidebar = ({
+  data,
+  setData,
+  selectedDays,
+  setSelectedDays,
+  trainingPlanData,
+  setCalendarTrainingPlans,
+  enqueueSnackbar,
+}: CalendarSidebarProps) => {
   const classes = useStyles();
   const [openSidebar, setOpenSidebar] = useState({ right: false });
   const { trainingPlan }: any = data;

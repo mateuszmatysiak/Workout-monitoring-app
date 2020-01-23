@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import { Typography, IconButton, Box, Tooltip } from '@material-ui/core';
 import TrainingPlanTable from '../../TrainingPlanTable';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import Dialog from '../../Dialog';
 import DeleteIcon from '@material-ui/icons/Delete';
+import ClearIcon from '@material-ui/icons/Clear';
+import clsx from 'clsx';
+import { withSnackbar, WithSnackbarProps } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
@@ -33,6 +36,9 @@ const useStyles = makeStyles(theme => ({
   },
   icon: {
     fill: theme.palette.grey[300],
+  },
+  disabledIcon: {
+    fill: theme.palette.secondary.main,
   },
   item: {
     padding: '8px 0',
@@ -63,158 +69,58 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const CalendarDetails = () => {
+interface CalendarDetailsProps extends WithSnackbarProps {
+  fetchTraining: any;
+  currentTraining: any;
+  setCurrentTraining: (value: any) => void;
+  setCalendarTrainingPlans: (value: any) => void;
+  setFetchTraining: (value: any) => void;
+  enqueueSnackbar: any;
+}
+
+const CalendarDetails = ({
+  fetchTraining,
+  currentTraining,
+  setCurrentTraining,
+  setCalendarTrainingPlans,
+  setFetchTraining,
+  enqueueSnackbar,
+}: CalendarDetailsProps) => {
   const classes = useStyles();
+  const [currentTrainingId] = (currentTraining || []).map(({ id }: any) => id);
 
-  const [fetchTraining, setFetchTraining] = useState([
-    {
-      name: 'Na jeszcze coś tam',
-      training: [
-        {
-          id: 111,
-          name: 'Tabaka',
-          series: [
-            {
-              id: 0,
-              repeat: 1,
-              time: 5,
-            },
-            {
-              id: 1,
-              repeat: 1,
-              time: 5,
-            },
-          ],
-        },
-        {
-          id: 1111,
-          name: 'Rzut ręcznikiem',
-          series: [
-            {
-              id: 0,
-              repeat: 3,
-              kg: 20,
-            },
-            {
-              id: 1,
-              repeat: 3,
-              kg: 20,
-            },
-          ],
-        },
-        {
-          id: 11111,
-          name: 'Rzut ręcznikiem',
-          series: [
-            {
-              id: 0,
-              repeat: 3,
-              kg: 20,
-            },
-            {
-              id: 1,
-              repeat: 3,
-              kg: 20,
-            },
-          ],
-        },
-        {
-          id: 11111,
-          name: 'Rzut ręcznikiem',
-          series: [
-            {
-              id: 0,
-              repeat: 3,
-              kg: 20,
-            },
-            {
-              id: 1,
-              repeat: 3,
-              kg: 20,
-            },
-          ],
-        },
-        {
-          id: 11111,
-          name: 'Rzut ręcznikiem',
-          series: [
-            {
-              id: 0,
-              repeat: 3,
-              kg: 20,
-            },
-            {
-              id: 1,
-              repeat: 3,
-              kg: 20,
-            },
-          ],
-        },
-      ],
-      dates: [
-        '2019-01-01',
-        '2019-01-02',
-        '2019-01-03',
-        '2019-01-01',
-        '2019-01-02',
-        '2019-01-03',
-        '2019-01-01',
-        '2019-01-02',
-        '2019-01-03',
-        ,
-        '2019-01-01',
-        '2019-01-02',
-        '2019-01-03',
-        ,
-        '2019-01-01',
-        '2019-01-02',
-        '2019-01-03',
-      ],
-    },
-    {
-      name: 'test',
-      training: [
-        {
-          id: 222,
-          name: 'Cwiczenie2',
-          series: [
-            {
-              id: 0,
-              repeat: 1,
-              time: 5,
-            },
-            {
-              id: 1,
-              repeat: 1,
-              time: 5,
-            },
-          ],
-        },
-        {
-          id: 2222,
-          name: 'Cwiczenie222',
-          series: [
-            {
-              id: 0,
-              repeat: 3,
-              kg: 20,
-            },
-            {
-              id: 1,
-              repeat: 3,
-              kg: 20,
-            },
-          ],
-        },
-      ],
-      dates: ['2019-07-04', '2019-07-22', '2019-07-06'],
-    },
-  ]);
-  const [currentTraining, setCurrentTraining] = useState([]) as any;
+  async function handleDeleteTraining(value: any) {
+    await fetch('http://localhost:3100/userworkout', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id: value }),
+    })
+      .then(() => {
+        setCurrentTraining([]);
+        setFetchTraining(fetchTraining.filter((item: any) => item.id !== value));
+      })
+      .then(() =>
+        enqueueSnackbar('Usunięto plan', {
+          variant: 'success',
+          anchorOrigin: {
+            vertical: 'bottom',
+            horizontal: 'right',
+          },
+        }),
+      );
+    await fetch('http://localhost:3100/userworkout')
+      .then((res: any) => res.json())
+      .then(({ dates, calendarDates }: any) =>
+        setCalendarTrainingPlans({ dates: dates, calendarDates: calendarDates }),
+      );
+  }
 
-  const [selectTraining] = (currentTraining || []).map((item: any) => item.name);
-
-  const handleDeleteTraining = () => console.log('Usunięto');
+  const clearPickedTraining = () => {
+    setFetchTraining([]);
+    setCurrentTraining([]);
+  };
 
   return (
     <div className={classes.wrapper}>
@@ -223,15 +129,31 @@ const CalendarDetails = () => {
           <Typography className={classes.title} variant="h5">
             Szczegóły treningu
           </Typography>
-          <Dialog
-            children="Czy na pewno chcesz usunąć plan treningowy z kalendarza? Czynność ta jest nieodwracalna!"
-            tooltipTitle="Usuń plan z kalendarza"
-            dialogTitle="Usuń plan treningowy z kalendarza"
-            buttonName="Usuń"
-            deleteDialog
-            dialogFunc={handleDeleteTraining}
-            Icon={<DeleteIcon className={classes.icon} />}
-          />
+          <Box display="flex">
+            <Tooltip title="Wyczyść pobraną liste treningów">
+              <span>
+                <IconButton disabled={!fetchTraining.length} onClick={() => clearPickedTraining()}>
+                  <ClearIcon
+                    className={clsx(classes.icon, !fetchTraining.length && classes.disabledIcon)}
+                  />
+                </IconButton>
+              </span>
+            </Tooltip>
+            <Dialog
+              children="Czy na pewno chcesz usunąć plan treningowy z kalendarza? Czynność ta jest nieodwracalna!"
+              tooltipTitle="Usuń plan z kalendarza"
+              dialogTitle="Usuń plan treningowy z kalendarza"
+              buttonName="Usuń"
+              deleteDialog
+              dialogFunc={() => handleDeleteTraining(currentTrainingId)}
+              Icon={
+                <DeleteIcon
+                  className={clsx(classes.icon, !currentTraining.length && classes.disabledIcon)}
+                />
+              }
+              disabled={!currentTraining.length}
+            />
+          </Box>
         </header>
         <div className={classes.textFieldWrapper}>
           <TextField
@@ -245,9 +167,9 @@ const CalendarDetails = () => {
                 : null
             }
             fullWidth
-            value={selectTraining || ''}
+            value={currentTrainingId || ''}
             onChange={(e: any) =>
-              setCurrentTraining(fetchTraining.filter((item: any) => item.name === e.target.value))
+              setCurrentTraining(fetchTraining.filter((item: any) => item.id === e.target.value))
             }
             InputProps={{
               classes: {
@@ -262,28 +184,28 @@ const CalendarDetails = () => {
               className: classes.helperText,
             }}
           >
-            {fetchTraining.map(({ name }: any) => (
-              <MenuItem key={name} value={name}>
-                {name}
+            {fetchTraining.map(({ title, id }: any, index: any) => (
+              <MenuItem key={index} value={id}>
+                {title}
               </MenuItem>
             ))}
           </TextField>
         </div>
         <main>
-          {currentTraining.map(({ name, training, dates }: any, index: any) => {
+          {currentTraining.map(({ title, trainingPlan, dates }: any, index: any) => {
             const allDates = dates.map((item: any) => item);
             return (
               <div key={index}>
                 <div className={classes.item}>
                   <Typography variant="body2">Tytuł</Typography>
-                  <Typography variant="h6">{name}</Typography>
+                  <Typography variant="h6">{title}</Typography>
                 </div>
                 <div className={classes.item}>
                   <Typography variant="body2">Daty</Typography>
                   <div className={classes.dates}>
                     {allDates.map((date: any, index: any) => (
                       <Typography key={index} variant="h6">
-                        {date}
+                        {date.substr(0, 10)}
                       </Typography>
                     ))}
                   </div>
@@ -292,7 +214,7 @@ const CalendarDetails = () => {
                   <Typography className={classes.subtitle} variant="body2">
                     Plan treningowy
                   </Typography>
-                  <TrainingPlanTable data={training} />
+                  <TrainingPlanTable data={trainingPlan.training} />
                 </div>
               </div>
             );
@@ -303,4 +225,4 @@ const CalendarDetails = () => {
   );
 };
 
-export default CalendarDetails;
+export default withSnackbar(CalendarDetails);

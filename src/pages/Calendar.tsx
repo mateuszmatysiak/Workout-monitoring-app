@@ -32,6 +32,8 @@ const Calendar = () => {
     calendarDates: [],
   });
   const [trainingPlanData, setTrainingPlanData] = useState([]);
+  const [fetchTraining, setFetchTraining] = useState([]);
+  const [currentTraining, setCurrentTraining] = useState([]) as any;
 
   useEffect(() => {
     setLoading(true);
@@ -53,6 +55,21 @@ const Calendar = () => {
       );
   }, []);
 
+  const getTrainingPlan = (value: any) => {
+    fetch('http://localhost:3100/workoutplan', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ date: value }),
+    })
+      .then((res: any) => res.json())
+      .then((data: any) => {
+        setFetchTraining(data);
+        setCurrentTraining(new Array(data[0]));
+      });
+  };
+
   return (
     <SidebarTemplate>
       {loading ? (
@@ -65,8 +82,15 @@ const Calendar = () => {
             selectedDays={data.dates}
             setSelectedDays={setSelectedDays}
             calendarTrainingPlans={calendarTrainingPlans}
+            getTrainingPlan={getTrainingPlan}
           />
-          <CalendarDetails />
+          <CalendarDetails
+            fetchTraining={fetchTraining}
+            setFetchTraining={setFetchTraining}
+            setCurrentTraining={setCurrentTraining}
+            currentTraining={currentTraining}
+            setCalendarTrainingPlans={setCalendarTrainingPlans}
+          />
           <CalendarSidebar
             data={data}
             setData={setData}

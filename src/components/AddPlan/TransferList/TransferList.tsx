@@ -264,7 +264,6 @@ const TransferList = ({
             {left.length === 0 ? 'Brak ćwiczeń do wybrania' : 'Brak wybranych ćwiczeń'}
           </Typography>
         )}
-        <ListItem />
       </List>
     </Card>
   );

@@ -7,7 +7,7 @@ import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import MenuIcon from '@material-ui/icons/Menu';
 import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import AssignmentIcon from '@material-ui/icons/Assignment';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import clsx from 'clsx';
 
@@ -24,10 +24,14 @@ const useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.standard,
     }),
     zIndex: 3,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       position: 'fixed',
       top: 0,
       left: 0,
+    },
+
+    [theme.breakpoints.down('xs')]: {
+      transform: 'translateX(-55px)',
     },
   },
   navWrapperActive: {
@@ -106,7 +110,7 @@ const SidebarNavigation = () => {
           </ListItem>
           <ListItem component={NavLink} to="/plan-managment" className={classes.navItemWrapper}>
             <ListItemIcon className={classes.navIconWrapper}>
-              <FitnessCenterIcon className={classes.navIcon} />
+              <AssignmentIcon className={classes.navIcon} />
             </ListItemIcon>
             <Typography className={classes.navItem}>Zarządzanie planami</Typography>
           </ListItem>
@@ -116,18 +120,18 @@ const SidebarNavigation = () => {
             </ListItemIcon>
             <Typography className={classes.navItem}>Gotowe plany treningowe</Typography>
           </ListItem>
-          <ListItem component={NavLink} to="/add-exercise" className={classes.navItemWrapper}>
+          <ListItem component={NavLink} to="/exercise-managment" className={classes.navItemWrapper}>
             <ListItemIcon className={classes.navIconWrapper}>
-              <AddCircleIcon className={classes.navIcon} />
+              <FitnessCenterIcon className={classes.navIcon} />
             </ListItemIcon>
-            <Typography className={classes.navItem}>Nowe ćwiczenie</Typography>
+            <Typography className={classes.navItem}>Zarządzanie ćwiczeniami</Typography>
           </ListItem>
-          <ListItem component={NavLink} to="/login" className={classes.navItemWrapper}>
+          {/* <ListItem component={NavLink} to="/login" className={classes.navItemWrapper}>
             <ListItemIcon className={classes.navIconWrapper}>
               <ExitToAppIcon className={classes.exitIcon} />
             </ListItemIcon>
             <Typography className={classes.navItem}>Wyloguj</Typography>
-          </ListItem>
+          </ListItem> */}
         </List>
       </nav>
     </>

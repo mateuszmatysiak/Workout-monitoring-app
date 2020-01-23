@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TextField from '../TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
@@ -10,6 +10,7 @@ import Dialog from '../Dialog';
 import DeleteIcon from '@material-ui/icons/Delete';
 import TrainingPlanTable from '../TrainingPlanTable';
 import EditPlan from '../EditPlan';
+import { withSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   textFieldWrapper: {
@@ -18,6 +19,10 @@ const useStyles = makeStyles(theme => ({
   textField: {
     backgroundColor: theme.palette.secondary.light,
     borderRadius: '5px',
+
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
+    },
   },
   searchIcon: {
     color: theme.palette.grey[300],
@@ -54,271 +59,6 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const dummyData = [
-  {
-    name: 'Trening siłowy',
-    training: [
-      {
-        id: 222,
-        name: 'Cwiczenie2',
-        series: [
-          {
-            id: 0,
-            repeat: 1,
-            kg: 25,
-            time: 5,
-          },
-          {
-            id: 1,
-            repeat: 1,
-            kg: 20,
-            time: 5,
-          },
-          {
-            id: 2,
-            repeat: 1,
-            kg: 50,
-            time: 5,
-          },
-        ],
-      },
-      {
-        id: 2222,
-        name: 'Cwiczenie222',
-        series: [
-          {
-            id: 0,
-            repeat: 3,
-            time: 2,
-            kg: 20,
-          },
-          {
-            id: 1,
-            repeat: 3,
-            time: 4,
-            kg: 20,
-          },
-        ],
-      },
-      {
-        id: 22222,
-        name: 'Cwiczenie222',
-        series: [
-          {
-            id: 0,
-            repeat: 3,
-            time: 2,
-            kg: 20,
-          },
-          {
-            id: 1,
-            repeat: 3,
-            time: 4,
-            kg: 20,
-          },
-        ],
-      },
-      {
-        id: 222222,
-        name: 'Cwiczenie222',
-        series: [
-          {
-            id: 0,
-            repeat: 3,
-            time: 2,
-            kg: 20,
-          },
-          {
-            id: 1,
-            repeat: 3,
-            time: 4,
-            kg: 20,
-          },
-        ],
-      },
-      {
-        id: 2222222,
-        name: 'Cwiczenie222',
-        series: [
-          {
-            id: 0,
-            repeat: 3,
-            time: 2,
-            kg: 20,
-          },
-          {
-            id: 1,
-            repeat: 3,
-            time: 4,
-            kg: 20,
-          },
-        ],
-      },
-      {
-        id: 22222222,
-        name: 'Cwiczenie222',
-        series: [
-          {
-            id: 0,
-            repeat: 3,
-            time: 2,
-            kg: 20,
-          },
-          {
-            id: 1,
-            repeat: 3,
-            time: 4,
-            kg: 20,
-          },
-        ],
-      },
-      {
-        id: 222222222,
-        name: 'Cwiczenie222',
-        series: [
-          {
-            id: 0,
-            repeat: 3,
-            time: 2,
-            kg: 20,
-          },
-          {
-            id: 1,
-            repeat: 3,
-            time: 4,
-            kg: 20,
-          },
-        ],
-      },
-    ],
-  },
-  {
-    name: 'Trening siłowy2',
-    training: [
-      {
-        id: 222,
-        name: 'Cwiczenie2',
-        series: [
-          {
-            id: 0,
-            repeat: 1,
-            kg: 25,
-            time: 5,
-          },
-        ],
-      },
-      {
-        id: 2222,
-        name: 'Cwiczenie222',
-        series: [
-          {
-            id: 0,
-            repeat: 3,
-            time: 2,
-            kg: 20,
-          },
-          {
-            id: 1,
-            repeat: 3,
-            time: 4,
-            kg: 20,
-          },
-        ],
-      },
-      {
-        id: 22222,
-        name: 'Cwiczenie222',
-        series: [
-          {
-            id: 0,
-            repeat: 3,
-            time: 2,
-            kg: 20,
-          },
-          {
-            id: 1,
-            repeat: 3,
-            time: 4,
-            kg: 20,
-          },
-        ],
-      },
-      {
-        id: 222222,
-        name: 'Cwiczenie222',
-        series: [
-          {
-            id: 0,
-            repeat: 3,
-            time: 2,
-            kg: 20,
-          },
-          {
-            id: 1,
-            repeat: 3,
-            time: 4,
-            kg: 20,
-          },
-        ],
-      },
-      {
-        id: 2222222,
-        name: 'Cwiczenie222',
-        series: [
-          {
-            id: 0,
-            repeat: 3,
-            time: 2,
-            kg: 20,
-          },
-          {
-            id: 1,
-            repeat: 3,
-            time: 4,
-            kg: 20,
-          },
-        ],
-      },
-      {
-        id: 22222222,
-        name: 'Cwiczenie222',
-        series: [
-          {
-            id: 0,
-            repeat: 3,
-            time: 2,
-            kg: 20,
-          },
-          {
-            id: 1,
-            repeat: 3,
-            time: 4,
-            kg: 20,
-          },
-        ],
-      },
-      {
-        id: 222222222,
-        name: 'Cwiczenie222',
-        series: [
-          {
-            id: 0,
-            repeat: 3,
-            time: 2,
-            kg: 20,
-          },
-          {
-            id: 1,
-            repeat: 3,
-            time: 4,
-            kg: 20,
-          },
-        ],
-      },
-    ],
-  },
-];
-
 const shortcut = (name = '') => {
   return name
     .split(' ')
@@ -328,18 +68,83 @@ const shortcut = (name = '') => {
     .toUpperCase();
 };
 
-const MyPlans = () => {
+const MyPlans = (props: any) => {
+  const { enqueueSnackbar } = props;
   const classes = useStyles();
   const [data, setData] = useState([]);
-  const handleDeletePlan = () => console.log('Usunięto');
+  const [trainingPlanData, setTrainingPlanData] = useState([]);
+  const [filteredTrainingPlanData, setFilteredTrainingPlanData] = useState([]);
+
+  const getPlans = () => {
+    fetch('http://localhost:3100/workoutplan', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name: '' }),
+    })
+      .then((res: any) => res.json())
+      .then((data: any) => {
+        setTrainingPlanData(data);
+        setFilteredTrainingPlanData(data);
+      });
+  };
+
+  useEffect(() => {
+    getPlans();
+  }, []);
+
+  async function handleDeletePlan(value: any) {
+    await fetch('http://localhost:3100/workoutplan', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id: value }),
+    }).then(() =>
+      enqueueSnackbar('Usunięto plan', {
+        variant: 'success',
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'right',
+        },
+      }),
+    );
+
+    await getPlans();
+  }
   const handleChangeTraining = (value: any) => setData(value);
-  const handleEditPlan = () => console.log(data);
+  async function handleEditPlan() {
+    await fetch('http://localhost:3100/workoutplan', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data[0]),
+    }).then(() =>
+      enqueueSnackbar('Edytowano plan', {
+        variant: 'success',
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'right',
+        },
+      }),
+    );
+    await getPlans();
+  }
+
+  const handleSetFiltered = (value: any, data: any) => {
+    setFilteredTrainingPlanData(
+      data.filter(({ name }: any) => name.toLowerCase().includes(value.toLowerCase())),
+    );
+  };
+
   return (
     <>
       <div className={classes.textFieldWrapper}>
         <TextField
           className={classes.textField}
-          onChange={(e: any) => console.log(e)}
+          onChange={(e: any) => handleSetFiltered(e.target.value, trainingPlanData)}
           placeholder="Wyszukaj"
           Icon={
             <InputAdornment position="start">
@@ -352,7 +157,7 @@ const MyPlans = () => {
           }}
         />
       </div>
-      {dummyData.map((item: any) => {
+      {filteredTrainingPlanData.map((item: any, index: any) => {
         const numberOfSeries = item.training
           .map((item: any) => item.series.length)
           .reduce((a: number, b: number) => a + b, 0);
@@ -364,8 +169,15 @@ const MyPlans = () => {
             )
             .reduce((a: number, b: number) => a + b, 0);
 
+        const items = [
+          { title: 'Ilość serii', value: numberOfSeries },
+          { title: 'Ilość kilogramów', value: numberOfItems('kg') },
+          { title: 'Ilość powtórzeń', value: numberOfItems('repeat') },
+          { title: 'Ilość minut', value: numberOfItems('time') },
+        ];
+
         return (
-          <Paper key={item.name} className={classes.paper}>
+          <Paper key={index} className={classes.paper}>
             <Box display="flex" alignItems="center" width="300px">
               <Avatar className={classes.avatar}>{shortcut(item.name)}</Avatar>
               <div className={classes.itemWrapper}>
@@ -373,29 +185,19 @@ const MyPlans = () => {
                 <Typography variant="h6">{item.name}</Typography>
               </div>
             </Box>
-            <div className={classes.itemWrapper}>
-              <Typography variant="body2">Ilość serii</Typography>
-              <Typography variant="h6">{numberOfSeries}</Typography>
-            </div>
-            <div className={classes.itemWrapper}>
-              <Typography variant="body2">Ilość kilogramów</Typography>
-              <Typography variant="h6">{numberOfItems('kg')}</Typography>
-            </div>
-            <div className={classes.itemWrapper}>
-              <Typography variant="body2">Ilość powtórzeń</Typography>
-              <Typography variant="h6">{numberOfItems('repeat')}</Typography>
-            </div>
-            <div className={classes.itemWrapper}>
-              <Typography variant="body2">Ilość minut</Typography>
-              <Typography variant="h6">{numberOfItems('time')}</Typography>
-            </div>
+            {items.map(({ title, value }: any, index: any) => (
+              <div key={index} className={classes.itemWrapper}>
+                <Typography variant="body2">{title}</Typography>
+                <Typography variant="h6">{value}</Typography>
+              </div>
+            ))}
             <Box display="flex">
               <Dialog
                 children="Czy na pewno chcesz usunąć plan treningowy z listy swoich planów? Czynność ta jest nieodwracalna!"
                 tooltipTitle="Usuń"
                 dialogTitle={`Usuń plan treningowy: ${item.name}`}
                 buttonName="Usuń"
-                dialogFunc={handleDeletePlan}
+                dialogFunc={() => handleDeletePlan(item.id)}
                 Icon={<DeleteIcon className={classes.icon} />}
                 deleteDialog
               />
@@ -425,4 +227,4 @@ const MyPlans = () => {
   );
 };
 
-export default MyPlans;
+export default withSnackbar(MyPlans);
