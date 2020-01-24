@@ -45,6 +45,10 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     borderLeft: `1px solid ${theme.palette.grey[700]}`,
     backgroundColor: theme.palette.secondary.main,
+
+    [theme.breakpoints.down('sm')]: {
+      borderLeft: `unset`,
+    },
   },
   textFieldBorder: {
     borderWidth: '1px',
@@ -66,7 +70,8 @@ const useStyles = makeStyles(theme => ({
     overflow: 'auto',
 
     [theme.breakpoints.down('sm')]: {
-      height: '300px',
+      borderLeft: 'none',
+      borderBottom: 'none',
     },
   },
   color: {

@@ -32,7 +32,10 @@ const useStyles = makeStyles(theme => ({
     padding: '16px',
   },
   subtitle: {
-    padding: '16px 0',
+    paddingBottom: '16px',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
   },
   icon: {
     fill: theme.palette.grey[300],
@@ -44,6 +47,9 @@ const useStyles = makeStyles(theme => ({
     padding: '8px 0',
     margin: '16px',
     borderBottom: `1px solid ${theme.palette.grey[300]}`,
+    whiteSpace: 'nowrap',
+    overflow: 'auto',
+    textOverflow: 'ellipsis',
   },
   tableWrapper: {
     margin: '16px',
@@ -211,9 +217,12 @@ const CalendarDetails = ({
                   </div>
                 </div>
                 <div className={classes.tableWrapper}>
-                  <Typography className={classes.subtitle} variant="body2">
-                    Plan treningowy
-                  </Typography>
+                  <Box display="flex" flexDirection="column">
+                    <Typography variant="body2">Plan treningowy</Typography>
+                    <Typography className={classes.subtitle} variant="h6">
+                      {trainingPlan.name}
+                    </Typography>
+                  </Box>
                   <TrainingPlanTable data={trainingPlan.training} />
                 </div>
               </div>

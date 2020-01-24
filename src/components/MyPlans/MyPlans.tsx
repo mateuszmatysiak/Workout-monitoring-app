@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import TextField from '../TextField';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { Paper, Typography, Avatar, Box } from '@material-ui/core';
+import { Paper, Typography, Avatar, Box, useMediaQuery } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import Dialog from '../Dialog';
@@ -46,9 +46,41 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.grey[300],
     margin: '16px 16px 0 16px',
     padding: '16px',
+
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+      alignItems: 'center',
+    },
   },
   itemWrapper: {
     marginRight: '24px',
+    overflow: 'hidden',
+    [theme.breakpoints.down('sm')]: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginRight: 0,
+    },
+  },
+  titleWrapper: {
+    display: 'flex',
+    alignItems: 'center',
+    width: '300px',
+
+    [theme.breakpoints.down('sm')]: {
+      justifyContent: 'center',
+      padding: '12px 0',
+    },
+  },
+  exerciseTitle: {
+    [theme.breakpoints.down('sm')]: {
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+      whiteSpace: 'nowrap',
+      maxWidth: '250px',
+      textAlign: 'center',
+    },
   },
   icon: {
     fill: theme.palette.grey[300],
@@ -71,6 +103,8 @@ const shortcut = (name = '') => {
 const MyPlans = (props: any) => {
   const { enqueueSnackbar } = props;
   const classes = useStyles();
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [data, setData] = useState([]);
   const [trainingPlanData, setTrainingPlanData] = useState([]);
   const [filteredTrainingPlanData, setFilteredTrainingPlanData] = useState([]);
@@ -140,7 +174,7 @@ const MyPlans = (props: any) => {
   };
 
   return (
-    <>
+    <Box paddingBottom="24px">
       <div className={classes.textFieldWrapper}>
         <TextField
           className={classes.textField}
@@ -178,13 +212,15 @@ const MyPlans = (props: any) => {
 
         return (
           <Paper key={index} className={classes.paper}>
-            <Box display="flex" alignItems="center" width="300px">
-              <Avatar className={classes.avatar}>{shortcut(item.name)}</Avatar>
+            <div className={classes.titleWrapper}>
+              {!mobile && <Avatar className={classes.avatar}>{shortcut(item.name)}</Avatar>}
               <div className={classes.itemWrapper}>
                 <Typography variant="body2">Nazwa</Typography>
-                <Typography variant="h6">{item.name}</Typography>
+                <Typography className={classes.exerciseTitle} variant="h6">
+                  {item.name}
+                </Typography>
               </div>
-            </Box>
+            </div>
             {items.map(({ title, value }: any, index: any) => (
               <div key={index} className={classes.itemWrapper}>
                 <Typography variant="body2">{title}</Typography>
@@ -223,7 +259,7 @@ const MyPlans = (props: any) => {
           </Paper>
         );
       })}
-    </>
+    </Box>
   );
 };
 

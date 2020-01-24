@@ -46,6 +46,7 @@ const AddNameToPlan = ({ planName, setPlanName }: AddNameToPlanProps) => {
         InputLabelProps={{
           className: classes.textFieldFont,
         }}
+        inputProps={{ maxLength: 20 }}
       />
     </Box>
   );

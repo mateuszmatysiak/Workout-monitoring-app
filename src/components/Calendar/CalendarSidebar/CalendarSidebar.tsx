@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
   list: {
     width: 800,
     height: '100%',
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.secondary.light,
     color: theme.palette.grey[300],
     overflowX: 'hidden',
 
@@ -144,6 +144,7 @@ const CalendarSidebar = ({
               InputLabelProps={{
                 className: classes.textFieldFont,
               }}
+              inputProps={{ maxLength: 25 }}
             />
             <TextField
               variant="outlined"

@@ -21,7 +21,6 @@ const AddPlan = (props: any) => {
     fetch('http://localhost:3100/exercises')
       .then((res: any) => res.json())
       .then((data: any) => setLeft(data))
-      .catch((err: any) => console.log(err))
       .then(() => setLoading(false));
   }, []);
 

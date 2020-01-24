@@ -12,8 +12,12 @@ import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({
   dialog: {
-    width: '70vw',
     maxWidth: 'unset',
+    height: 'unset',
+
+    [theme.breakpoints.up('md')]: {
+      width: '70vw',
+    },
   },
   wrapper: {
     position: 'relative',
@@ -22,6 +26,10 @@ const useStyles = makeStyles(theme => ({
   },
   text: {
     color: theme.palette.grey[300],
+
+    [theme.breakpoints.down('md')]: {
+      height: 'calc(100vh - 130px)',
+    },
   },
   header: {
     position: 'sticky',

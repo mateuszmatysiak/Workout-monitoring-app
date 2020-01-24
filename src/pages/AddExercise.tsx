@@ -12,7 +12,6 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     height: '100%',
     display: 'flex',
-    justifyContent: 'center',
     alignItems: 'center',
 
     [theme.breakpoints.down('sm')]: {
@@ -30,9 +29,13 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '5px',
 
     [theme.breakpoints.down('sm')]: {
-      width: 'unset',
+      width: '100%',
       height: 'unset',
       border: 0,
+      marginTop: '24px',
+    },
+    [theme.breakpoints.down('xs')]: {
+      marginTop: '0',
     },
   },
   textField: {

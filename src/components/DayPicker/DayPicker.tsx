@@ -18,7 +18,6 @@ const useStyles = makeStyles(theme => ({
   wrapper: {
     display: 'flex',
     justifyContent: 'center',
-    minHeight: '350px',
   },
 }));
 

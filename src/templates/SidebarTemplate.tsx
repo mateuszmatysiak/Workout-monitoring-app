@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Sidebar from '../components/Sidebar';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Header from '../components/Header';
+import clsx from 'clsx';
+import { useMediaQuery } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   page: {
@@ -37,6 +39,21 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.secondary.main,
     borderBottom: `1px solid ${theme.palette.grey[700]}`,
   },
+  backdrop: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    background: 'rgba(0,0,0, .5)',
+    opacity: 0,
+    transition: 'opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+    zIndex: -999,
+  },
+  backdropActive: {
+    opacity: 1,
+    zIndex: 2,
+  },
 }));
 
 interface SidebarTemplateProps {
@@ -45,13 +62,24 @@ interface SidebarTemplateProps {
 
 const SidebarTemplate = ({ children }: SidebarTemplateProps) => {
   const classes = useStyles();
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down('lg'));
+  const [activeSidebar, setActiveSidebar] = useState(false);
+  const handleActiveSidebar = () => setActiveSidebar(!activeSidebar);
+
   return (
     <div className={classes.page}>
-      <Sidebar />
+      <Sidebar activeSidebar={activeSidebar} handleActiveSidebar={handleActiveSidebar} />
       <div className={classes.wrapper}>
-        <Header />
+        <Header activeSidebar={activeSidebar} handleActiveSidebar={handleActiveSidebar} />
         <div className={classes.content}>{children}</div>
       </div>
+      {mobile && (
+        <div
+          onClick={() => handleActiveSidebar()}
+          className={clsx(classes.backdrop, activeSidebar && classes.backdropActive)}
+        />
+      )}
     </div>
   );
 };

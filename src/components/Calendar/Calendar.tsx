@@ -123,9 +123,19 @@ const ExercisesCalendar = ({
               margin: 16px;
               padding: 0 24px 24px 0;
             }
+
+            @media (max-width: 600px) {
+                .DayPicker-wrapper {
+                  padding: 0 0 24px 0;
+                  font-size: 13px;
+                }
+              }
+
             .DayPicker-Day {
               outline: none;
               border: 1px solid transparent;
+              overflow: auto;
+              border-radius: 0;
             }
             .DayPicker:not(.DayPicker--interactionDisabled) .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover {
               background-color: #ffffff1a;

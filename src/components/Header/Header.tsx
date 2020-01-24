@@ -1,9 +1,11 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import HeaderHelpDialog from './HeaderHelpDialog';
-import { Typography, ListItem, ListItemIcon, Box } from '@material-ui/core';
+import { Typography, ListItem, ListItemIcon, Box, IconButton, useMediaQuery } from '@material-ui/core';
 import { useLocation, NavLink } from 'react-router-dom';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
+import MenuIcon from '@material-ui/icons/Menu';
 
 const useStyles = makeStyles(theme => ({
   header: {
@@ -22,7 +24,10 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 700,
 
     [theme.breakpoints.down('xs')]: {
-      fontSize: '8px',
+      fontSize: '12px',
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+      whiteSpace: 'nowrap',
     },
   },
   navItemWrapper: {
@@ -46,11 +51,21 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.grey['300'],
     fontSize: '24px',
   },
+  headerIcon: {
+    fill: theme.palette.grey[300],
+  },
 }));
 
-const Header = () => {
+interface HeaderProps {
+  activeSidebar: boolean;
+  handleActiveSidebar: () => void;
+}
+
+const Header = ({ activeSidebar, handleActiveSidebar }: HeaderProps) => {
   const classes = useStyles();
   const pathName = useLocation().pathname;
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down('xs'));
   const getTitle = () => {
     switch (pathName) {
       case '/plan-managment':
@@ -65,8 +80,21 @@ const Header = () => {
         return 'Aplikacja stworzona przez Marcina Musiała i Mateusza Matysiaka';
     }
   };
+
+  const NavIconButton = () =>
+    activeSidebar ? (
+      <NavigateBeforeIcon className={classes.headerIcon} />
+    ) : (
+      <MenuIcon className={classes.headerIcon} />
+    );
+
   return (
     <header className={classes.header}>
+      {mobile && (
+        <IconButton onClick={handleActiveSidebar}>
+          <NavIconButton />
+        </IconButton>
+      )}
       <Typography className={classes.title}>{getTitle()}</Typography>
       <Box display="flex" marginRight="8px">
         <HeaderHelpDialog />

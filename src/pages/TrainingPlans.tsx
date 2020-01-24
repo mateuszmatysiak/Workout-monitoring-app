@@ -27,6 +27,7 @@ const useStyles = makeStyles(theme => ({
   chip: {
     margin: '4px 8px',
     border: `3px solid transparent`,
+    width: '115px',
   },
   chipActive: {
     border: `3px solid #4466df`,

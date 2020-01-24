@@ -14,6 +14,7 @@ const useStyles = makeStyles(theme => ({
     background: '#424242',
     height: '100%',
     border: `1px solid ${theme.palette.grey[700]}`,
+    boxShadow: 'unset',
   },
   tableHeader: {
     backgroundColor: theme.palette.secondary.light,

@@ -17,6 +17,10 @@ const useStyles = makeStyles(theme => ({
     '&:nth-child(2)': {
       marginLeft: '16px',
     },
+
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '12px',
+    },
   },
 }));
 
