@@ -12,7 +12,6 @@ const useStyles = makeStyles(theme => ({
   tableContainer: {
     borderBottom: 'unset',
     background: '#424242',
-    height: '100%',
     border: `1px solid ${theme.palette.grey[700]}`,
     boxShadow: 'unset',
   },

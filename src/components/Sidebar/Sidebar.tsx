@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { NavLink } from 'react-router-dom';
 import { Typography, List, ListItem, ListItemIcon, IconButton, Tooltip } from '@material-ui/core';

@@ -71,7 +71,7 @@ const Training = ({
       },
       body: JSON.stringify(data),
     }).then(() =>
-      enqueueSnackbar('Dodano wybrany plan treningowy do kalendarza', {
+      enqueueSnackbar('Dodano plan treningowy do kalendarza', {
         variant: 'success',
         anchorOrigin: {
           vertical: 'bottom',
