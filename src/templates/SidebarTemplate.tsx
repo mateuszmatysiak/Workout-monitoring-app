@@ -47,12 +47,13 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
     background: 'rgba(0,0,0, .5)',
     opacity: 0,
-    transition: 'opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+    transition: 'z-index 0.3s step-end, opacity 0.3s linear',
     zIndex: -999,
   },
   backdropActive: {
     opacity: 1,
     zIndex: 2,
+    transition: 'z-index 0.3s step-start, opacity 0.3s linear',
   },
 }));
 

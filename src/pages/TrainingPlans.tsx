@@ -20,7 +20,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 const useStyles = makeStyles(theme => ({
   root: {
     padding: '8px 0',
-    margin: '16px',
+    margin: '16px 16px 0 16px',
     backgroundColor: theme.palette.secondary.light,
     color: theme.palette.grey[300],
     boxShadow: 'unset',
