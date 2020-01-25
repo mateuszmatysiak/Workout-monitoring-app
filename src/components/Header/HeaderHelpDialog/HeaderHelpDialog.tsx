@@ -24,7 +24,11 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
   },
   content: {
-    minHeight: 'calc(100vh - 120px)',
+    minHeight: 'calc(100vh - 180px)',
+
+    [theme.breakpoints.down('xs')]: {
+      minHeight: 'calc(100vh - 120px)',
+    },
   },
   expansionPanelHeader: {
     background: theme.palette.secondary.light,
@@ -78,6 +82,7 @@ const HeaderHelpDialog = () => {
         fullScreen={fullScreen}
         open={openDialog}
         onClose={handleClickClose}
+        PaperProps={{ style: { minWidth: fullScreen ? 'unset' : '80vh' } }}
       >
         <div className={classes.wrapper}>
           <DialogTitle className={classes.text}>FAQ</DialogTitle>

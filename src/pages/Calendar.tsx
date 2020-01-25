@@ -95,7 +95,6 @@ const Calendar = () => {
             data={data}
             setData={setData}
             trainingPlanData={trainingPlanData}
-            selectedDays={selectedDays}
             setSelectedDays={setSelectedDays}
             setCalendarTrainingPlans={setCalendarTrainingPlans}
           />

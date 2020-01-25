@@ -50,9 +50,9 @@ const TrainingPlanTable = ({ data }: TrainingPlanTableProps) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {series.map(({ id, kg, time, repeat }: any) => {
+              {series.map(({ id, kg, time, repeat }: any, index: any) => {
                 return (
-                  <TableRow key={id}>
+                  <TableRow key={index}>
                     <TableCell className={classes.tableCell}>Seria {id + 1}</TableCell>
                     <TableCell className={classes.tableCell} align="right">
                       {kg}

@@ -9,6 +9,7 @@ import {
   FIRST_DAY_OF_WEEK,
   LABELS,
 } from '../../utils/localization';
+import Helmet from 'react-helmet';
 
 const useStyles = makeStyles(theme => ({
   daypicker: {
@@ -73,6 +74,42 @@ const DayPickerComponent = ({ selectedDays, setSelectedDays }: DayPickerProps) =
         modifiersStyles={modifiersStyles}
         onDayClick={handleDayClick}
       />
+      <Helmet>
+        <style>{`
+            .DayPicker-wrapper {
+              outline: none;
+              background-color: #212121;
+              border-radius: 5px;
+              margin: 16px;
+              padding: 0 24px 24px 0;
+            }
+
+            @media (max-width: 600px) {
+                .DayPicker-wrapper {
+                  padding: 0 0 24px 0;
+                  font-size: 13px;
+                }
+              }
+
+            .DayPicker-Day {
+              outline: none;
+              border: 1px solid transparent;
+              overflow: auto;
+              border-radius: 0;
+            }
+            .DayPicker:not(.DayPicker--interactionDisabled) .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover {
+              background-color: #ffffff1a;
+              border-radius: 0;
+              border: 1px solid transparent;
+            }
+            .DayPicker-NavButton--prev {
+              outline: none;
+            }
+            .DayPicker-NavButton--next {
+              outline: none;
+            }
+            `}</style>
+      </Helmet>
     </div>
   );
 };

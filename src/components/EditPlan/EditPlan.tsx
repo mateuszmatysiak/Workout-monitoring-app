@@ -33,7 +33,12 @@ const useStyles = makeStyles(theme => ({
   tableCell: {
     borderColor: theme.palette.grey[700],
     textAlign: 'center',
-    maxWidth: '60px',
+    maxWidth: '80px',
+    minWidth: '80px',
+
+    [theme.breakpoints.down('xs')]: {
+      minWidth: '50px',
+    },
   },
   textField: {
     minWidth: '40px',

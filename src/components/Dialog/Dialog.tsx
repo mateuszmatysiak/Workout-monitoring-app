@@ -27,8 +27,8 @@ const useStyles = makeStyles(theme => ({
   text: {
     color: theme.palette.grey[300],
 
-    [theme.breakpoints.down('md')]: {
-      height: 'calc(100vh - 130px)',
+    [theme.breakpoints.down('sm')]: {
+      height: 'calc(100vh - 135px)',
     },
   },
   header: {
@@ -117,6 +117,7 @@ const DialogComponent = ({
         fullScreen={fullScreen}
         open={openDialog}
         onClose={handleClickClose}
+        style={{ zIndex: 1301 }}
       >
         <div className={classes.wrapper}>
           <DialogTitle className={clsx(classes.header, deleteDialog && classes.error)}>

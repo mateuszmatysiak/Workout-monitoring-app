@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import CalendarSideButton from '../CalendarSideButton';
-import { Typography, Button, Box } from '@material-ui/core';
+import { Typography, Button, Box, Tooltip, IconButton } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import DayPicker from '../../DayPicker';
 import TrainingPlanTable from '../../TrainingPlanTable';
 import { withSnackbar, WithSnackbarProps } from 'notistack';
+import ClearAllIcon from '@material-ui/icons/ClearAll';
 
 const useStyles = makeStyles(theme => ({
   list: {
@@ -27,6 +28,9 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
   },
   title: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     padding: '16px',
   },
   textField: {
@@ -55,7 +59,6 @@ type DrawerSide = 'right';
 interface CalendarSidebarProps extends WithSnackbarProps {
   data: any;
   setData: (value: any) => void;
-  selectedDays: string[];
   setSelectedDays: (value: any) => void;
   trainingPlanData: any[];
   setCalendarTrainingPlans: (value: any) => void;
@@ -65,7 +68,6 @@ interface CalendarSidebarProps extends WithSnackbarProps {
 const CalendarSidebar = ({
   data,
   setData,
-  selectedDays,
   setSelectedDays,
   trainingPlanData,
   setCalendarTrainingPlans,
@@ -73,6 +75,7 @@ const CalendarSidebar = ({
 }: CalendarSidebarProps) => {
   const classes = useStyles();
   const [openSidebar, setOpenSidebar] = useState({ right: false });
+  const [pickedDays, setPickedDays] = useState([]);
   const { trainingPlan }: any = data;
 
   const toggleDrawer = (side: DrawerSide, open: boolean) => (
@@ -96,7 +99,7 @@ const CalendarSidebar = ({
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ ...data, dates: selectedDays }),
+      body: JSON.stringify({ ...data, dates: pickedDays }),
     }).then(() =>
       enqueueSnackbar('Dodano plan treningowy do kalendarza', {
         variant: 'success',
@@ -114,11 +117,12 @@ const CalendarSidebar = ({
     setData({
       title: '',
       trainingPlan: [],
-      dates: selectedDays,
+      dates: [],
     });
     setSelectedDays([]);
+    setPickedDays([]);
   }
-
+  console.log();
   const [tableData] = (trainingPlan || []).map((item: any) => item.training);
   const [selectValue] = (trainingPlan || []).map((item: any) => item.name);
 
@@ -128,11 +132,26 @@ const CalendarSidebar = ({
         <div className={classes.list}>
           <Typography variant="h5" className={classes.title}>
             Dodaj plan treningowy do kalendarza
+            <Tooltip title="Wyczyść wszystko">
+              <IconButton
+                onClick={() => {
+                  setData({
+                    title: '',
+                    trainingPlan: [],
+                    dates: [],
+                  });
+                  setPickedDays([]);
+                }}
+              >
+                <ClearAllIcon color="primary" />
+              </IconButton>
+            </Tooltip>
           </Typography>
           <div className={classes.formWrapper}>
             <TextField
               variant="outlined"
               label="Tytuł"
+              value={data.title}
               className={classes.textField}
               onChange={(e: any) => setData({ ...data, title: e.target.value })}
               InputProps={{
@@ -178,7 +197,7 @@ const CalendarSidebar = ({
                 );
               })}
             </TextField>
-            <DayPicker selectedDays={selectedDays} setSelectedDays={setSelectedDays} />
+            <DayPicker selectedDays={pickedDays} setSelectedDays={setPickedDays} />
             <div className={classes.buttonWrapper}>
               <Button
                 variant="contained"

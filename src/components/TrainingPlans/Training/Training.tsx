@@ -24,11 +24,11 @@ const useStyles = makeStyles(theme => ({
     height: '150px',
   },
   dialogText: {
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.secondary.light,
     color: theme.palette.grey[300],
   },
   dialogContent: {
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.secondary.light,
     padding: '16px 24px',
   },
 }));

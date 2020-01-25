@@ -1,7 +1,7 @@
 import React from 'react';
 import DayPicker from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
   WEEKDAYS_SHORT,
   MONTHS,
@@ -10,6 +10,8 @@ import {
   LABELS,
 } from '../../utils/localization';
 import Helmet from 'react-helmet';
+import { Tooltip, useMediaQuery } from '@material-ui/core';
+import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
 
 const useStyles = makeStyles(theme => ({
   cell: {
@@ -29,9 +31,23 @@ const useStyles = makeStyles(theme => ({
     right: 0,
     fontSize: 20,
   },
-  titleInCell: {
+  titleWrapperCell: {
+    display: 'flex',
+    alignItems: 'center',
     fontSize: '12px',
     textAlign: 'left',
+    background: theme.palette.secondary.dark,
+    marginBottom: '4px',
+    padding: '8px',
+    borderRadius: '5px',
+  },
+  titleInCell: {
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
+  iconInCell: {
+    marginRight: '4px',
   },
   wrapper: {
     display: 'flex',
@@ -69,17 +85,18 @@ const ExercisesCalendar = ({
 }: ExercisesCalendarProps) => {
   const classes = useStyles();
   const { dates, calendarDates } = calendarTrainingPlans;
-
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down('sm'));
   const fixedCalendarDates = calendarDates.map((item: any) => new Date(item));
   const modifiers = {
     active: fixedCalendarDates,
   };
 
   const isActive = (value: any) => {
-    const isTrue = calendarTrainingPlans.calendarDates
+    const isNotEmpty = calendarTrainingPlans.calendarDates
       .map((item: any) => new Date(item).getDate())
       .includes(value.getDate());
-    isTrue && getTrainingPlan(value);
+    isNotEmpty && getTrainingPlan(value);
   };
 
   function renderDay(day: any, item: any) {
@@ -90,9 +107,12 @@ const ExercisesCalendar = ({
         {dates[date] &&
           item.active &&
           dates[date].map((name: any, index: any) => (
-            <div key={index} className={classes.titleInCell}>
-              {name}
-            </div>
+            <Tooltip key={index} title={name}>
+              <div className={classes.titleWrapperCell}>
+                {!mobile && <FitnessCenterIcon className={classes.iconInCell} fontSize="small" />}
+                <div className={classes.titleInCell}>{name}</div>
+              </div>
+            </Tooltip>
           ))}
       </div>
     );
