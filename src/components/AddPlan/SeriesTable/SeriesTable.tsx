@@ -92,7 +92,7 @@ const SeriesTable = ({ data, setData }: ExercisesSeriesTableProps) => {
                 <TableCell align="right" className={classes.tableCell}>
                   <TextField
                     type="number"
-                    value={training[index].series.length}
+                    value={training[index].series.length || 0}
                     id={`${index}`}
                     className={classes.textField}
                     onChange={(e: any) =>

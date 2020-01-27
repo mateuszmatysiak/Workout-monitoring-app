@@ -98,6 +98,27 @@ const InfoTable = ({ data, setData }: ExercisesInfoTableProps) => {
       .slice(0, 3);
   };
 
+  const createTextField = (value: number, id: any, itemId: number, seriesId: number, series: any) => (
+    <TableCell className={classes.tableCell}>
+      <TextField
+        type="number"
+        value={value || 0}
+        id={`${id}`}
+        className={classes.textField}
+        onChange={(e: any) => {
+          handleAddInfoToTable(
+            itemId,
+            seriesId,
+            series,
+            parseInt(e.target.value.replace(/\D/, '')),
+            'kg',
+          );
+        }}
+        onInput={(e: any) => handleOnInput(e.target.value)}
+      />
+    </TableCell>
+  );
+
   return (
     <TableContainer className={classes.container} component={Paper}>
       {training.map((item: any, index: number) => (
@@ -123,60 +144,9 @@ const InfoTable = ({ data, setData }: ExercisesInfoTableProps) => {
                   <TableCell className={classes.titleTable} scope="row">
                     Seria {series.id + 1}
                   </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    <TextField
-                      type="number"
-                      value={series.kg}
-                      id={`${id}`}
-                      className={classes.textField}
-                      onChange={(e: any) => {
-                        handleAddInfoToTable(
-                          item.id,
-                          series.id,
-                          series,
-                          parseInt(e.target.value),
-                          'kg',
-                        );
-                      }}
-                      onInput={(e: any) => handleOnInput(e.target.value)}
-                    />
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    <TextField
-                      type="number"
-                      value={series.time}
-                      id={`${id}`}
-                      className={classes.textField}
-                      onChange={(e: any) =>
-                        handleAddInfoToTable(
-                          item.id,
-                          series.id,
-                          series,
-                          parseInt(e.target.value),
-                          'time',
-                        )
-                      }
-                      onInput={(e: any) => handleOnInput(e.target.value)}
-                    />
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    <TextField
-                      type="number"
-                      value={series.repeat}
-                      id={`${id}`}
-                      className={classes.textField}
-                      onChange={(e: any) =>
-                        handleAddInfoToTable(
-                          item.id,
-                          series.id,
-                          series,
-                          parseInt(e.target.value),
-                          'repeat',
-                        )
-                      }
-                      onInput={(e: any) => handleOnInput(e.target.value)}
-                    />
-                  </TableCell>
+                  {createTextField(series.kg, id, item.id, series.id, series)}
+                  {createTextField(series.time, id, item.id, series.id, series)}
+                  {createTextField(series.repeat, id, item.id, series.id, series)}
                 </TableRow>
               );
             })}

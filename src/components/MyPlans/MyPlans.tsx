@@ -120,11 +120,25 @@ const MyPlans = (props: any) => {
       },
       body: JSON.stringify({ name: '' }),
     })
-      .then((res: any) => res.json())
+      .then((res: any) => {
+        if (!res.ok) {
+          throw res;
+        }
+        return res.json();
+      })
       .then((data: any) => {
         setTrainingPlanData(data);
         setFilteredTrainingPlanData(data);
       })
+      .catch(({ statusText }: any) =>
+        enqueueSnackbar(`${statusText}`, {
+          variant: 'error',
+          anchorOrigin: {
+            vertical: 'bottom',
+            horizontal: 'right',
+          },
+        }),
+      )
       .then(() => setLoading(false));
   };
 
@@ -200,7 +214,7 @@ const MyPlans = (props: any) => {
           <CircularProgress />
         </Box>
       ) : (
-        filteredTrainingPlanData.map((item: any, index: any) => {
+        (filteredTrainingPlanData || []).map((item: any, index: any) => {
           const numberOfSeries = item.training
             .map((item: any) => item.series.length)
             .reduce((a: number, b: number) => a + b, 0);

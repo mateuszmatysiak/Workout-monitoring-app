@@ -101,12 +101,26 @@ const AddExercise = (props: any) => {
 
   useEffect(() => {
     fetch('http://localhost:3100/exercises')
-      .then((res: any) => res.json())
+      .then((res: any) => {
+        if (!res.ok) {
+          throw res;
+        }
+        return res.json();
+      })
       .then((data: any) => {
         setListOfExercises(data);
         setFilteredList(removeDuplicates(data));
-      });
-  }, []);
+      })
+      .catch(({ statusText }: any) =>
+        enqueueSnackbar(`${statusText}`, {
+          variant: 'error',
+          anchorOrigin: {
+            vertical: 'bottom',
+            horizontal: 'right',
+          },
+        }),
+      );
+  }, [enqueueSnackbar]);
 
   async function handleDeleteExercise(value: any) {
     await fetch('http://localhost:3100/exercises', {

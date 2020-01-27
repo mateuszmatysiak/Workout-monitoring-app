@@ -6,6 +6,7 @@ import CalendarDetails from '../components/Calendar/CalendarDetails';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { withSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
@@ -18,7 +19,8 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Calendar = () => {
+const Calendar = (props: any) => {
+  const { enqueueSnackbar } = props;
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
   const [selectedDays, setSelectedDays] = useState([]) as any[];
@@ -44,16 +46,44 @@ const Calendar = () => {
       },
       body: JSON.stringify({ name: '' }),
     })
-      .then((res: any) => res.json())
+      .then((res: any) => {
+        if (!res.ok) {
+          throw res;
+        }
+        return res.json();
+      })
       .then((data: any) => setTrainingPlanData(data))
+      .catch(({ statusText }: any) =>
+        enqueueSnackbar(`${statusText}`, {
+          variant: 'error',
+          anchorOrigin: {
+            vertical: 'bottom',
+            horizontal: 'right',
+          },
+        }),
+      )
       .then(() => setLoading(false));
 
     fetch('http://localhost:3100/userworkout')
-      .then((res: any) => res.json())
+      .then((res: any) => {
+        if (!res.ok) {
+          throw res;
+        }
+        return res.json();
+      })
       .then(({ dates, calendarDates }: any) =>
         setCalendarTrainingPlans({ dates: dates, calendarDates: calendarDates }),
+      )
+      .catch(({ statusText }: any) =>
+        enqueueSnackbar(`${statusText}`, {
+          variant: 'error',
+          anchorOrigin: {
+            vertical: 'bottom',
+            horizontal: 'right',
+          },
+        }),
       );
-  }, []);
+  }, [enqueueSnackbar]);
 
   const getTrainingPlan = (value: any) => {
     fetch('http://localhost:3100/workoutplan', {
@@ -104,4 +134,4 @@ const Calendar = () => {
   );
 };
 
-export default Calendar;
+export default withSnackbar(Calendar);

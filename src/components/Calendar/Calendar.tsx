@@ -87,7 +87,7 @@ const ExercisesCalendar = ({
   const { dates, calendarDates } = calendarTrainingPlans;
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const fixedCalendarDates = calendarDates.map((item: any) => new Date(item));
+  const fixedCalendarDates = (calendarDates || []).map((item: any) => new Date(item));
   const modifiers = {
     active: fixedCalendarDates,
   };

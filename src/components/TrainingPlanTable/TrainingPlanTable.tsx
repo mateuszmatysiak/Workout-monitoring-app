@@ -37,7 +37,9 @@ const TrainingPlanTable = ({ data }: TrainingPlanTableProps) => {
           <Table key={index}>
             <TableHead className={classes.tableHeader}>
               <TableRow>
-                <TableCell className={classes.tableCell}>{name}</TableCell>
+                <TableCell style={{ width: '400px' }} className={classes.tableCell}>
+                  {name}
+                </TableCell>
                 <TableCell className={classes.tableCell} align="right">
                   Ciężar [kg]
                 </TableCell>

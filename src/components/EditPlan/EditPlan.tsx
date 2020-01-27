@@ -134,7 +134,7 @@ const EditPlan = ({ data, onChange }: EditPlanProps) => {
                     <TableCell className={classes.tableCell}>
                       <TextField
                         type="number"
-                        value={series.kg}
+                        value={series.kg || 0}
                         id={`${id}`}
                         className={classes.textField}
                         onChange={(e: any) => {
@@ -152,7 +152,7 @@ const EditPlan = ({ data, onChange }: EditPlanProps) => {
                     <TableCell className={classes.tableCell}>
                       <TextField
                         type="number"
-                        value={series.time}
+                        value={series.time || 0}
                         id={`${id}`}
                         className={classes.textField}
                         onChange={(e: any) =>
@@ -170,7 +170,7 @@ const EditPlan = ({ data, onChange }: EditPlanProps) => {
                     <TableCell className={classes.tableCell}>
                       <TextField
                         type="number"
-                        value={series.repeat}
+                        value={series.repeat || 0}
                         id={`${id}`}
                         className={classes.textField}
                         onChange={(e: any) =>

@@ -16,6 +16,7 @@ import GroupIcon from '@material-ui/icons/Group';
 import Training from '../components/TrainingPlans/Training';
 import clsx from 'clsx';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { withSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -48,7 +49,8 @@ const chips = [
   { id: 4, label: 'Grupowe', Icon: <GroupIcon /> },
 ];
 
-const TrainingPlans = () => {
+const TrainingPlans = (props: any) => {
+  const { enqueueSnackbar } = props;
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
   const [trainingData, setTrainingData] = useState({
@@ -67,10 +69,24 @@ const TrainingPlans = () => {
       },
       body: JSON.stringify({ name: '' }),
     })
-      .then((res: any) => res.json())
+      .then((res: any) => {
+        if (!res.ok) {
+          throw res;
+        }
+        return res.json();
+      })
       .then((data: any) => setTrainingData(data))
+      .catch(({ statusText }: any) =>
+        enqueueSnackbar(`${statusText}`, {
+          variant: 'error',
+          anchorOrigin: {
+            vertical: 'bottom',
+            horizontal: 'right',
+          },
+        }),
+      )
       .then(() => setLoading(false));
-  }, []);
+  }, [enqueueSnackbar]);
 
   const [pageNumber, setPageNumber] = useState(0);
   const [data, setData] = useState({
@@ -119,18 +135,18 @@ const TrainingPlans = () => {
           <CircularProgress />
         </Box>
       ) : (
-          <Paper className={classes.root}>
-            <Grid container spacing={2} style={{ padding: 16 }}>
-              {addTraining((trainingData.cardio || []), 0)}
-              {addTraining((trainingData.strength || []), 1)}
-              {addTraining((trainingData.couples || []), 2)}
-              {addTraining((trainingData.bike || []), 3)}
-              {addTraining((trainingData.group || []), 4)}
-            </Grid>
-          </Paper>
-        )}
+        <Paper className={classes.root}>
+          <Grid container spacing={2} style={{ padding: 16 }}>
+            {addTraining(trainingData.cardio || [], 0)}
+            {addTraining(trainingData.strength || [], 1)}
+            {addTraining(trainingData.couples || [], 2)}
+            {addTraining(trainingData.bike || [], 3)}
+            {addTraining(trainingData.group || [], 4)}
+          </Grid>
+        </Paper>
+      )}
     </SidebarTemplate>
   );
 };
 
-export default TrainingPlans;
+export default withSnackbar(TrainingPlans);
