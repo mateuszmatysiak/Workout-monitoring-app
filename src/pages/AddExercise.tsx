@@ -102,13 +102,11 @@ const AddExercise = (props: any) => {
   const [checked, setChecked] = useState<number[]>([]);
 
   useEffect(() => {
-    fetch('http://localhost:3100/exercises', {
-      method: 'POST',
+    fetch(`http://localhost:3100/exercises/username=${username}`, {
       headers: {
         Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ name: '', username }),
     })
       .then((res: any) => {
         if (!res.ok) {
@@ -181,12 +179,10 @@ const AddExercise = (props: any) => {
         },
       }),
     );
-    await fetch('http://localhost:3100/exercises', {
-      method: 'POST',
+    await fetch(`http://localhost:3100/exercises/username=${username}`, {
       headers: {
         Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
-        body: JSON.stringify({ name: '', username }),
       },
     })
       .then((res: any) => res.json())
