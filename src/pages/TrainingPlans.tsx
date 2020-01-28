@@ -52,7 +52,6 @@ const chips = [
 const TrainingPlans = (props: any) => {
   const { enqueueSnackbar } = props;
   const token = localStorage.getItem('token');
-  const username = localStorage.getItem('username');
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
   const [trainingData, setTrainingData] = useState({
@@ -67,7 +66,7 @@ const TrainingPlans = (props: any) => {
     fetch('http://localhost:3100/workoutplanexample', {
       method: 'POST',
       headers: {
-        'Authorization': 'Bearer ' + token,
+        Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ name: '' }),
@@ -79,15 +78,16 @@ const TrainingPlans = (props: any) => {
         return res.json();
       })
       .then((data: any) => setTrainingData(data))
-      .catch(({ statusText }: any) =>
-        enqueueSnackbar(`${statusText}`, {
-          variant: 'error',
-          anchorOrigin: {
-            vertical: 'bottom',
-            horizontal: 'right',
-          },
-        }),
-      )
+      .catch(({ statusText }: any) => console.log(statusText))
+      // .catch(({ statusText }: any) =>
+      //   enqueueSnackbar(`${statusText}`, {
+      //     variant: 'error',
+      //     anchorOrigin: {
+      //       vertical: 'bottom',
+      //       horizontal: 'right',
+      //     },
+      //   }),
+      // )
       .then(() => setLoading(false));
   }, [enqueueSnackbar, token]);
 

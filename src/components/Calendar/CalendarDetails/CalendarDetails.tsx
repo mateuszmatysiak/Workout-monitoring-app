@@ -119,12 +119,10 @@ const CalendarDetails = ({
           },
         }),
       );
-    await fetch('http://localhost:3100/userworkout', {
-      method: 'POST',
+    await fetch(`http://localhost:3100/userworkout/info/${username}`, {
       headers: {
         Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
-        body: JSON.stringify({ username }),
       },
     })
       .then((res: any) => res.json())

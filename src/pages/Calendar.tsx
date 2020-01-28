@@ -55,15 +55,16 @@ const Calendar = (props: any) => {
         return res.json();
       })
       .then((data: any) => setTrainingPlanData(data))
-      .catch(({ statusText }: any) =>
-        enqueueSnackbar(`${statusText}`, {
-          variant: 'error',
-          anchorOrigin: {
-            vertical: 'bottom',
-            horizontal: 'right',
-          },
-        }),
-      )
+      .catch(({ statusText }: any) => console.log(statusText))
+      // .catch(({ statusText }: any) =>
+      //   enqueueSnackbar(`${statusText}`, {
+      //     variant: 'error',
+      //     anchorOrigin: {
+      //       vertical: 'bottom',
+      //       horizontal: 'right',
+      //     },
+      //   }),
+      // )
       .then(() => setLoading(false));
 
     fetch(`http://localhost:3100/userworkout/info/${username}`, {
@@ -81,15 +82,16 @@ const Calendar = (props: any) => {
       .then(({ dates, calendarDates }: any) =>
         setCalendarTrainingPlans({ dates: dates, calendarDates: calendarDates }),
       )
-      .catch(({ statusText }: any) =>
-        enqueueSnackbar(`${statusText}`, {
-          variant: 'error',
-          anchorOrigin: {
-            vertical: 'bottom',
-            horizontal: 'right',
-          },
-        }),
-      );
+      .catch(({ statusText }: any) => console.log(statusText));
+    // .catch(({ statusText }: any) =>
+    //   enqueueSnackbar(`${statusText}`, {
+    //     variant: 'error',
+    //     anchorOrigin: {
+    //       vertical: 'bottom',
+    //       horizontal: 'right',
+    //     },
+    //   }),
+    // );
   }, [enqueueSnackbar, token]);
 
   const getTrainingPlan = (value: any) => {

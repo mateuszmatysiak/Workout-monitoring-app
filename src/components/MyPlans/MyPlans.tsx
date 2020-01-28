@@ -177,7 +177,7 @@ const MyPlans = (props: any) => {
         Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data[0]),
+      body: JSON.stringify(data.map((item: any) => ({ ...item, username: username }))[0]),
     }).then(() =>
       enqueueSnackbar('Edytowano plan', {
         variant: 'success',
