@@ -66,12 +66,10 @@ const Calendar = (props: any) => {
       )
       .then(() => setLoading(false));
 
-    fetch('http://localhost:3100/userworkout', {
-      method: 'POST',
+    fetch(`http://localhost:3100/userworkout/info/${username}`, {
       headers: {
         Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
-        body: JSON.stringify({ username }),
       },
     })
       .then((res: any) => {

@@ -20,12 +20,10 @@ const AddPlan = (props: any) => {
 
   useEffect(() => {
     setLoading(true);
-    fetch('http://localhost:3100/exercises', {
-      method: 'POST',
+    fetch(`http://localhost:3100/exercises/${username}`, {
       headers: {
         Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
-        body: JSON.stringify({ name: '', username }),
       },
     })
       .then((res: any) => res.json())
@@ -40,7 +38,7 @@ const AddPlan = (props: any) => {
         Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data[0]),
+      body: JSON.stringify(data.map((item: any) => ({ ...item, username: username }))[0]),
     }).then(() =>
       enqueueSnackbar(`Dodano plan treningowy o nazwie: ${planName}`, {
         variant: 'success',

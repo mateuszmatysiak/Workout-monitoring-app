@@ -98,7 +98,14 @@ const InfoTable = ({ data, setData }: ExercisesInfoTableProps) => {
       .slice(0, 3);
   };
 
-  const createTextField = (value: number, id: any, itemId: number, seriesId: number, series: any) => (
+  const createTextField = (
+    value: number,
+    id: any,
+    itemId: number,
+    seriesId: number,
+    series: any,
+    type: any,
+  ) => (
     <TableCell className={classes.tableCell}>
       <TextField
         type="number"
@@ -111,7 +118,7 @@ const InfoTable = ({ data, setData }: ExercisesInfoTableProps) => {
             seriesId,
             series,
             parseInt(e.target.value.replace(/\D/, '')),
-            'kg',
+            type,
           );
         }}
         onInput={(e: any) => handleOnInput(e.target.value)}
@@ -144,9 +151,9 @@ const InfoTable = ({ data, setData }: ExercisesInfoTableProps) => {
                   <TableCell className={classes.titleTable} scope="row">
                     Seria {series.id + 1}
                   </TableCell>
-                  {createTextField(series.kg, id, item.id, series.id, series)}
-                  {createTextField(series.time, id, item.id, series.id, series)}
-                  {createTextField(series.repeat, id, item.id, series.id, series)}
+                  {createTextField(series.kg, id, item.id, series.id, series, 'kg')}
+                  {createTextField(series.time, id, item.id, series.id, series, 'time')}
+                  {createTextField(series.repeat, id, item.id, series.id, series, 'repeat')}
                 </TableRow>
               );
             })}

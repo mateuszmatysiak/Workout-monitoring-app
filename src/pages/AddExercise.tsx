@@ -102,7 +102,7 @@ const AddExercise = (props: any) => {
   const [checked, setChecked] = useState<number[]>([]);
 
   useEffect(() => {
-    fetch(`http://localhost:3100/exercises/username=${username}`, {
+    fetch(`http://localhost:3100/exercises/${username}`, {
       headers: {
         Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
@@ -136,7 +136,7 @@ const AddExercise = (props: any) => {
         Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ exercises: value }),
+      body: JSON.stringify({ exercises: value, username }),
     }).then(() => {
       setChecked([]);
       enqueueSnackbar('Usunięto ćwiczenie', {
@@ -147,13 +147,11 @@ const AddExercise = (props: any) => {
         },
       });
     });
-    await fetch('http://localhost:3100/exercises', {
-      method: 'POST',
+    await fetch(`http://localhost:3100/exercises/${username}`, {
       headers: {
         Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ username }),
     })
       .then((res: any) => res.json())
       .then((data: any) => {
@@ -179,7 +177,7 @@ const AddExercise = (props: any) => {
         },
       }),
     );
-    await fetch(`http://localhost:3100/exercises/username=${username}`, {
+    await fetch(`http://localhost:3100/exercises/${username}`, {
       headers: {
         Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
