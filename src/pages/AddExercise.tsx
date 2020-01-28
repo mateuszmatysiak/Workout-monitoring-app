@@ -94,6 +94,7 @@ const removeDuplicates = (data: any) => {
 const AddExercise = (props: any) => {
   const { enqueueSnackbar } = props;
   const token = localStorage.getItem('token');
+  const username = localStorage.getItem('username');
   const classes = useStyles();
   const [exercise, setExercise] = useState('');
   const [listOfExercises, setListOfExercises] = useState([]);
@@ -102,10 +103,12 @@ const AddExercise = (props: any) => {
 
   useEffect(() => {
     fetch('http://localhost:3100/exercises', {
+      method: 'POST',
       headers: {
         Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify({ username }),
     })
       .then((res: any) => {
         if (!res.ok) {
@@ -147,10 +150,12 @@ const AddExercise = (props: any) => {
       });
     });
     await fetch('http://localhost:3100/exercises', {
+      method: 'POST',
       headers: {
         Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify({ username }),
     })
       .then((res: any) => res.json())
       .then((data: any) => {
@@ -166,7 +171,7 @@ const AddExercise = (props: any) => {
         Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ name: exercise }),
+      body: JSON.stringify({ name: exercise, username }),
     }).then(() =>
       enqueueSnackbar('Dodano ćwiczenie', {
         variant: 'success',
@@ -177,9 +182,11 @@ const AddExercise = (props: any) => {
       }),
     );
     await fetch('http://localhost:3100/exercises', {
+      method: 'POST',
       headers: {
         Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
+        body: JSON.stringify({ username }),
       },
     })
       .then((res: any) => res.json())

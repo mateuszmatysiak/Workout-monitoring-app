@@ -94,6 +94,7 @@ const CalendarDetails = ({
 }: CalendarDetailsProps) => {
   const classes = useStyles();
   const token = localStorage.getItem('token');
+  const username = localStorage.getItem('username');
   const [currentTrainingId] = (currentTraining || []).map(({ id }: any) => id);
 
   async function handleDeleteTraining(value: any) {
@@ -119,9 +120,11 @@ const CalendarDetails = ({
         }),
       );
     await fetch('http://localhost:3100/userworkout', {
+      method: 'POST',
       headers: {
         Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
+        body: JSON.stringify({ username }),
       },
     })
       .then((res: any) => res.json())

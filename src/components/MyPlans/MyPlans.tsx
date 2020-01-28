@@ -105,6 +105,7 @@ const MyPlans = (props: any) => {
   const { enqueueSnackbar } = props;
   const classes = useStyles();
   const token = localStorage.getItem('token');
+  const username = localStorage.getItem('username');
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [data, setData] = useState([]);
@@ -120,7 +121,7 @@ const MyPlans = (props: any) => {
         Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ name: '' }),
+      body: JSON.stringify({ name: '', username }),
     })
       .then((res: any) => {
         if (!res.ok) {

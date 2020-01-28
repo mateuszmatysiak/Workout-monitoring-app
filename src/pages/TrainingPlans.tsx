@@ -52,6 +52,7 @@ const chips = [
 const TrainingPlans = (props: any) => {
   const { enqueueSnackbar } = props;
   const token = localStorage.getItem('token');
+  const username = localStorage.getItem('username');
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
   const [trainingData, setTrainingData] = useState({

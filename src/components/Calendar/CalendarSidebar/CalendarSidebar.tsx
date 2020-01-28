@@ -75,6 +75,7 @@ const CalendarSidebar = ({
 }: CalendarSidebarProps) => {
   const classes = useStyles();
   const token = localStorage.getItem('token');
+  const username = localStorage.getItem('username');
   const [openSidebar, setOpenSidebar] = useState({ right: false });
   const [pickedDays, setPickedDays] = useState([]);
   const { trainingPlan }: any = data;
@@ -112,9 +113,11 @@ const CalendarSidebar = ({
       }),
     );
     await fetch('http://localhost:3100/userworkout', {
+      method: 'POST',
       headers: {
         Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
+        body: JSON.stringify({ username }),
       },
     })
       .then((res: any) => res.json())

@@ -55,6 +55,7 @@ const Training = ({
 }: TrainingProps) => {
   const classes = useStyles({});
   const token = localStorage.getItem('token');
+  const username = localStorage.getItem('username');
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -71,7 +72,7 @@ const Training = ({
         Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ ...data, example: true }),
+      body: JSON.stringify({ ...data, example: true, username }),
     }).then(() =>
       enqueueSnackbar('Dodano plan treningowy do kalendarza', {
         variant: 'success',

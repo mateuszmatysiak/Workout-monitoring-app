@@ -24,7 +24,6 @@ const Calendar = (props: any) => {
   const classes = useStyles();
   const token = localStorage.getItem('token');
   const username = localStorage.getItem('username');
-  console.log(username)
   const [loading, setLoading] = useState(true);
   const [selectedDays, setSelectedDays] = useState([]) as any[];
   const [data, setData] = useState<any>({
@@ -47,7 +46,7 @@ const Calendar = (props: any) => {
         Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ name: '' }),
+      body: JSON.stringify({ name: '', username }),
     })
       .then((res: any) => {
         if (!res.ok) {
@@ -68,9 +67,11 @@ const Calendar = (props: any) => {
       .then(() => setLoading(false));
 
     fetch('http://localhost:3100/userworkout', {
+      method: 'POST',
       headers: {
         Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
+        body: JSON.stringify({ username }),
       },
     })
       .then((res: any) => {
@@ -100,7 +101,7 @@ const Calendar = (props: any) => {
         Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ date: value }),
+      body: JSON.stringify({ date: value, username }),
     })
       .then((res: any) => res.json())
       .then((data: any) => {
