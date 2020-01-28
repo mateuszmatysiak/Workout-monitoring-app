@@ -108,7 +108,7 @@ const AddExercise = (props: any) => {
         Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ username }),
+      body: JSON.stringify({ name: '', username }),
     })
       .then((res: any) => {
         if (!res.ok) {
@@ -186,7 +186,7 @@ const AddExercise = (props: any) => {
       headers: {
         Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
-        body: JSON.stringify({ username }),
+        body: JSON.stringify({ name: '', username }),
       },
     })
       .then((res: any) => res.json())
