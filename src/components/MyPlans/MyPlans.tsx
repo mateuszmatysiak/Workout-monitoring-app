@@ -104,6 +104,7 @@ const shortcut = (name = '') => {
 const MyPlans = (props: any) => {
   const { enqueueSnackbar } = props;
   const classes = useStyles();
+  const token = localStorage.getItem('token');
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [data, setData] = useState([]);
@@ -116,6 +117,7 @@ const MyPlans = (props: any) => {
     fetch('http://localhost:3100/workoutplan', {
       method: 'POST',
       headers: {
+        Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ name: '' }),
@@ -150,6 +152,7 @@ const MyPlans = (props: any) => {
     await fetch('http://localhost:3100/workoutplan', {
       method: 'DELETE',
       headers: {
+        Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ id: value }),
@@ -170,6 +173,7 @@ const MyPlans = (props: any) => {
     await fetch('http://localhost:3100/workoutplan', {
       method: 'PATCH',
       headers: {
+        Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data[0]),

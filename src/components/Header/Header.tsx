@@ -1,7 +1,14 @@
 import React from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import HeaderHelpDialog from './HeaderHelpDialog';
-import { Typography, ListItem, ListItemIcon, Box, IconButton, useMediaQuery } from '@material-ui/core';
+import {
+  Typography,
+  ListItem,
+  ListItemIcon,
+  Box,
+  IconButton,
+  useMediaQuery,
+} from '@material-ui/core';
 import { useLocation, NavLink } from 'react-router-dom';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
@@ -98,7 +105,12 @@ const Header = ({ activeSidebar, handleActiveSidebar }: HeaderProps) => {
       <Typography className={classes.title}>{getTitle()}</Typography>
       <Box display="flex" marginRight="8px">
         <HeaderHelpDialog />
-        <ListItem component={NavLink} to="/login" className={classes.navItemWrapper}>
+        <ListItem
+          component={NavLink}
+          onClick={() => localStorage.removeItem('token')}
+          to="/login"
+          className={classes.navItemWrapper}
+        >
           <ListItemIcon className={classes.navIconWrapper}>
             <ExitToAppIcon className={classes.exitIcon} />
           </ListItemIcon>

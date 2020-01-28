@@ -29,7 +29,7 @@ const buttons = [
   { id: 1, name: 'Dodaj plan treningowy' },
 ];
 
-const PlanManagment = (props: any) => {
+const PlanManagment = () => {
   const classes = useStyles();
   const [pageNumber, setPageNumber] = useState(0);
 

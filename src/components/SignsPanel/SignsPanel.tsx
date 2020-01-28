@@ -2,8 +2,6 @@ import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
@@ -11,9 +9,9 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import BgImg from '../../assets/bg.jpg';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import SignsDialog from './SignsPanelDialog';
 import { useLocation, Link, useHistory } from 'react-router-dom';
 import { object, string } from 'yup';
+import { withSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -87,21 +85,50 @@ const SignsSchema = object().shape({
 
 const SignsValues = { username: '', email: '', password: '' };
 
-const SingsPanel = () => {
+const SingsPanel = (props: any) => {
+  const { enqueueSnackbar } = props;
   const classes = useStyles();
-
-  const pathName = useLocation().pathname;
   const history = useHistory();
-
-  const handleLogin = () => history.push('/calendar');
-  const handleRegistration = () => console.log('Rejestracja');
-
+  const pathName = useLocation().pathname;
+  const handleSubmit = ({ username, password, email }: any) => {
+    fetch(
+      pathName === '/login' ? 'http://localhost:3100/auth/login' : 'http://localhost:3100/user',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password, email }),
+      },
+    )
+      .then((res: any) => {
+        if (!res.ok) {
+          throw res;
+        }
+        return res.json();
+      })
+      .then(({ access_token }: any) => {
+        if (access_token !== '') localStorage.setItem('token', access_token);
+        localStorage.setItem('username', username);
+        history.push('/calendar');
+      })
+      .then(() =>
+        enqueueSnackbar('Zalogowano', {
+          variant: 'success',
+          anchorOrigin: {
+            vertical: 'bottom',
+            horizontal: 'right',
+          },
+        }),
+      )
+      .catch(({ statusText }: any) => console.log(statusText));
+  };
   return (
     <Formik
       initialValues={SignsValues}
       validationSchema={pathName === '/login' ? null : SignsSchema}
       onSubmit={(values, { resetForm }) => {
-        console.log(values);
+        handleSubmit(values);
         resetForm();
       }}
     >
@@ -208,27 +235,16 @@ const SingsPanel = () => {
                   <ErrorMessage name="password">
                     {msg => <div className={classes.error}>{msg}</div>}
                   </ErrorMessage>
-                  {pathName === '/login' ? (
-                    <FormControlLabel
-                      style={{ color: '#e0e0e0' }}
-                      control={<Checkbox value="remember" style={{ color: '#e0e0e0' }} />}
-                      label="Zapamiętaj mnie"
-                    />
-                  ) : null}
                   <Button
                     type="submit"
                     fullWidth
                     variant="contained"
                     color="primary"
                     className={classes.submit}
-                    onClick={pathName === '/login' ? handleLogin : handleRegistration}
                   >
                     {pathName === '/login' ? 'Zaloguj się' : 'Zarejestruj się'}
                   </Button>
                   <Grid container>
-                    <Grid item xs>
-                      <SignsDialog />
-                    </Grid>
                     <Grid item>
                       <Link
                         className={classes.link}
@@ -250,4 +266,4 @@ const SingsPanel = () => {
   );
 };
 
-export default SingsPanel;
+export default withSnackbar(SingsPanel);

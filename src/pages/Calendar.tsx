@@ -22,6 +22,9 @@ const useStyles = makeStyles(theme => ({
 const Calendar = (props: any) => {
   const { enqueueSnackbar } = props;
   const classes = useStyles();
+  const token = localStorage.getItem('token');
+  const username = localStorage.getItem('username');
+  console.log(username)
   const [loading, setLoading] = useState(true);
   const [selectedDays, setSelectedDays] = useState([]) as any[];
   const [data, setData] = useState<any>({
@@ -36,12 +39,12 @@ const Calendar = (props: any) => {
   const [trainingPlanData, setTrainingPlanData] = useState([]);
   const [fetchTraining, setFetchTraining] = useState([]);
   const [currentTraining, setCurrentTraining] = useState([]) as any;
-
   useEffect(() => {
     setLoading(true);
     fetch('http://localhost:3100/workoutplan', {
       method: 'POST',
       headers: {
+        Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ name: '' }),
@@ -64,7 +67,12 @@ const Calendar = (props: any) => {
       )
       .then(() => setLoading(false));
 
-    fetch('http://localhost:3100/userworkout')
+    fetch('http://localhost:3100/userworkout', {
+      headers: {
+        Authorization: 'Bearer ' + token,
+        'Content-Type': 'application/json',
+      },
+    })
       .then((res: any) => {
         if (!res.ok) {
           throw res;
@@ -83,12 +91,13 @@ const Calendar = (props: any) => {
           },
         }),
       );
-  }, [enqueueSnackbar]);
+  }, [enqueueSnackbar, token]);
 
   const getTrainingPlan = (value: any) => {
     fetch('http://localhost:3100/workoutplan', {
       method: 'POST',
       headers: {
+        Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ date: value }),

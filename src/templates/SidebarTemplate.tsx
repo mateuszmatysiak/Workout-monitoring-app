@@ -4,6 +4,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Header from '../components/Header';
 import clsx from 'clsx';
 import { useMediaQuery } from '@material-ui/core';
+import { Redirect } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   page: {
@@ -67,6 +68,10 @@ const SidebarTemplate = ({ children }: SidebarTemplateProps) => {
   const mobile = useMediaQuery(theme.breakpoints.down('lg'));
   const [activeSidebar, setActiveSidebar] = useState(false);
   const handleActiveSidebar = () => setActiveSidebar(!activeSidebar);
+
+  const token = localStorage.getItem('token');
+
+  if (!token) return <Redirect to="/login" />;
 
   return (
     <div className={classes.page}>

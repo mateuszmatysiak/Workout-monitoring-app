@@ -93,6 +93,7 @@ const removeDuplicates = (data: any) => {
 
 const AddExercise = (props: any) => {
   const { enqueueSnackbar } = props;
+  const token = localStorage.getItem('token');
   const classes = useStyles();
   const [exercise, setExercise] = useState('');
   const [listOfExercises, setListOfExercises] = useState([]);
@@ -100,7 +101,12 @@ const AddExercise = (props: any) => {
   const [checked, setChecked] = useState<number[]>([]);
 
   useEffect(() => {
-    fetch('http://localhost:3100/exercises')
+    fetch('http://localhost:3100/exercises', {
+      headers: {
+        Authorization: 'Bearer ' + token,
+        'Content-Type': 'application/json',
+      },
+    })
       .then((res: any) => {
         if (!res.ok) {
           throw res;
@@ -126,6 +132,7 @@ const AddExercise = (props: any) => {
     await fetch('http://localhost:3100/exercises', {
       method: 'DELETE',
       headers: {
+        Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ exercises: value }),
@@ -139,7 +146,12 @@ const AddExercise = (props: any) => {
         },
       });
     });
-    await fetch('http://localhost:3100/exercises')
+    await fetch('http://localhost:3100/exercises', {
+      headers: {
+        Authorization: 'Bearer ' + token,
+        'Content-Type': 'application/json',
+      },
+    })
       .then((res: any) => res.json())
       .then((data: any) => {
         setListOfExercises(removeDuplicates(data));
@@ -151,6 +163,7 @@ const AddExercise = (props: any) => {
     await fetch('http://localhost:3100/exercises', {
       method: 'POST',
       headers: {
+        Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ name: exercise }),
@@ -163,7 +176,12 @@ const AddExercise = (props: any) => {
         },
       }),
     );
-    await fetch('http://localhost:3100/exercises')
+    await fetch('http://localhost:3100/exercises', {
+      headers: {
+        Authorization: 'Bearer ' + token,
+        'Content-Type': 'application/json',
+      },
+    })
       .then((res: any) => res.json())
       .then((data: any) => {
         setListOfExercises(removeDuplicates(data));

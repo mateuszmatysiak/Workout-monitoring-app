@@ -54,6 +54,7 @@ const Training = ({
   enqueueSnackbar,
 }: TrainingProps) => {
   const classes = useStyles({});
+  const token = localStorage.getItem('token');
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -67,9 +68,10 @@ const Training = ({
     fetch('http://localhost:3100/workoutplan', {
       method: 'POST',
       headers: {
+        Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({ ...data, example: true }),
     }).then(() =>
       enqueueSnackbar('Dodano plan treningowy do kalendarza', {
         variant: 'success',

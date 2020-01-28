@@ -9,6 +9,7 @@ import { withSnackbar } from 'notistack';
 
 const AddPlan = (props: any) => {
   const { enqueueSnackbar } = props;
+  const token = localStorage.getItem('token');
   const [data, setData] = useState([]);
   const [left, setLeft] = useState<any[]>([]);
   const [right, setRight] = useState<any[]>([]);
@@ -18,16 +19,22 @@ const AddPlan = (props: any) => {
 
   useEffect(() => {
     setLoading(true);
-    fetch('http://localhost:3100/exercises')
+    fetch('http://localhost:3100/exercises', {
+      headers: {
+        Authorization: 'Bearer ' + token,
+        'Content-Type': 'application/json',
+      },
+    })
       .then((res: any) => res.json())
       .then((data: any) => setLeft(data))
       .then(() => setLoading(false));
-  }, []);
+  }, [token]);
 
   const addPlan = () => {
     fetch('http://localhost:3100/workoutplan', {
       method: 'POST',
       headers: {
+        Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data[0]),

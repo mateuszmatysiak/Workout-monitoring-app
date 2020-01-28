@@ -51,6 +51,7 @@ const chips = [
 
 const TrainingPlans = (props: any) => {
   const { enqueueSnackbar } = props;
+  const token = localStorage.getItem('token');
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
   const [trainingData, setTrainingData] = useState({
@@ -65,6 +66,7 @@ const TrainingPlans = (props: any) => {
     fetch('http://localhost:3100/workoutplanexample', {
       method: 'POST',
       headers: {
+        'Authorization': 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ name: '' }),
@@ -86,7 +88,7 @@ const TrainingPlans = (props: any) => {
         }),
       )
       .then(() => setLoading(false));
-  }, [enqueueSnackbar]);
+  }, [enqueueSnackbar, token]);
 
   const [pageNumber, setPageNumber] = useState(0);
   const [data, setData] = useState({

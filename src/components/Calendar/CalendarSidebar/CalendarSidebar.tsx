@@ -74,6 +74,7 @@ const CalendarSidebar = ({
   enqueueSnackbar,
 }: CalendarSidebarProps) => {
   const classes = useStyles();
+  const token = localStorage.getItem('token');
   const [openSidebar, setOpenSidebar] = useState({ right: false });
   const [pickedDays, setPickedDays] = useState([]);
   const { trainingPlan }: any = data;
@@ -97,6 +98,7 @@ const CalendarSidebar = ({
     await fetch('http://localhost:3100/workoutplan', {
       method: 'POST',
       headers: {
+        Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ ...data, dates: pickedDays }),
@@ -109,7 +111,12 @@ const CalendarSidebar = ({
         },
       }),
     );
-    await fetch('http://localhost:3100/userworkout')
+    await fetch('http://localhost:3100/userworkout', {
+      headers: {
+        Authorization: 'Bearer ' + token,
+        'Content-Type': 'application/json',
+      },
+    })
       .then((res: any) => res.json())
       .then(({ dates, calendarDates }: any) =>
         setCalendarTrainingPlans({ dates: dates, calendarDates: calendarDates }),

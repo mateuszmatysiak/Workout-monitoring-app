@@ -93,12 +93,14 @@ const CalendarDetails = ({
   enqueueSnackbar,
 }: CalendarDetailsProps) => {
   const classes = useStyles();
+  const token = localStorage.getItem('token');
   const [currentTrainingId] = (currentTraining || []).map(({ id }: any) => id);
 
   async function handleDeleteTraining(value: any) {
     await fetch('http://localhost:3100/userworkout', {
       method: 'DELETE',
       headers: {
+        Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ id: value }),
@@ -116,7 +118,12 @@ const CalendarDetails = ({
           },
         }),
       );
-    await fetch('http://localhost:3100/userworkout')
+    await fetch('http://localhost:3100/userworkout', {
+      headers: {
+        Authorization: 'Bearer ' + token,
+        'Content-Type': 'application/json',
+      },
+    })
       .then((res: any) => res.json())
       .then(({ dates, calendarDates }: any) =>
         setCalendarTrainingPlans({ dates: dates, calendarDates: calendarDates }),
